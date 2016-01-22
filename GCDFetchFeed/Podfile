@@ -1,0 +1,8 @@
+pod 'Reveal-iOS-SDK', :configurations => ['Debug']
+pod 'SDWebImage'
+pod 'Masonry'
+pod 'MJRefresh'
+pod 'JSONModel'
+pod 'Ono'
+pod 'AFNetworking'
+pod 'DTCoreText'
