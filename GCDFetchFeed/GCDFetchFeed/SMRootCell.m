@@ -15,6 +15,9 @@
 @property (nonatomic, strong) SMTitleLabel *titleLabel;
 @property (nonatomic, strong) SMContentLabel *contentLabel;
 @property (nonatomic, strong) SMHighlightLabel *highlightLabel;
+@property (nonatomic, strong) SMFeedModel *feedModel;
+
+@property (nonatomic, strong) UIButton *clickButton;
 
 @end
 
@@ -40,7 +43,11 @@
     [self addSubview:self.titleLabel];
     [self addSubview:self.contentLabel];
     [self addSubview:self.highlightLabel];
+    [self addSubview:self.clickButton];
     
+    [self.clickButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.bottom.equalTo(self);
+    }];
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.equalTo(self).offset([SMStyle floatMarginMassive]);
         make.size.mas_equalTo(CGSizeMake(30, 30));
@@ -64,6 +71,13 @@
     self.contentLabel.text = viewModel.contentString;
     [self.iconImageView updateWithImageWebUrl:viewModel.iconUrl];
     self.highlightLabel.text = viewModel.highlightString;
+    self.feedModel = viewModel.feedModel;
+}
+#pragma mark - Private
+- (void)clickedButton {
+    if ([self.delegate respondsToSelector:@selector(smRootCellView:clickWithFeedModel:)]) {
+        [self.delegate smRootCellView:self clickWithFeedModel:self.feedModel];
+    }
 }
 
 #pragma mark - Getter
@@ -92,6 +106,14 @@
         _highlightLabel.textAlignment = NSTextAlignmentRight;
     }
     return _highlightLabel;
+}
+- (UIButton *)clickButton {
+    if (!_clickButton) {
+        _clickButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_clickButton setBackgroundColor:[SMStyle colorBlackLightAlpha] forState:UIControlStateHighlighted];
+        [_clickButton addTarget:self action:@selector(clickedButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _clickButton;
 }
 
 @end

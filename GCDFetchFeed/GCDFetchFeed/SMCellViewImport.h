@@ -10,6 +10,9 @@
 #define Header_h
 
 #import "Masonry.h"
+
+#import "UIButton+BackgroundColor.h"
+
 #import "SMTitleLabel.h"
 #import "SMContentLabel.h"
 #import "SMSubContentLabel.h"

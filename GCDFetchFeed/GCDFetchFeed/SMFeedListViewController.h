@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class SMFeedModel;
+
 @interface SMFeedListViewController : UIViewController
+- (instancetype)initWithFeedModel:(SMFeedModel *)feedModel;
 
 @end

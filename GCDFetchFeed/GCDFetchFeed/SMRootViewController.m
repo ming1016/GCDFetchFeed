@@ -16,9 +16,11 @@
 #import "SMRootDataSource.h"
 #import "SMRootCell.h"
 
+#import "SMFeedListViewController.h"
+
 static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 
-@interface SMRootViewController()<UITableViewDataSource,UITableViewDelegate>
+@interface SMRootViewController()<UITableViewDataSource,UITableViewDelegate,SMRootCellDelegate>
 
 @property (nonatomic, strong) NSMutableArray *feeds;
 @property (nonatomic, strong) SMFeedStore *feedStore;
@@ -87,7 +89,13 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     NSLog(@"fetch complete");
 }
 
+
 #pragma mark - Delegate
+#pragma mark - SMRootCell Delegate
+- (void)smRootCellView:(SMRootCell *)cell clickWithFeedModel:(SMFeedModel *)feedModel {
+    SMFeedListViewController *feedList = [[SMFeedListViewController alloc] initWithFeedModel:feedModel];
+    [self.navigationController pushViewController:feedList animated:YES];
+}
 #pragma mark - TableView Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -96,7 +104,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     return [self.feeds count];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 70;
+    return 80;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rootViewControllerIdentifier];
@@ -108,9 +116,12 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     
     if (!v) {
         v = [[SMRootCell alloc] init];
-        v.frame = CGRectMake(0, 0, self.view.bounds.size.width, 70);
         v.tag = 123432;
+        v.delegate = self;
         [cell.contentView addSubview:v];
+        [v mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.left.top.bottom.equalTo(cell.contentView);
+        }];
     }
     
     SMFeedModel *model = self.feeds[indexPath.row];
@@ -120,6 +131,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     viewModel.iconUrl = model.imageUrl;
     NSUInteger itemsCount = model.items.count;
     viewModel.highlightString = [NSString stringWithFormat:@"%lu条",(unsigned long)itemsCount];
+    viewModel.feedModel = model;
     [v updateWithViewModel:viewModel];
     
     return cell;

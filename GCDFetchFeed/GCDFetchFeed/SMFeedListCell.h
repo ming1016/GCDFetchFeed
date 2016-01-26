@@ -9,6 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "SMFeedListCellViewModel.h"
 
+@protocol SMFeedListCellDelegate;
+
 @interface SMFeedListCell : UIView
+
+@property (nonatomic, weak) id<SMFeedListCellDelegate> delegate;
+- (instancetype)initWithViewModel:(SMFeedListCellViewModel *)viewModel;
+- (void)updateWithViewModel:(SMFeedListCellViewModel *)viewModel;
+
+@end
+
+@protocol SMFeedListCellDelegate <NSObject>
+
+@optional
+- (void)smFeedListCellView:(SMFeedListCell *)cell clickWithItemModel:(SMFeedItemModel *)itemModel;
 
 @end

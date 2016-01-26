@@ -7,7 +7,14 @@
 //
 
 #import "SMFeedListCellViewModel.h"
+#import "SMStyle.h"
 
 @implementation SMFeedListCellViewModel
+
+- (void)setTitleString:(NSString *)titleString {
+    _titleString = titleString;
+    CGRect frame = [titleString boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - [SMStyle floatMarginMassive]*2, 999) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine attributes:@{NSFontAttributeName:[SMStyle fontHuge]} context:nil];
+    _cellHeight = 70 + (frame.size.height - 18);
+}
 
 @end

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "SMRootViewController.h"
+#import "SMStyle.h"
 
 @interface AppDelegate ()
 

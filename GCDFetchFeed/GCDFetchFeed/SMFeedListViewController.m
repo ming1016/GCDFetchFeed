@@ -10,6 +10,10 @@
 #import "Masonry.h"
 #import "SMFeedStore.h"
 #import "SMFeedListCell.h"
+#import "SMFeedListCellViewModel.h"
+#import "NSDate+InternetDateTime.h"
+
+static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControllerCell";
 
 @interface SMFeedListViewController()<UITableViewDataSource,UITableViewDelegate>
 
@@ -29,11 +33,12 @@
     }
     return self;
 }
-
-- (instancetype)initWithModel:(SMFeedModel *)model {
+- (instancetype)initWithFeedModel:(SMFeedModel *)feedModel {
     if (self = [super init]) {
-        self.feedModel = model;
-        self.listData = [NSMutableArray arrayWithArray:model.items];
+        self.feedModel = feedModel;
+        if (feedModel.items.count > 0) {
+            self.listData = [NSMutableArray arrayWithArray:feedModel.items];
+        }
     }
     return self;
 }
@@ -44,6 +49,67 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.title = self.feedModel.title;
+    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:feedListViewControllerCellIdentifier];
+    [self.view addSubview:self.tableView];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_topLayoutGuideTop);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+    [self.tableView reloadData];
+}
+
+#pragma mark - Delegate
+#pragma mark - UITableView Delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.listData.count;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    SMFeedItemModel *itemModel = self.listData[indexPath.row];
+    SMFeedListCellViewModel *viewModel = [[SMFeedListCellViewModel alloc] init];
+    viewModel.titleString = itemModel.title;
+    return viewModel.cellHeight;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:feedListViewControllerCellIdentifier];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.contentView.backgroundColor = [UIColor clearColor];
+    
+    SMFeedListCell *v = (SMFeedListCell *)[cell viewWithTag:132421];
+    if (!v) {
+        v = [[SMFeedListCell alloc] init];
+        v.tag = 132421;
+        [cell.contentView addSubview:v];
+        [v mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.left.top.bottom.equalTo(cell.contentView);
+        }];
+    }
+    
+    SMFeedItemModel *itemModel = self.listData[indexPath.row];
+    SMFeedListCellViewModel *viewModel = [[SMFeedListCellViewModel alloc] init];
+    viewModel.titleString = itemModel.title;
+    NSDate *date = [NSDate dateFromInternetDateTimeString:itemModel.pubDate formatHint:DateFormatHintRFC822];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM-dd"];
+    NSString *authorString = @"";
+    if (itemModel.author.length > 0) {
+        authorString = itemModel.author;
+    }
+    NSString *categoryString = @"";
+    if (itemModel.category.length > 0) {
+        categoryString = [NSString stringWithFormat:@"[%@]",itemModel.category];
+    }
+    viewModel.contentString = [NSString stringWithFormat:@"%@ %@ %@",[dateFormatter stringFromDate:date],categoryString,authorString];
+    viewModel.itemModel = itemModel;
+    [v updateWithViewModel:viewModel];
+    
+    return cell;
 }
 
 #pragma mark - Getter
@@ -52,6 +118,17 @@
         _listData = [NSMutableArray array];
     }
     return _listData;
+}
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero];
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.showsVerticalScrollIndicator = NO;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    return _tableView;
 }
 
 @end

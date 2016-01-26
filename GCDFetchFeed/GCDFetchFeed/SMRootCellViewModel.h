@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SMFeedModel.h"
 
 @interface SMRootCellViewModel : NSObject
 
@@ -14,5 +15,6 @@
 @property (nonatomic, copy) NSString *contentString;
 @property (nonatomic, copy) NSString *iconUrl;
 @property (nonatomic, copy) NSString *highlightString;
+@property (nonatomic, strong) SMFeedModel *feedModel;
 
 @end

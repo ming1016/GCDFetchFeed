@@ -17,6 +17,7 @@
 + (UIFont *)fontSmall;
 
 //UIColor
++ (UIColor *)colorBlackLightAlpha;
 + (UIColor *)colorGrayLight;
 + (UIColor *)colorGrayDark;
 + (UIColor *)colorOrangeLight;
