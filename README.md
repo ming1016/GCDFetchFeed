@@ -4,9 +4,14 @@
 * RSS解析成可用model
 * dispatch_group监听多feeds的fetch
 * 首页列表展示
-
-# Todo List：
+* 数据请求和vc分离，使用通知和单例进行数据共享
 * feed列表页
+* 多行标题viewmodel里算cell高
+* 时间显示
+* 作者信息
+* 分类显示
+
+#Todo List：
 * feed详情页
 * Atom解析
 * FMDB本地存储 feed
