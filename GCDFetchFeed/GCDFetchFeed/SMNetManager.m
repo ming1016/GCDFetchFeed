@@ -7,10 +7,19 @@
 //
 
 #import "SMNetManager.h"
+#import "SMFeedModel.h"
+#import "SMNotificationConst.h"
+#import "SMFeedStore.h"
+
+@interface SMNetManager()
+
+@property (nonatomic, strong)SMFeedStore *feedStore;
+
+@end
 
 @implementation SMNetManager
 
-+ (AFHTTPSessionManager *)shareInstance {
++ (SMNetManager *)shareInstance {
     static SMNetManager *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -19,6 +28,59 @@
         instance.requestSerializer.timeoutInterval = 20.f;
     });
     return instance;
+}
+
+- (void)fetchAllFeedWithModelArray:(NSArray *)modelArray {
+    __weak __typeof(self)weakSelf = self;
+    //gcd
+    dispatch_queue_t fetchFeedQueue = dispatch_queue_create("com.starming.fetchfeed.fetchfeed", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_group_t group = dispatch_group_create();
+    self.feeds = [NSMutableArray arrayWithArray:modelArray];
+    
+    for (int i = 0; i < modelArray.count; i++) {
+        dispatch_group_enter(group);
+        SMFeedModel *feedModel = modelArray[i];
+        dispatch_async(fetchFeedQueue, ^{
+            [weakSelf GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+//                NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+//                NSLog(@"Data: %@", xmlString);
+//                NSLog(@"%@",feedModel);
+                
+                weakSelf.feeds[i] = [weakSelf.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
+                
+                //通知
+                NSDictionary *userInfo = @{@"index":[NSString stringWithFormat:@"%d",i]};
+                [[NSNotificationCenter defaultCenter] postNotificationName:NetworkingFetchOneFeedCompleteNotification object:nil userInfo:userInfo];
+                
+                dispatch_group_leave(group);
+                
+            } failure:^(NSURLSessionTask *operation, NSError *error) {
+                NSLog(@"Error: %@", error);
+                dispatch_group_leave(group);
+            }];
+            
+        });//end dispatch async
+        
+    }//end for
+    
+    //全完成后执行事件
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:NetworkingFetchAllFeedsCompleteNotification object:nil userInfo:nil];
+    });
+}
+
+#pragma mark - Getter
+- (SMFeedStore *)feedStore {
+    if (!_feedStore) {
+        _feedStore = [[SMFeedStore alloc] init];
+    }
+    return _feedStore;
+}
+- (NSMutableArray *)feeds {
+    if (!_feeds) {
+        _feeds = [NSMutableArray array];
+    }
+    return _feeds;
 }
 
 @end

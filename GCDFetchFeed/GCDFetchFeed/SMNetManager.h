@@ -11,6 +11,10 @@
 
 @interface SMNetManager : AFHTTPSessionManager
 
-+ (AFHTTPSessionManager *)shareInstance;
++ (SMNetManager *)shareInstance;
+
+@property (nonatomic, strong) NSMutableArray *feeds;
+
+- (void)fetchAllFeedWithModelArray:(NSArray *)modelArray;
 
 @end

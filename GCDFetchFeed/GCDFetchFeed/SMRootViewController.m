@@ -10,11 +10,11 @@
 #import "SMNetManager.h"
 #import "Ono.h"
 #import "Masonry.h"
+#import "SMNotificationConst.h"
 
 #import "SMFeedStore.h"
 #import "SMRootDataSource.h"
 #import "SMRootCell.h"
-#import "UIImageView+WebCache.h"
 
 static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 
@@ -37,11 +37,14 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     }
     return self;
 }
+
 - (void)viewDidAppear:(BOOL)animated {
-    
+    [super viewDidAppear:animated];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //Notification
+    [self buildNotificationObserver];
     //UI
     self.title = @"GCDFetchFeed";
     self.view.backgroundColor = [UIColor whiteColor];
@@ -53,53 +56,34 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     }];
     [self.tableView reloadData];
     
-    //Request
-    AFHTTPSessionManager *manager = [SMNetManager shareInstance];
-    __weak __typeof(self)weakSelf = self;
-    
     //空判断
     if (self.feeds.count > 0) {
         //
     } else {
         return;
     }
-    
-    //gcd
-    dispatch_queue_t fetchFeedQueue = dispatch_queue_create("com.starming.fetchfeed.fetchfeed", DISPATCH_QUEUE_CONCURRENT);
-    dispatch_group_t group = dispatch_group_create();
-    
-    for (int i = 0; i < self.feeds.count; i++) {
-        dispatch_group_enter(group);
-        SMFeedModel *feedModel = self.feeds[i];
-        dispatch_async(fetchFeedQueue, ^{
-            [manager GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-//                NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//                NSLog(@"Data: %@", xmlString);
-//                NSLog(@"%@",feedModel);
-                
-                weakSelf.feeds[i] = [weakSelf.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
-                [weakSelf.tableView reloadData];
-                
-                dispatch_group_leave(group);
-                
-            } failure:^(NSURLSessionTask *operation, NSError *error) {
-                NSLog(@"Error: %@", error);
-                dispatch_group_leave(group);
-            }];
-            
-        });//end dispatch async
-        
-    }//end for
-    
-    //全完成后执行事件
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        [weakSelf fetchedAllFeeds];
-    });
+    [[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds];
+
+}
+//Notification
+- (void)buildNotificationObserver {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchedOneFeed:) name:NetworkingFetchOneFeedCompleteNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchedAllFeeds:) name:NetworkingFetchAllFeedsCompleteNotification object:nil];
+}
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - private
+//抓完一个
+- (void)fetchedOneFeed:(NSNotification *)notification {
+    NSString *indexString = [notification.userInfo objectForKey:@"index"];
+    NSUInteger index = [indexString integerValue];
+    self.feeds[index] = [SMNetManager shareInstance].feeds[index];
+    [self.tableView reloadData];
+}
 //抓完所有的feeds
-- (void)fetchedAllFeeds {
+- (void)fetchedAllFeeds:(NSNotification *)notification {
     NSLog(@"fetch complete");
 }
 

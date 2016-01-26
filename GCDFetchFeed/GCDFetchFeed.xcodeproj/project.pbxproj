@@ -18,6 +18,9 @@
 		3E58A8711C50C1830026A610 /* SMDividingLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8701C50C1830026A610 /* SMDividingLineView.m */; };
 		3E58A8771C50E0E10026A610 /* SMStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8761C50E0E10026A610 /* SMStyle.m */; };
 		3E58A87B1C50F01E0026A610 /* SMNetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A87A1C50F01E0026A610 /* SMNetManager.m */; };
+		3E8341EF1C5257F4002C3EAA /* SMFeedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8341EE1C5257F4002C3EAA /* SMFeedListViewController.m */; };
+		3E8341F21C525ABD002C3EAA /* SMFeedListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8341F11C525ABD002C3EAA /* SMFeedListCell.m */; };
+		3E8341F51C525ADD002C3EAA /* SMFeedListCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8341F41C525ADD002C3EAA /* SMFeedListCellViewModel.m */; };
 		3EAC029B1C4F7DC9009BE766 /* SMFeedStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAC029A1C4F7DC9009BE766 /* SMFeedStore.m */; };
 		3EAC029F1C4F8602009BE766 /* SMRootDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAC029E1C4F8602009BE766 /* SMRootDataSource.m */; };
 		3EAC02A21C4F8CB2009BE766 /* SMRootCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAC02A11C4F8CB2009BE766 /* SMRootCell.m */; };
@@ -73,6 +76,13 @@
 		3E58A8761C50E0E10026A610 /* SMStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMStyle.m; sourceTree = "<group>"; };
 		3E58A8791C50F01E0026A610 /* SMNetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMNetManager.h; sourceTree = "<group>"; };
 		3E58A87A1C50F01E0026A610 /* SMNetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMNetManager.m; sourceTree = "<group>"; };
+		3E8341ED1C5257F4002C3EAA /* SMFeedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMFeedListViewController.h; sourceTree = "<group>"; };
+		3E8341EE1C5257F4002C3EAA /* SMFeedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFeedListViewController.m; sourceTree = "<group>"; };
+		3E8341F01C525ABD002C3EAA /* SMFeedListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMFeedListCell.h; sourceTree = "<group>"; };
+		3E8341F11C525ABD002C3EAA /* SMFeedListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFeedListCell.m; sourceTree = "<group>"; };
+		3E8341F31C525ADD002C3EAA /* SMFeedListCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMFeedListCellViewModel.h; sourceTree = "<group>"; };
+		3E8341F41C525ADD002C3EAA /* SMFeedListCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFeedListCellViewModel.m; sourceTree = "<group>"; };
+		3EA7BF841C57194D00055544 /* SMNotificationConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMNotificationConst.h; sourceTree = "<group>"; };
 		3EAC02991C4F7DC9009BE766 /* SMFeedStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMFeedStore.h; sourceTree = "<group>"; };
 		3EAC029A1C4F7DC9009BE766 /* SMFeedStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFeedStore.m; sourceTree = "<group>"; };
 		3EAC029D1C4F8602009BE766 /* SMRootDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMRootDataSource.h; sourceTree = "<group>"; };
@@ -142,6 +152,7 @@
 		3E58A8611C50B86C0026A610 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				3EA7BF831C57193E00055544 /* Notification */,
 				3E58A8781C50EFF90026A610 /* Net */,
 				3E58A8741C50D3390026A610 /* HeaderFile */,
 				3E58A8621C50B8F80026A610 /* Style */,
@@ -194,7 +205,7 @@
 			name = Net;
 			sourceTree = "<group>";
 		};
-		3EAC029C1C4F85CA009BE766 /* ViewController */ = {
+		3E8341EB1C52569F002C3EAA /* Root */ = {
 			isa = PBXGroup;
 			children = (
 				3EE3116E1C4E212700103FA3 /* SMRootViewController.h */,
@@ -205,6 +216,36 @@
 				3E58A8521C507BFD0026A610 /* SMRootCellViewModel.m */,
 				3EAC029D1C4F8602009BE766 /* SMRootDataSource.h */,
 				3EAC029E1C4F8602009BE766 /* SMRootDataSource.m */,
+			);
+			name = Root;
+			sourceTree = "<group>";
+		};
+		3E8341EC1C5256AE002C3EAA /* List */ = {
+			isa = PBXGroup;
+			children = (
+				3E8341ED1C5257F4002C3EAA /* SMFeedListViewController.h */,
+				3E8341EE1C5257F4002C3EAA /* SMFeedListViewController.m */,
+				3E8341F01C525ABD002C3EAA /* SMFeedListCell.h */,
+				3E8341F11C525ABD002C3EAA /* SMFeedListCell.m */,
+				3E8341F31C525ADD002C3EAA /* SMFeedListCellViewModel.h */,
+				3E8341F41C525ADD002C3EAA /* SMFeedListCellViewModel.m */,
+			);
+			name = List;
+			sourceTree = "<group>";
+		};
+		3EA7BF831C57193E00055544 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				3EA7BF841C57194D00055544 /* SMNotificationConst.h */,
+			);
+			name = Notification;
+			sourceTree = "<group>";
+		};
+		3EAC029C1C4F85CA009BE766 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3E8341EC1C5256AE002C3EAA /* List */,
+				3E8341EB1C52569F002C3EAA /* Root */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -490,6 +531,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E8341F51C525ADD002C3EAA /* SMFeedListCellViewModel.m in Sources */,
 				3E58A8711C50C1830026A610 /* SMDividingLineView.m in Sources */,
 				3E58A8771C50E0E10026A610 /* SMStyle.m in Sources */,
 				3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */,
@@ -501,12 +543,14 @@
 				3E58A86B1C50BA870026A610 /* SMSubContentLabel.m in Sources */,
 				3EE311701C4E212700103FA3 /* SMRootViewController.m in Sources */,
 				3EE311751C4E303600103FA3 /* SMFeedModel.m in Sources */,
+				3E8341F21C525ABD002C3EAA /* SMFeedListCell.m in Sources */,
 				3EE311401C4E1F0800103FA3 /* AppDelegate.m in Sources */,
 				3EAC029F1C4F8602009BE766 /* SMRootDataSource.m in Sources */,
 				3E58A8651C50B90A0026A610 /* UIColor-Expanded.m in Sources */,
 				3EE3113D1C4E1F0800103FA3 /* main.m in Sources */,
 				3E58A87B1C50F01E0026A610 /* SMNetManager.m in Sources */,
 				3EAC02A21C4F8CB2009BE766 /* SMRootCell.m in Sources */,
+				3E8341EF1C5257F4002C3EAA /* SMFeedListViewController.m in Sources */,
 				3E58A8601C50B7270026A610 /* SMTitleLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
