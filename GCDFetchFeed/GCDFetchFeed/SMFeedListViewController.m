@@ -12,21 +12,22 @@
 #import "SMFeedListCell.h"
 #import "SMFeedListCellViewModel.h"
 #import "NSDate+InternetDateTime.h"
+#import "SMArticleViewController.h"
 
 static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControllerCell";
 
-@interface SMFeedListViewController()<UITableViewDataSource,UITableViewDelegate>
+@interface SMFeedListViewController()<UITableViewDataSource,UITableViewDelegate,SMFeedListCellDelegate>
 
 @property (nonatomic, strong) SMFeedModel *feedModel;    //需要用的feed的model
 @property (nonatomic, strong) NSMutableArray *listData;  //datasource
 @property (nonatomic, strong) SMFeedStore *feedStore;
 @property (nonatomic, strong) UITableView *tableView;
 
-
 @end
 
 @implementation SMFeedListViewController
 
+#pragma mark - Life Cycle
 - (instancetype)init {
     if (self = [super init]) {
         //
@@ -55,13 +56,20 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:feedListViewControllerCellIdentifier];
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuideTop);
-        make.left.right.bottom.equalTo(self.view);
+        make.top.left.right.bottom.equalTo(self.view);
     }];
     [self.tableView reloadData];
 }
 
+#pragma mark - Private
+
+
 #pragma mark - Delegate
+#pragma mark - SMFeedListCell Delegate
+- (void)smFeedListCellView:(SMFeedListCell *)cell clickWithItemModel:(SMFeedItemModel *)itemModel {
+    SMArticleViewController *articleVC = [[SMArticleViewController alloc] initWithFeedModel:itemModel];
+    [self.navigationController pushViewController:articleVC animated:YES];
+}
 #pragma mark - UITableView Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -85,6 +93,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     if (!v) {
         v = [[SMFeedListCell alloc] init];
         v.tag = 132421;
+        v.delegate = self;
         [cell.contentView addSubview:v];
         [v mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.left.top.bottom.equalTo(cell.contentView);

@@ -26,6 +26,8 @@
 		3EAC029B1C4F7DC9009BE766 /* SMFeedStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAC029A1C4F7DC9009BE766 /* SMFeedStore.m */; };
 		3EAC029F1C4F8602009BE766 /* SMRootDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAC029E1C4F8602009BE766 /* SMRootDataSource.m */; };
 		3EAC02A21C4F8CB2009BE766 /* SMRootCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAC02A11C4F8CB2009BE766 /* SMRootCell.m */; };
+		3EC82B731C72E4BC0057C6E5 /* SMArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC82B721C72E4BC0057C6E5 /* SMArticleViewController.m */; };
+		3EC82B751C7326D90057C6E5 /* css.html in Resources */ = {isa = PBXBuildFile; fileRef = 3EC82B741C7326D90057C6E5 /* css.html */; };
 		3EE3113D1C4E1F0800103FA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3113C1C4E1F0800103FA3 /* main.m */; };
 		3EE311401C4E1F0800103FA3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3113F1C4E1F0800103FA3 /* AppDelegate.m */; };
 		3EE311481C4E1F0800103FA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EE311471C4E1F0800103FA3 /* Assets.xcassets */; };
@@ -95,6 +97,9 @@
 		3EAC029E1C4F8602009BE766 /* SMRootDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMRootDataSource.m; sourceTree = "<group>"; };
 		3EAC02A01C4F8CB2009BE766 /* SMRootCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMRootCell.h; sourceTree = "<group>"; };
 		3EAC02A11C4F8CB2009BE766 /* SMRootCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMRootCell.m; sourceTree = "<group>"; };
+		3EC82B711C72E4BC0057C6E5 /* SMArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMArticleViewController.h; sourceTree = "<group>"; };
+		3EC82B721C72E4BC0057C6E5 /* SMArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMArticleViewController.m; sourceTree = "<group>"; };
+		3EC82B741C7326D90057C6E5 /* css.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = css.html; sourceTree = "<group>"; };
 		3EE311381C4E1F0800103FA3 /* GCDFetchFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GCDFetchFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EE3113C1C4E1F0800103FA3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3EE3113E1C4E1F0800103FA3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -177,6 +182,7 @@
 				3E58A8641C50B90A0026A610 /* UIColor-Expanded.m */,
 				3E58A8751C50E0E10026A610 /* SMStyle.h */,
 				3E58A8761C50E0E10026A610 /* SMStyle.m */,
+				3EC82B741C7326D90057C6E5 /* css.html */,
 			);
 			name = Style;
 			sourceTree = "<group>";
@@ -254,10 +260,20 @@
 		3EAC029C1C4F85CA009BE766 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3EC82B701C72E35E0057C6E5 /* Article */,
 				3E8341EC1C5256AE002C3EAA /* List */,
 				3E8341EB1C52569F002C3EAA /* Root */,
 			);
 			name = ViewController;
+			sourceTree = "<group>";
+		};
+		3EC82B701C72E35E0057C6E5 /* Article */ = {
+			isa = PBXGroup;
+			children = (
+				3EC82B711C72E4BC0057C6E5 /* SMArticleViewController.h */,
+				3EC82B721C72E4BC0057C6E5 /* SMArticleViewController.m */,
+			);
+			name = Article;
 			sourceTree = "<group>";
 		};
 		3EE3112F1C4E1F0800103FA3 = {
@@ -469,6 +485,7 @@
 			files = (
 				3EE3114B1C4E1F0800103FA3 /* LaunchScreen.storyboard in Resources */,
 				3EE311481C4E1F0800103FA3 /* Assets.xcassets in Resources */,
+				3EC82B751C7326D90057C6E5 /* css.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,6 +565,7 @@
 				3E58A8771C50E0E10026A610 /* SMStyle.m in Sources */,
 				3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */,
 				3E58A8581C507FB90026A610 /* SMImageView.m in Sources */,
+				3EC82B731C72E4BC0057C6E5 /* SMArticleViewController.m in Sources */,
 				3E58A8681C50BA4A0026A610 /* SMContentLabel.m in Sources */,
 				3E58A85D1C50B6B30026A610 /* SMLabel.m in Sources */,
 				3EAC029B1C4F7DC9009BE766 /* SMFeedStore.m in Sources */,

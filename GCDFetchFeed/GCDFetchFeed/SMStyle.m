@@ -45,6 +45,12 @@
 //-------------------------
 //         CGFloat
 //--------------------------
++ (CGFloat)floatScreenWidth {
+    return [UIScreen mainScreen].bounds.size.width;
+}
++ (CGFloat)floatScreenHeight {
+    return [UIScreen mainScreen].bounds.size.height;
+}
 + (CGFloat)floatMarginMassive {
     return 20;
 }

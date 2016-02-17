@@ -53,8 +53,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:rootViewControllerIdentifier];
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_topLayoutGuideTop);
-        make.left.right.bottom.equalTo(self.view);
+        make.top.left.right.bottom.equalTo(self.view);
     }];
     [self.tableView reloadData];
     
