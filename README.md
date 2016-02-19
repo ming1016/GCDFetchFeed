@@ -10,13 +10,13 @@
 * 时间显示
 * 作者信息
 * 分类显示
+* Html convert to Core Text
+* feed详情页
 
 #Todo List：
-* feed详情页
 * Atom解析
 * FMDB本地存储 feed
 * 判断4g和wifi环境，wifi下可串行下载离线浏览图片
-* Html convert to Core Text
 
 # 截图
 ![Alt text](http://ww2.sinaimg.cn/mw1024/681101d0jw1f08irq9qczj20yi1pcwjp.jpg)
