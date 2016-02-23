@@ -14,9 +14,12 @@
 * feed详情页
 
 #Todo List：
-* Atom解析
 * FMDB本地存储 feed
+* 详细页添加一个图片一张张下载的百分比进度条。
+* 首页提供一个fetch中的进度条。
+* Atom解析
 * 判断4g和wifi环境，wifi下可串行下载离线浏览图片
+
 
 # 截图
 ![Alt text](http://ww2.sinaimg.cn/mw1024/681101d0jw1f08irq9qczj20yi1pcwjp.jpg)
