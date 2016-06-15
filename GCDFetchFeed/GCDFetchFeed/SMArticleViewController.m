@@ -20,6 +20,7 @@
 @property (nonatomic, strong) DTAttributedLabel *articleLabel;
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @property (nonatomic, strong) UIView *backScrollViewContainer;
+//@property (nonatomic, strong) DTAttributedTextContentView *articleView;
 @property (nonatomic, strong) DTAttributedTextContentView *articleView;
 
 @property (nonatomic, strong) NSURL *lastActionLink;
@@ -228,9 +229,9 @@
         self.articleView.layouter = nil;
         [self.articleView relayoutText];
         CGSize sizeNeed = self.articleView.layoutFrame.frame.size;
-        //更新高
+//        //更新高
         [self.articleView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(sizeNeed.height + [SMStyle floatMarginMassive]*2);
+            make.height.mas_equalTo(sizeNeed.height + [SMStyle floatMarginMassive]*3);
         }];
         [self.backScrollViewContainer mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self.articleView.mas_bottom);

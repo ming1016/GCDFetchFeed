@@ -78,6 +78,9 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     return self.listData.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([UIDevice currentDevice].systemVersion.integerValue > 7) {
+        return UITableViewAutomaticDimension;
+    }
     SMFeedItemModel *itemModel = self.listData[indexPath.row];
     SMFeedListCellViewModel *viewModel = [[SMFeedListCellViewModel alloc] init];
     viewModel.titleString = itemModel.title;
