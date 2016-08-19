@@ -1,3 +1,4 @@
+platform :ios, '7.0'
 pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 pod 'SDWebImage'
 pod 'Masonry'
@@ -7,3 +8,4 @@ pod 'Ono'
 pod 'AFNetworking'
 pod 'DTCoreText'
 pod 'FMDB'
+pod 'ReactiveCocoa'

@@ -11,6 +11,7 @@
 #import "SMNotificationConst.h"
 #import "SMFeedStore.h"
 
+
 @interface SMNetManager()
 
 @property (nonatomic, strong)SMFeedStore *feedStore;
@@ -30,43 +31,46 @@
     return instance;
 }
 
-- (void)fetchAllFeedWithModelArray:(NSArray *)modelArray {
+- (RACSignal *)fetchAllFeedWithModelArray:(NSArray *)modelArray {
     __weak __typeof(self)weakSelf = self;
-    //gcd
-    dispatch_queue_t fetchFeedQueue = dispatch_queue_create("com.starming.fetchfeed.fetchfeed", DISPATCH_QUEUE_CONCURRENT);
-    dispatch_group_t group = dispatch_group_create();
-    self.feeds = [NSMutableArray arrayWithArray:modelArray];
-    
-    for (int i = 0; i < modelArray.count; i++) {
-        dispatch_group_enter(group);
-        SMFeedModel *feedModel = modelArray[i];
-        dispatch_async(fetchFeedQueue, ^{
-            [weakSelf GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-//                NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//                NSLog(@"Data: %@", xmlString);
-//                NSLog(@"%@",feedModel);
-                
-                weakSelf.feeds[i] = [weakSelf.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
-                
-                //通知
-                NSDictionary *userInfo = @{@"index":[NSString stringWithFormat:@"%d",i]};
-                [[NSNotificationCenter defaultCenter] postNotificationName:NetworkingFetchOneFeedCompleteNotification object:nil userInfo:userInfo];
-                
-                dispatch_group_leave(group);
-                
-            } failure:^(NSURLSessionTask *operation, NSError *error) {
-                NSLog(@"Error: %@", error);
-                dispatch_group_leave(group);
-            }];
-            
-        });//end dispatch async
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        //gcd
+        dispatch_queue_t fetchFeedQueue = dispatch_queue_create("com.starming.fetchfeed.fetchfeed", DISPATCH_QUEUE_CONCURRENT);
+        dispatch_group_t group = dispatch_group_create();
+        self.feeds = [NSMutableArray arrayWithArray:modelArray];
         
-    }//end for
+        for (int i = 0; i < modelArray.count; i++) {
+            dispatch_group_enter(group);
+            SMFeedModel *feedModel = modelArray[i];
+            dispatch_async(fetchFeedQueue, ^{
+                [weakSelf GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+                    //                NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                    //                NSLog(@"Data: %@", xmlString);
+                    //                NSLog(@"%@",feedModel);
+                    
+                    weakSelf.feeds[i] = [weakSelf.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
+                    [subscriber sendNext:@(i)];
+                    //通知
+                    
+                    dispatch_group_leave(group);
+                    
+                } failure:^(NSURLSessionTask *operation, NSError *error) {
+                    NSLog(@"Error: %@", error);
+                    dispatch_group_leave(group);
+                }];
+                
+            });//end dispatch async
+            
+        }//end for
+        
+        //全完成后执行事件
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            [subscriber sendCompleted];
+        });
+        return nil;
+        
+    }];
     
-    //全完成后执行事件
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:NetworkingFetchAllFeedsCompleteNotification object:nil userInfo:nil];
-    });
 }
 
 #pragma mark - Getter

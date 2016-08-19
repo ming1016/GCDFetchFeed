@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveCocoa/RACEXTScope.h>
 
 @interface SMNetManager : AFHTTPSessionManager
 
@@ -15,6 +17,6 @@
 
 @property (nonatomic, strong) NSMutableArray *feeds;
 
-- (void)fetchAllFeedWithModelArray:(NSArray *)modelArray;
+- (RACSignal *)fetchAllFeedWithModelArray:(NSArray *)modelArray;
 
 @end

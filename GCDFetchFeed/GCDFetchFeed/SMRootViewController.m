@@ -46,9 +46,8 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     //Notification
-    [self buildNotificationObserver];
     //UI
-    self.title = @"GCDFetchFeed";
+    self.title = @"Feeds";
     self.view.backgroundColor = [UIColor whiteColor];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:rootViewControllerIdentifier];
     [self.view addSubview:self.tableView];
@@ -63,38 +62,34 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     } else {
         return;
     }
-    [[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds];
-
-}
-//Notification
-- (void)buildNotificationObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchedOneFeed:) name:NetworkingFetchOneFeedCompleteNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchedAllFeeds:) name:NetworkingFetchAllFeedsCompleteNotification object:nil];
-}
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self fetchAllFeeds];
+    
+    [[self rac_signalForSelector:@selector(smRootCellView:clickWithFeedModel:) fromProtocol:@protocol(SMRootCellDelegate)] subscribeNext:^(RACTuple *value) {
+        SMFeedModel *feedModel = (SMFeedModel *)value.second;
+        SMFeedListViewController *feedList = [[SMFeedListViewController alloc] initWithFeedModel:feedModel];
+        [self.navigationController pushViewController:feedList animated:YES];
+    }];
 }
 
 #pragma mark - private
-//抓完一个
-- (void)fetchedOneFeed:(NSNotification *)notification {
-    NSString *indexString = [notification.userInfo objectForKey:@"index"];
-    NSUInteger index = [indexString integerValue];
-    self.feeds[index] = [SMNetManager shareInstance].feeds[index];
-    [self.tableView reloadData];
+- (void)fetchAllFeeds {
+    @weakify(self);
+    [[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
+        @strongify(self);
+        NSUInteger index = [value integerValue];
+        self.feeds[index] = [SMNetManager shareInstance].feeds[index];
+        return self.feeds[index];
+    }] doCompleted:^{
+        //抓完所有的feeds
+        NSLog(@"fetch complete");
+    }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
+        //抓完一个
+        @strongify(self);
+        [self.tableView reloadData];
+    }];
 }
-//抓完所有的feeds
-- (void)fetchedAllFeeds:(NSNotification *)notification {
-    NSLog(@"fetch complete");
-}
-
 
 #pragma mark - Delegate
-#pragma mark - SMRootCell Delegate
-- (void)smRootCellView:(SMRootCell *)cell clickWithFeedModel:(SMFeedModel *)feedModel {
-    SMFeedListViewController *feedList = [[SMFeedListViewController alloc] initWithFeedModel:feedModel];
-    [self.navigationController pushViewController:feedList animated:YES];
-}
 #pragma mark - TableView Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
