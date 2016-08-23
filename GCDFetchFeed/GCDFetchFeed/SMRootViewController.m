@@ -16,6 +16,8 @@
 #import "SMRootDataSource.h"
 #import "SMRootCell.h"
 
+#import "SMDB.h"
+
 #import "SMFeedListViewController.h"
 
 static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
@@ -62,13 +64,26 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     } else {
         return;
     }
+    
+    //本地
+    @weakify(self);
+    [[[SMDB shareInstance] selectAllFeeds] subscribeNext:^(NSMutableArray *x) {
+        @strongify(self);
+        if (self.feeds.count <= x.count) {
+            self.feeds = x;
+        }
+    }];
+    
+    //网络获取
     [self fetchAllFeeds];
     
     [[self rac_signalForSelector:@selector(smRootCellView:clickWithFeedModel:) fromProtocol:@protocol(SMRootCellDelegate)] subscribeNext:^(RACTuple *value) {
+        @strongify(self);
         SMFeedModel *feedModel = (SMFeedModel *)value.second;
         SMFeedListViewController *feedList = [[SMFeedListViewController alloc] initWithFeedModel:feedModel];
         [self.navigationController pushViewController:feedList animated:YES];
     }];
+    
 }
 
 #pragma mark - private
@@ -123,8 +138,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     viewModel.titleString = model.title;
     viewModel.contentString = model.des;
     viewModel.iconUrl = model.imageUrl;
-    NSUInteger itemsCount = model.items.count;
-    viewModel.highlightString = [NSString stringWithFormat:@"%lu条",(unsigned long)itemsCount];
+    viewModel.highlightString = [NSString stringWithFormat:@"%lu条",(unsigned long)model.unReadCount];
     viewModel.feedModel = model;
     [v updateWithViewModel:viewModel];
     
@@ -148,7 +162,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     if (!_feeds) {
         NSMutableArray *mArr = [NSMutableArray array];
         SMFeedModel *starmingFeed = [[SMFeedModel alloc] init];
-        starmingFeed.title = @"Starming星光社最新更新";
+        starmingFeed.title = @"Starming星光社最新更新1";
         starmingFeed.feedUrl = @"http://www.starming.com/index.php?v=index&rss=all";
         starmingFeed.imageUrl = @"";
         [mArr addObject:starmingFeed];

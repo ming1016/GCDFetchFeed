@@ -13,6 +13,8 @@
 #import "SMFeedListCellViewModel.h"
 #import "NSDate+InternetDateTime.h"
 #import "SMArticleViewController.h"
+#import "SMDB.h"
+#import "MJRefresh.h"
 
 static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControllerCell";
 
@@ -22,6 +24,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 @property (nonatomic, strong) NSMutableArray *listData;  //datasource
 @property (nonatomic, strong) SMFeedStore *feedStore;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic) NSUInteger page;
 
 @end
 
@@ -37,9 +40,11 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 - (instancetype)initWithFeedModel:(SMFeedModel *)feedModel {
     if (self = [super init]) {
         self.feedModel = feedModel;
-        if (feedModel.items.count > 0) {
-            self.listData = [NSMutableArray arrayWithArray:feedModel.items];
-        }
+//        if (feedModel.items.count > 0) {
+//            self.listData = [NSMutableArray arrayWithArray:feedModel.items];
+//        }
+        self.page = 0;
+        [self selectFeedItems];
     }
     return self;
 }
@@ -58,11 +63,32 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.equalTo(self.view);
     }];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
 }
 
 #pragma mark - Private
+- (void)selectFeedItems {
+    RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityHigh];
 
+    @weakify(self);
+    [[[[[SMDB shareInstance] selectFeedItemsWithPage:self.page fid:self.feedModel.fid]
+       subscribeOn:scheduler]
+      deliverOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(NSMutableArray *x) {
+        @strongify(self);
+        if (self.listData.count > 0) {
+            [self.listData addObjectsFromArray:x];
+        } else {
+            self.listData = x;
+        }
+        [self.tableView reloadData];
+    } error:^(NSError *error) {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    } completed:^{
+        [self.tableView.mj_footer endRefreshing];
+    }];
+    self.page += 1;
+}
 
 #pragma mark - Delegate
 #pragma mark - SMFeedListCell Delegate
@@ -139,6 +165,8 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        //mj
+        _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(selectFeedItems)];
     }
     return _tableView;
 }

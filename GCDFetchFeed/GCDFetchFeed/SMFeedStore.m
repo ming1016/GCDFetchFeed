@@ -30,7 +30,11 @@
 - (SMFeedModel *)updateFeedModelWithData:(NSData *)feedData preModel:(SMFeedModel *)preModel{
     ONOXMLDocument *document = [ONOXMLDocument XMLDocumentWithData:feedData error:nil];
     SMFeedModel *feedModel = [[SMFeedModel alloc] init];
+    //原有model需要保留的
     feedModel.feedUrl = preModel.feedUrl;
+    feedModel.fid = preModel.fid;
+    feedModel.unReadCount = preModel.unReadCount;
+    //开始解析
     for (ONOXMLElement *element in document.rootElement.children) {
         
         if ([element.tag isEqualToString:@"channel"]) {

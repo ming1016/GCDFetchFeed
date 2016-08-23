@@ -10,6 +10,7 @@
 #import "SMFeedModel.h"
 #import "SMNotificationConst.h"
 #import "SMFeedStore.h"
+#import "SMDB.h"
 
 
 @interface SMNetManager()
@@ -31,28 +32,32 @@
     return instance;
 }
 
-- (RACSignal *)fetchAllFeedWithModelArray:(NSArray *)modelArray {
-    __weak __typeof(self)weakSelf = self;
+- (RACSignal *)fetchAllFeedWithModelArray:(NSMutableArray *)modelArray {
+    @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
         //gcd
         dispatch_queue_t fetchFeedQueue = dispatch_queue_create("com.starming.fetchfeed.fetchfeed", DISPATCH_QUEUE_CONCURRENT);
         dispatch_group_t group = dispatch_group_create();
-        self.feeds = [NSMutableArray arrayWithArray:modelArray];
+        self.feeds = modelArray;
         
         for (int i = 0; i < modelArray.count; i++) {
             dispatch_group_enter(group);
             SMFeedModel *feedModel = modelArray[i];
             dispatch_async(fetchFeedQueue, ^{
-                [weakSelf GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+                [self GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
                     //                NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
                     //                NSLog(@"Data: %@", xmlString);
                     //                NSLog(@"%@",feedModel);
                     
-                    weakSelf.feeds[i] = [weakSelf.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
-                    [subscriber sendNext:@(i)];
-                    //通知
-                    
-                    dispatch_group_leave(group);
+                    self.feeds[i] = [self.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
+                    SMDB *db = [[SMDB alloc] init];
+                    [[db insertWithFeedModel:self.feeds[i]] subscribeNext:^(id x) {
+                        //插入本地数据库成功
+                        [subscriber sendNext:@(i)];
+                        //通知
+                        dispatch_group_leave(group);
+                    }];
                     
                 } failure:^(NSURLSessionTask *operation, NSError *error) {
                     NSLog(@"Error: %@", error);

@@ -6,98 +6,167 @@
 //  Copyright © 2016年 Starming. All rights reserved.
 //
 
+//打开当前模拟器目录po NSHomeDirectory()
+//platform shell open /Users/xxx/Library/CoreSimulator/...上面打印出来的模拟器地址
+
 #import "SMDB.h"
 
 
 @interface SMDB()
 
-@property (nonatomic, copy) NSString *dbPath;
-@property (nonatomic, assign) SMDBTable dbTable;
-@property (nonatomic, copy) NSString *dbName;
-@property (nonatomic, copy) NSString *dbCreateSql;
+@property (nonatomic, copy) NSString *feedDBPath;
+@property (nonatomic, copy) NSString *feedItemDBPath;
 
 @end
 
 @implementation SMDB
 
 #pragma mark - Life Cycle
-- (instancetype)initWithDBTable:(SMDBTable)dbTable {
++ (SMDB *)shareInstance {
+    static SMDB *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[SMDB alloc] init];
+    });
+    return instance;
+}
+
+- (instancetype)init {
     if (self = [super init]) {
-        self.dbTable = dbTable;
+
+        _feedDBPath = [PATH_OF_DOCUMENT stringByAppendingPathComponent:@"feeds.sqlite"];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:_feedDBPath] == NO) {
+            FMDatabase *db = [FMDatabase databaseWithPath:_feedDBPath];
+            if ([db open]) {
+                NSString *createSql = @"create table feeds (fid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, title text, link text, des text, copyright text, generator text, imageurl text, feedurl text, unread integer)";
+                [db executeUpdate:createSql];
+                NSString *createItemSql = @"create table feeditem (iid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, fid integer, link text, title text, author text, category text, pubdate text, des blob, isread integer)";
+                [db executeUpdate:createItemSql];
+            }
+        }
         
     }
     return self;
 }
-
-- (void)createTableWithSql:(NSString *)sql {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:self.dbPath] == NO) {
-        FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
+#pragma mark - DB Operate
+- (RACSignal *)insertWithFeedModel:(SMFeedModel *)feedModel {
+    @weakify(self);
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
-            NSString *sql = @"";
+            //检查是否存在这个feed
+            FMResultSet *rsl = [db executeQuery:@"select fid from feeds where feedurl = ?",feedModel.feedUrl];
+            int fid = 0;
+            if ([rsl next]) {
+                //存在返回fid
+                fid = [rsl intForColumn:@"fid"];
+                
+            } else {
+                //不存在创建一个，同时返回fid
+                [db executeUpdate:@"insert into feeds (title, link, des, copyright, generator, imageurl, feedurl) values (?, ?, ?, ?, ?, ?, ?)", feedModel.title, feedModel.link, feedModel.des, feedModel.copyright, feedModel.generator, feedModel.imageUrl, feedModel.feedUrl];
+                
+                FMResultSet *fidRsl = [db executeQuery:@"select fid from feeds where feedurl = ?",feedModel.feedUrl];
+                if ([fidRsl next]) {
+                    fid = [fidRsl intForColumn:@"fid"];
+                }
+                
+            }
+            //添加feed item
+            if (feedModel.items.count > 0) {
+                for (SMFeedItemModel *itemModel in feedModel.items) {
+                    FMResultSet *iRsl = [db executeQuery:@"select iid from feeditem where link = ?",itemModel.link];
+                    if ([iRsl next]) {
+                    } else {
+                        [db executeUpdate:@"insert into feeditem (fid, link, title, author, category, pubdate, des, isread) values (?, ?, ?, ?, ?, ?, ?, ?)", @(fid), itemModel.link, itemModel.title, itemModel.author, itemModel.category, itemModel.pubDate, itemModel.des, @0];
+                    }
+                }
+            }
+            //读取未读item数
+            FMResultSet *uRsl = [db executeQuery:@"select iid from feeditem where fid = ? and isread = ?",@(fid), @0];
+            NSUInteger count = 0;
+            while ([uRsl next]) {
+                count++;
+            }
+            feedModel.unReadCount = count;
+            //存在的话同时更新下feed信息
+            [db executeUpdate:@"update feeds set title = ?, link = ?, des = ?, copyright = ?, generator = ?, imageurl = ?, unread = ? where fid = ?",feedModel.title, feedModel.link, feedModel.des, feedModel.copyright, feedModel.generator, feedModel.imageUrl, @(count), @(fid)];
+            //告知完成可以接下来的操作
+            [subscriber sendNext:nil];
+            [subscriber sendCompleted];
+            [db close];
         }
-    }
+        return nil;
+    }];
+    
 }
 
-#pragma mark - Interface
-- (void)executeUpdateWithSql:(NSString *)sql {
-    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
-    if ([db open]) {
-        BOOL result = [db executeUpdate:sql];
-        if (!result) {
-            //出错时的处理
+- (RACSignal *)selectAllFeeds {
+    @weakify(self);
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
+        if ([db open]) {
+            FMResultSet *rs = [db executeQuery:@"select * from feeds"];
+            NSUInteger count = 0;
+            NSMutableArray *feedsArray = [NSMutableArray array];
+            while ([rs next]) {
+                SMFeedModel *feedModel = [[SMFeedModel alloc] init];
+                feedModel.fid = [rs intForColumn:@"fid"];
+                feedModel.title = [rs stringForColumn:@"title"];
+                feedModel.link = [rs stringForColumn:@"link"];
+                feedModel.des = [rs stringForColumn:@"des"];
+                feedModel.copyright = [rs stringForColumn:@"copyright"];
+                feedModel.generator = [rs stringForColumn:@"generator"];
+                feedModel.imageUrl = [rs stringForColumn:@"imageurl"];
+                feedModel.feedUrl = [rs stringForColumn:@"feedurl"];
+                feedModel.unReadCount = [rs intForColumn:@"unread"];
+                [feedsArray addObject:feedModel];
+                count++;
+            }
+            [subscriber sendNext:feedsArray];
+            [subscriber sendCompleted];
+            [db close];
         }
-        [db close];
-    }
-}
-- (FMResultSet *)executeQueryWithSql:(NSString *)sql {
-    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
-    if ([db open]) {
-        FMResultSet *resultSet = [db executeQuery:sql];
-        [db close];
-        return resultSet;
-    }
-    return nil;
+        return nil;
+    }];
 }
 
-#pragma mark - Private
+- (RACSignal *)selectFeedItemsWithPage:(NSUInteger)page fid:(NSUInteger)fid {
+    @weakify(self);
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
+        if ([db open]) {
+            FMResultSet *rs = [db executeQuery:@"select * from feeditem where fid = ? order by iid desc limit ?, 20",@(fid), @(page * 20)];
+            NSUInteger count = 0;
+            NSMutableArray *feedItemsArray = [NSMutableArray array];
+            while ([rs next]) {
+                SMFeedItemModel *itemModel = [[SMFeedItemModel alloc] init];
+                itemModel.iid = [rs intForColumn:@"iid"];
+                itemModel.fid = [rs intForColumn:@"fid"];
+                itemModel.link = [rs stringForColumn:@"link"];
+                itemModel.title = [rs stringForColumn:@"title"];
+                itemModel.author = [rs stringForColumn:@"author"];
+                itemModel.category = [rs stringForColumn:@"category"];
+                itemModel.pubDate = [rs stringForColumn:@"pubDate"];
+                itemModel.des = [rs stringForColumn:@"des"];
+                itemModel.isRead = [rs intForColumn:@"isread"];
+                [feedItemsArray addObject:itemModel];
+                count++;
+            }
+            if (count > 0) {
+                [subscriber sendNext:feedItemsArray];
+            } else {
+                [subscriber sendError:nil];
+            }
+            [subscriber sendCompleted];
+            [db close];
+        }
+        return nil;
+    }];
+}
 
-#pragma mark - Getter
-- (NSString *)dbCreateSql {
-    if (!_dbCreateSql) {
-        switch (self.dbTable) {
-            case SMDBTableTypeFeeds:
-                _dbCreateSql = @"";
-                break;
-            case SMDBTableTypeFeedItem:
-                _dbCreateSql = @"";
-                break;
-            default:
-                break;
-        }
-    }
-    return _dbCreateSql;
-}
-- (NSString *)dbName {
-    if (!_dbName) {
-        switch (self.dbTable) {
-            case SMDBTableTypeFeeds:
-                _dbName = @"feeds";
-                break;
-            case SMDBTableTypeFeedItem:
-                _dbName = @"feedItem";
-                break;
-            default:
-                break;
-        }
-    }
-    return _dbName;
-}
-- (NSString *)dbPath {
-    if (!_dbPath) {
-        _dbPath = [PATH_OF_DOCUMENT stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite",self.dbName]];
-    }
-    return _dbPath;
-}
 
 
 @end
