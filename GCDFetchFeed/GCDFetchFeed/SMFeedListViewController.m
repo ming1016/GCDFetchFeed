@@ -96,9 +96,6 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     return self.listData.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([UIDevice currentDevice].systemVersion.integerValue > 7) {
-        return UITableViewAutomaticDimension;
-    }
     SMFeedItemModel *itemModel = self.listData[indexPath.row];
     SMFeedListCellViewModel *viewModel = [[SMFeedListCellViewModel alloc] init];
     viewModel.titleString = itemModel.title;
@@ -126,7 +123,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     viewModel.titleString = itemModel.title;
     NSDate *date = [NSDate dateFromInternetDateTimeString:itemModel.pubDate formatHint:DateFormatHintRFC822];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MM-dd"];
+    [dateFormatter setDateFormat:@"MM-dd HH点"];
     NSString *authorString = @"";
     if (itemModel.author.length > 0) {
         authorString = itemModel.author;
@@ -135,7 +132,11 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     if (itemModel.category.length > 0) {
         categoryString = [NSString stringWithFormat:@"[%@]",itemModel.category];
     }
-    viewModel.contentString = [NSString stringWithFormat:@"%@ %@ %@",[dateFormatter stringFromDate:date],categoryString,authorString];
+    NSString *dateString = @"";
+    if ([dateFormatter stringFromDate:date]) {
+        dateString = [NSString stringWithFormat:@"%@ ",[dateFormatter stringFromDate:date]];
+    }
+    viewModel.contentString = [NSString stringWithFormat:@"%@%@ %@",dateString,categoryString,authorString];
     viewModel.itemModel = itemModel;
     [v updateWithViewModel:viewModel];
     

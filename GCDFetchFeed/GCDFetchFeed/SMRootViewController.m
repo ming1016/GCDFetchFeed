@@ -68,7 +68,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     @weakify(self);
     [[[SMDB shareInstance] selectAllFeeds] subscribeNext:^(NSMutableArray *x) {
         @strongify(self);
-        if (self.feeds.count <= x.count) {
+        if (x.count > 0) {
             self.feeds = x;
             [self.tableView reloadData];
         }
@@ -88,6 +88,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 
 #pragma mark - private
 - (void)fetchAllFeeds {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     @weakify(self);
     [[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
         @strongify(self);
@@ -97,6 +98,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     }] doCompleted:^{
         //抓完所有的feeds
         NSLog(@"fetch complete");
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
         //抓完一个
         @strongify(self);

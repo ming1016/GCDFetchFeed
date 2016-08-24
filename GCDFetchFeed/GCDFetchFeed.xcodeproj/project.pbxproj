@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A8B09E31D6DA2BB00BE4FEC /* STMAssembleMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09DC1D6DA2BB00BE4FEC /* STMAssembleMaker.m */; };
+		0A8B09E41D6DA2BB00BE4FEC /* STMAssembleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09DE1D6DA2BB00BE4FEC /* STMAssembleView.m */; };
+		0A8B09E51D6DA2BB00BE4FEC /* STMPartMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09E01D6DA2BB00BE4FEC /* STMPartMaker.m */; };
+		0A8B09E61D6DA2BB00BE4FEC /* STMPartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09E21D6DA2BB00BE4FEC /* STMPartView.m */; };
 		3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8521C507BFD0026A610 /* SMRootCellViewModel.m */; };
 		3E58A8581C507FB90026A610 /* SMImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8571C507FB90026A610 /* SMImageView.m */; };
 		3E58A85D1C50B6B30026A610 /* SMLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A85C1C50B6B30026A610 /* SMLabel.m */; };
@@ -58,6 +62,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A8B09DB1D6DA2BB00BE4FEC /* STMAssembleMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMAssembleMaker.h; sourceTree = "<group>"; };
+		0A8B09DC1D6DA2BB00BE4FEC /* STMAssembleMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMAssembleMaker.m; sourceTree = "<group>"; };
+		0A8B09DD1D6DA2BB00BE4FEC /* STMAssembleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMAssembleView.h; sourceTree = "<group>"; };
+		0A8B09DE1D6DA2BB00BE4FEC /* STMAssembleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMAssembleView.m; sourceTree = "<group>"; };
+		0A8B09DF1D6DA2BB00BE4FEC /* STMPartMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMPartMaker.h; sourceTree = "<group>"; };
+		0A8B09E01D6DA2BB00BE4FEC /* STMPartMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMPartMaker.m; sourceTree = "<group>"; };
+		0A8B09E11D6DA2BB00BE4FEC /* STMPartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMPartView.h; sourceTree = "<group>"; };
+		0A8B09E21D6DA2BB00BE4FEC /* STMPartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMPartView.m; sourceTree = "<group>"; };
 		3E58A8511C507BFD0026A610 /* SMRootCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMRootCellViewModel.h; sourceTree = "<group>"; };
 		3E58A8521C507BFD0026A610 /* SMRootCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMRootCellViewModel.m; sourceTree = "<group>"; };
 		3E58A8561C507FB90026A610 /* SMImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMImageView.h; sourceTree = "<group>"; };
@@ -151,6 +163,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A8B09DA1D6DA2AD00BE4FEC /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				0A8B09DB1D6DA2BB00BE4FEC /* STMAssembleMaker.h */,
+				0A8B09DC1D6DA2BB00BE4FEC /* STMAssembleMaker.m */,
+				0A8B09DD1D6DA2BB00BE4FEC /* STMAssembleView.h */,
+				0A8B09DE1D6DA2BB00BE4FEC /* STMAssembleView.m */,
+				0A8B09DF1D6DA2BB00BE4FEC /* STMPartMaker.h */,
+				0A8B09E01D6DA2BB00BE4FEC /* STMPartMaker.m */,
+				0A8B09E11D6DA2BB00BE4FEC /* STMPartView.h */,
+				0A8B09E21D6DA2BB00BE4FEC /* STMPartView.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		3E45BCC01C85780500D7C9CD /* ListView */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +201,7 @@
 		3E58A8611C50B86C0026A610 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				0A8B09DA1D6DA2AD00BE4FEC /* UI */,
 				3E7402C31C7BFC550006466A /* DB */,
 				3EA7BF831C57193E00055544 /* Notification */,
 				3E58A8781C50EFF90026A610 /* Net */,
@@ -584,19 +612,23 @@
 				3EA7BF871C5741AC00055544 /* UIButton+BackgroundColor.m in Sources */,
 				3E58A8711C50C1830026A610 /* SMDividingLineView.m in Sources */,
 				3E58A8771C50E0E10026A610 /* SMStyle.m in Sources */,
+				0A8B09E61D6DA2BB00BE4FEC /* STMPartView.m in Sources */,
 				3E7402C61C7BFD8C0006466A /* SMDB.m in Sources */,
 				3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */,
 				3E58A8581C507FB90026A610 /* SMImageView.m in Sources */,
 				3EC82B731C72E4BC0057C6E5 /* SMArticleViewController.m in Sources */,
 				3E58A8681C50BA4A0026A610 /* SMContentLabel.m in Sources */,
 				3E58A85D1C50B6B30026A610 /* SMLabel.m in Sources */,
+				0A8B09E41D6DA2BB00BE4FEC /* STMAssembleView.m in Sources */,
 				3EAC029B1C4F7DC9009BE766 /* SMFeedStore.m in Sources */,
 				3E58A86E1C50BDCE0026A610 /* SMHighlightLabel.m in Sources */,
 				3E58A86B1C50BA870026A610 /* SMSubContentLabel.m in Sources */,
 				3EE311701C4E212700103FA3 /* SMRootViewController.m in Sources */,
 				3EE311751C4E303600103FA3 /* SMFeedModel.m in Sources */,
 				3E8341F21C525ABD002C3EAA /* SMFeedListCell.m in Sources */,
+				0A8B09E31D6DA2BB00BE4FEC /* STMAssembleMaker.m in Sources */,
 				3EE311401C4E1F0800103FA3 /* AppDelegate.m in Sources */,
+				0A8B09E51D6DA2BB00BE4FEC /* STMPartMaker.m in Sources */,
 				3EAC029F1C4F8602009BE766 /* SMRootDataSource.m in Sources */,
 				3E58A8651C50B90A0026A610 /* UIColor-Expanded.m in Sources */,
 				3EE3113D1C4E1F0800103FA3 /* main.m in Sources */,
