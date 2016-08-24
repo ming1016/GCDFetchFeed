@@ -52,7 +52,9 @@
                     
                     self.feeds[i] = [self.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
                     SMDB *db = [[SMDB alloc] init];
-                    [[db insertWithFeedModel:self.feeds[i]] subscribeNext:^(id x) {
+                    [[db insertWithFeedModel:self.feeds[i]] subscribeNext:^(NSNumber *x) {
+                        SMFeedModel *model = (SMFeedModel *)self.feeds[i];
+                        model.fid = [x integerValue];
                         //插入本地数据库成功
                         [subscriber sendNext:@(i)];
                         //通知

@@ -147,7 +147,7 @@
             [itemArray addObject:itemModel];
         } //end entry
     }
-    feedModel.items = [NSArray arrayWithArray:itemArray];
+    feedModel.items = itemArray;
     return feedModel;
 }
 

@@ -197,7 +197,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         v2exFeed.imageUrl = @"http://cdn.v2ex.co/site/logo@2x.png";
         [mArr addObject:v2exFeed];
         
-        _feeds = [NSMutableArray arrayWithArray:mArr];
+        _feeds = mArr;
     }
     return _feeds;
 }

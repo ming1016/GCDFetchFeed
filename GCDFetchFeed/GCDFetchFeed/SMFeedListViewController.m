@@ -31,12 +31,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 @implementation SMFeedListViewController
 
 #pragma mark - Life Cycle
-//- (instancetype)init {
-//    if (self = [super init]) {
-//        //
-//    }
-//    return self;
-//}
+
 - (instancetype)initWithFeedModel:(SMFeedModel *)feedModel {
     if (self = [super init]) {
         self.feedModel = feedModel;

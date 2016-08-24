@@ -19,7 +19,7 @@
 @property (nonatomic, copy) NSString<Optional> *copyright;
 @property (nonatomic, copy) NSString<Optional> *generator;
 @property (nonatomic, copy) NSString<Optional> *imageUrl;     //icon图标
-@property (nonatomic, strong) NSArray *items;                 //SMFeedItemModel
+@property (nonatomic, strong) NSMutableArray *items;                 //SMFeedItemModel
 @property (nonatomic, copy) NSString<Optional> *feedUrl;      //博客feed的链接
 @property (nonatomic) NSUInteger unReadCount;
 

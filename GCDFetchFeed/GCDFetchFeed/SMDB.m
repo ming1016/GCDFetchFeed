@@ -92,7 +92,7 @@
             //存在的话同时更新下feed信息
             [db executeUpdate:@"update feeds set title = ?, link = ?, des = ?, copyright = ?, generator = ?, imageurl = ?, unread = ? where fid = ?",feedModel.title, feedModel.link, feedModel.des, feedModel.copyright, feedModel.generator, feedModel.imageUrl, @(count), @(fid)];
             //告知完成可以接下来的操作
-            [subscriber sendNext:nil];
+            [subscriber sendNext:@(fid)];
             [subscriber sendCompleted];
             [db close];
         }
