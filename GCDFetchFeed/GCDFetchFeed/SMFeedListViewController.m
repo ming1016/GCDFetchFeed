@@ -31,20 +31,17 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 @implementation SMFeedListViewController
 
 #pragma mark - Life Cycle
-- (instancetype)init {
-    if (self = [super init]) {
-        //
-    }
-    return self;
-}
+//- (instancetype)init {
+//    if (self = [super init]) {
+//        //
+//    }
+//    return self;
+//}
 - (instancetype)initWithFeedModel:(SMFeedModel *)feedModel {
     if (self = [super init]) {
         self.feedModel = feedModel;
-//        if (feedModel.items.count > 0) {
-//            self.listData = [NSMutableArray arrayWithArray:feedModel.items];
-//        }
         self.page = 0;
-        [self selectFeedItems];
+        
     }
     return self;
 }
@@ -63,7 +60,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.equalTo(self.view);
     }];
-//    [self.tableView reloadData];
+    [self selectFeedItems];
 }
 
 #pragma mark - Private

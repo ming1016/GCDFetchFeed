@@ -46,9 +46,9 @@
             SMFeedModel *feedModel = modelArray[i];
             dispatch_async(fetchFeedQueue, ^{
                 [self GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-                    //                NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                    //                NSLog(@"Data: %@", xmlString);
-                    //                NSLog(@"%@",feedModel);
+//                    NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+//                    NSLog(@"Data: %@", xmlString);
+//                    NSLog(@"%@",feedModel);
                     
                     self.feeds[i] = [self.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
                     SMDB *db = [[SMDB alloc] init];

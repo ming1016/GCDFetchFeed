@@ -56,7 +56,6 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.equalTo(self.view);
     }];
-    [self.tableView reloadData];
     
     //空判断
     if (self.feeds.count > 0) {
@@ -71,6 +70,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         @strongify(self);
         if (self.feeds.count <= x.count) {
             self.feeds = x;
+            [self.tableView reloadData];
         }
     }];
     
@@ -191,11 +191,11 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         ifanrFeed.imageUrl = @"http://tp1.sinaimg.cn/1642720480/180/5742721759/1";
         [mArr addObject:ifanrFeed];
         
-        SMFeedModel *songshuhuiFeed = [[SMFeedModel alloc] init];
-        songshuhuiFeed.title = @"科学松鼠会";
-        songshuhuiFeed.feedUrl = @"http://songshuhui.net/feed";
-        songshuhuiFeed.imageUrl = @"http://tp3.sinaimg.cn/1529573474/180/5676965583/0";
-        [mArr addObject:songshuhuiFeed];
+        SMFeedModel *v2exFeed = [[SMFeedModel alloc] init];
+        v2exFeed.title = @"V2EX";
+        v2exFeed.feedUrl = @"http://www.v2ex.com/index.xml";
+        v2exFeed.imageUrl = @"http://cdn.v2ex.co/site/logo@2x.png";
+        [mArr addObject:v2exFeed];
         
         _feeds = [NSMutableArray arrayWithArray:mArr];
     }
