@@ -85,6 +85,18 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 #pragma mark - Delegate
 #pragma mark - SMFeedListCell Delegate
 - (void)smFeedListCellView:(SMFeedListCell *)cell clickWithItemModel:(SMFeedItemModel *)itemModel {
+    RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground];
+    @weakify(self);
+    [[[[[SMDB shareInstance] markFeedItemAsRead:itemModel.iid] subscribeOn:scheduler] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(id x) {
+        @strongify(self);
+        if (itemModel.isRead > 0) {
+            //
+        } else {
+            itemModel.isRead = 1;
+            [self.tableView reloadData];
+            self.feedModel.unReadCount -= 1;
+        }
+    }];
     SMArticleViewController *articleVC = [[SMArticleViewController alloc] initWithFeedModel:itemModel];
     [self.navigationController pushViewController:articleVC animated:YES];
 }
@@ -123,7 +135,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     viewModel.titleString = itemModel.title;
     NSDate *date = [NSDate dateFromInternetDateTimeString:itemModel.pubDate formatHint:DateFormatHintRFC822];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MM-dd HH点"];
+    [dateFormatter setDateFormat:@"MM-dd HH:mm"];
     NSString *authorString = @"";
     if (itemModel.author.length > 0) {
         authorString = itemModel.author;

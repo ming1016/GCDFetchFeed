@@ -58,6 +58,11 @@
 - (void)updateWithViewModel:(SMFeedListCellViewModel *)viewModel {
     self.titleLabel.text = viewModel.titleString;
     self.contentLabel.text = viewModel.contentString;
+    if (viewModel.itemModel.isRead > 0) {
+        self.titleLabel.textColor = [SMStyle colorGrayLight];
+    } else {
+        self.titleLabel.textColor = [SMStyle colorGrayDark];
+    }
     self.itemModel = viewModel.itemModel;
 }
 

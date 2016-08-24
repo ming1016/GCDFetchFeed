@@ -22,5 +22,6 @@
 - (RACSignal *)insertWithFeedModel:(SMFeedModel *)feedModel; //插入feed内容
 - (RACSignal *)selectAllFeeds; //读取所有feeds
 - (RACSignal *)selectFeedItemsWithPage:(NSUInteger)page fid:(NSUInteger)fid;
-
+- (RACSignal *)markFeedItemAsRead:(NSUInteger)iid;
+- (RACSignal *)markFeedAllItemsAsRead:(NSUInteger)fid;
 @end

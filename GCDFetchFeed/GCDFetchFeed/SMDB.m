@@ -166,6 +166,37 @@
         return nil;
     }];
 }
+//标注已读
+- (RACSignal *)markFeedItemAsRead:(NSUInteger)iid {
+    @weakify(self);
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
+        if ([db open]) {
+            [db executeUpdate:@"update feeditem set isread = ? where iid = ?", @(1), @(iid)];
+            [subscriber sendNext:nil];
+            [subscriber sendCompleted];
+            [db close];
+        }
+        return nil;
+    }];
+}
+
+//标注全部已读
+- (RACSignal *)markFeedAllItemsAsRead:(NSUInteger)fid {
+    @weakify(self);
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
+        if ([db open]) {
+            [db executeUpdate:@"update feeditem set isread = ? where fid = ?", @(1), @(fid)];
+            [subscriber sendNext:nil];
+            [subscriber sendCompleted];
+            [db close];
+        }
+        return nil;
+    }];
+}
 
 
 
