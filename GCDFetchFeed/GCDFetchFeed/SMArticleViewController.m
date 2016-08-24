@@ -61,8 +61,9 @@
     
     //Html转Native
     NSError *err = nil;
+    NSString *feedString = [NSString stringWithFormat:@"%@<p><a href=\"%@\">阅读原文</a></p>",self.feedItemModel.des,self.feedItemModel.link];
     NSString *styleString = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"css.html"] encoding:NSUTF8StringEncoding error:&err];
-    self.feedItemModel.des = [NSString stringWithFormat:@"%@%@",styleString,self.feedItemModel.des];
+    self.feedItemModel.des = [NSString stringWithFormat:@"%@%@",styleString,feedString];
     NSData *data = [self.feedItemModel.des dataUsingEncoding:NSUTF8StringEncoding];
     NSAttributedString *attrString = [[NSAttributedString alloc] initWithHTMLData:data documentAttributes:nil];
     self.articleView.attributedString = attrString;
