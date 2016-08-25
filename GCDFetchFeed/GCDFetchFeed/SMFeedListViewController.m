@@ -56,9 +56,20 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
         make.top.left.right.bottom.equalTo(self.view);
     }];
     [self selectFeedItems];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"全部已读" style:UIBarButtonItemStylePlain target:self action:@selector(markAllAsRead)];
 }
 
 #pragma mark - Private
+- (void)markAllAsRead {
+    RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault];
+    [[[[SMDB shareInstance] markFeedAllItemsAsRead:self.feedModel.fid] subscribeOn:scheduler] subscribeNext:^(id x) {
+        //
+    }];
+    self.feedModel.unReadCount = 0;
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
 - (void)selectFeedItems {
     RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityHigh];
 
@@ -85,7 +96,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 #pragma mark - Delegate
 #pragma mark - SMFeedListCell Delegate
 - (void)smFeedListCellView:(SMFeedListCell *)cell clickWithItemModel:(SMFeedItemModel *)itemModel {
-    RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground];
+    RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityHigh];
     @weakify(self);
     [[[[[SMDB shareInstance] markFeedItemAsRead:itemModel.iid] subscribeOn:scheduler] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(id x) {
         @strongify(self);
@@ -168,7 +179,6 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.backgroundColor = [UIColor clearColor];
-        _tableView.showsVerticalScrollIndicator = NO;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         //mj
         _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(selectFeedItems)];

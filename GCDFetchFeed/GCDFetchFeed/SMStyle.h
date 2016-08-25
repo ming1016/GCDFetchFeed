@@ -18,6 +18,7 @@
 
 //UIColor
 + (UIColor *)colorBlackLightAlpha;
++ (UIColor *)colorBlack;
 + (UIColor *)colorGrayLight;
 + (UIColor *)colorGrayDark;
 + (UIColor *)colorOrangeLight;

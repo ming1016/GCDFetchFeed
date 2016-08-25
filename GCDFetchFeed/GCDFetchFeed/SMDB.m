@@ -138,7 +138,7 @@
         @strongify(self);
         FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
-            FMResultSet *rs = [db executeQuery:@"select * from feeditem where fid = ? order by iid desc limit ?, 20",@(fid), @(page * 20)];
+            FMResultSet *rs = [db executeQuery:@"select * from feeditem where fid = ? and isread = ? order by iid desc limit ?, 20",@(fid), @(0), @(page * 20)];
             NSUInteger count = 0;
             NSMutableArray *feedItemsArray = [NSMutableArray array];
             while ([rs next]) {
@@ -190,6 +190,17 @@
         FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
             [db executeUpdate:@"update feeditem set isread = ? where fid = ?", @(1), @(fid)];
+            
+            FMResultSet *rs = [db executeQuery:@"select iid from feeditem where fid = ? order by iid asc",@(fid)];
+            NSUInteger count = 0;
+            while ([rs next]) {
+                count += 1;
+            }
+            //本地存储数据超过400就开始清理，只保留最新200条
+            if (count > 400) {
+                [db executeUpdate:@"delete from feeditem where fid = ? order by iid asc limit 0, ?", @(fid), @(count - 200)];
+            }
+            
             [subscriber sendNext:nil];
             [subscriber sendCompleted];
             [db close];

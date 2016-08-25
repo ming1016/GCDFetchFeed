@@ -11,6 +11,7 @@
 #import "Ono.h"
 #import "Masonry.h"
 #import "SMNotificationConst.h"
+#import "SMSubContentLabel.h"
 
 #import "SMFeedStore.h"
 #import "SMRootDataSource.h"
@@ -23,12 +24,15 @@
 static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 
 @interface SMRootViewController()<UITableViewDataSource,UITableViewDelegate,SMRootCellDelegate>
-
+//data
 @property (nonatomic, strong) NSMutableArray *feeds;
 @property (nonatomic, strong) SMFeedStore *feedStore;
-@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) SMRootDataSource *dataSource;
-
+@property (nonatomic) NSUInteger fetchingCount;
+//view
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIView *tbHeaderView;
+@property (nonatomic, strong) SMSubContentLabel *tbHeaderLabel;
 @end
 
 @implementation SMRootViewController
@@ -53,7 +57,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     [super viewDidLoad];
     //Notification
     //UI
-    self.title = @"Feeds";
+    self.title = @"已阅";
     self.view.backgroundColor = [UIColor whiteColor];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:rootViewControllerIdentifier];
     [self.view addSubview:self.tableView];
@@ -61,21 +65,26 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         make.top.left.right.bottom.equalTo(self.view);
     }];
     
-    //空判断
-    if (self.feeds.count > 0) {
-        //
-    } else {
-        return;
-    }
+    self.tbHeaderView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 30);
+    [self.tbHeaderView addSubview:self.tbHeaderLabel];
+    
+    [self.tbHeaderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.tbHeaderView);
+        make.centerX.equalTo(self.tbHeaderView);
+    }];
     
     //本地
     @weakify(self);
-    [[[SMDB shareInstance] selectAllFeeds] subscribeNext:^(NSMutableArray *x) {
-        @strongify(self);
-        if (x.count > 0) {
-            self.feeds = x;
-            [self.tableView reloadData];
+    RAC(self, feeds) = [[[SMDB shareInstance] selectAllFeeds] filter:^BOOL(NSMutableArray *feedsArray) {
+        if (feedsArray.count > 0) {
+            return YES;
+        } else {
+            return NO;
         }
+    }];
+    [RACObserve(self, feeds) subscribeNext:^(id x) {
+        @strongify(self);
+        [self.tableView reloadData];
     }];
     
     //网络获取
@@ -93,6 +102,8 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 #pragma mark - private
 - (void)fetchAllFeeds {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    self.tableView.tableHeaderView = self.tbHeaderView;
+    self.fetchingCount = 0;
     @weakify(self);
     [[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
         @strongify(self);
@@ -101,11 +112,17 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         return self.feeds[index];
     }] doCompleted:^{
         //抓完所有的feeds
+        @strongify(self);
         NSLog(@"fetch complete");
+        self.tbHeaderLabel.text = @"";
+        self.tableView.tableHeaderView = [[UIView alloc] init];
+        self.fetchingCount = 0;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
         //抓完一个
         @strongify(self);
+        self.fetchingCount += 1;
+        self.tbHeaderLabel.text = [NSString stringWithFormat:@"正在获取%@...(%lu/%lu)",feedModel.title,(unsigned long)self.fetchingCount,(unsigned long)self.feeds.count];
         [self.tableView reloadData];
     }];
 }
@@ -168,7 +185,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     if (!_feeds) {
         NSMutableArray *mArr = [NSMutableArray array];
         SMFeedModel *starmingFeed = [[SMFeedModel alloc] init];
-        starmingFeed.title = @"Starming星光社最新更新1";
+        starmingFeed.title = @"Starming星光社最新更新";
         starmingFeed.feedUrl = @"http://www.starming.com/index.php?v=index&rss=all";
         starmingFeed.imageUrl = @"";
         [mArr addObject:starmingFeed];
@@ -218,7 +235,18 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     }
     return _tableView;
 }
-
+- (UIView *)tbHeaderView {
+    if (!_tbHeaderView) {
+        _tbHeaderView = [[UIView alloc] init];
+    }
+    return _tbHeaderView;
+}
+- (SMSubContentLabel *)tbHeaderLabel {
+    if (!_tbHeaderLabel) {
+        _tbHeaderLabel = [[SMSubContentLabel alloc] init];
+    }
+    return _tbHeaderLabel;
+}
 
 
 @end

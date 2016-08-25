@@ -31,6 +31,9 @@
 + (UIColor *)colorBlackLightAlpha {
     return [[UIColor colorWithHexString:@"000000"] colorWithAlphaComponent:0.05];
 }
++ (UIColor *)colorBlack {
+    return [UIColor blackColor];
+}
 + (UIColor *)colorGrayLight {
     return [UIColor colorWithHexString:@"cccccc"];
 }

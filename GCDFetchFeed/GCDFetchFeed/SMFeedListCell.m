@@ -61,7 +61,7 @@
     if (viewModel.itemModel.isRead > 0) {
         self.titleLabel.textColor = [SMStyle colorGrayLight];
     } else {
-        self.titleLabel.textColor = [SMStyle colorGrayDark];
+        self.titleLabel.textColor = [SMStyle colorBlack];
     }
     self.itemModel = viewModel.itemModel;
 }
