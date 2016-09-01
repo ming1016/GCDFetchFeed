@@ -13,7 +13,7 @@
 - (instancetype)init {
     if (self = [super init]) {
         self.font = [SMStyle fontHuge];
-        self.textColor = [SMStyle colorBlack];
+        self.textColor = [SMStyle colorPaperBlack];
     }
     return self;
 }

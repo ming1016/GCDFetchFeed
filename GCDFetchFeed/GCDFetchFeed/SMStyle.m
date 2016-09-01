@@ -43,7 +43,18 @@
 + (UIColor *)colorOrangeLight {
     return [UIColor colorWithHexString:@"ff9933"];
 }
-
++ (UIColor *)colorPaperDark {
+    return [UIColor colorWithHexString:@"E8E7E2"];
+}
++ (UIColor *)colorPaperLight {
+    return [UIColor colorWithHexString:@"F2F1ED"];
+}
++ (UIColor *)colorPaperBlack {
+    return [UIColor colorWithHexString:@"62625F"];
+}
++ (UIColor *)colorPaperGray {
+    return [UIColor colorWithHexString:@"AAA9A5"];
+}
 
 //-------------------------
 //         CGFloat

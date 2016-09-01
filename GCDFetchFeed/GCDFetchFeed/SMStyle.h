@@ -22,6 +22,10 @@
 + (UIColor *)colorGrayLight;
 + (UIColor *)colorGrayDark;
 + (UIColor *)colorOrangeLight;
++ (UIColor *)colorPaperDark;
++ (UIColor *)colorPaperLight;
++ (UIColor *)colorPaperBlack;
++ (UIColor *)colorPaperGray;
 
 //CGFloat
 + (CGFloat)floatScreenWidth;                  //屏幕宽

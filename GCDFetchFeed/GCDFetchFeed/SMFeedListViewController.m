@@ -15,6 +15,7 @@
 #import "SMArticleViewController.h"
 #import "SMDB.h"
 #import "MJRefresh.h"
+#import "SMStyle.h"
 
 static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControllerCell";
 
@@ -47,7 +48,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [SMStyle colorPaperLight];
     self.title = self.feedModel.title;
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:feedListViewControllerCellIdentifier];
@@ -63,7 +64,10 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 #pragma mark - Private
 - (void)markAllAsRead {
     RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault];
-    [[[[SMDB shareInstance] markFeedAllItemsAsRead:self.feedModel.fid] subscribeOn:scheduler] subscribeNext:^(id x) {
+    [[[[[SMDB shareInstance] markFeedAllItemsAsRead:self.feedModel.fid]
+      subscribeOn:scheduler]
+     deliverOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(id x) {
         //
     }];
     self.feedModel.unReadCount = 0;

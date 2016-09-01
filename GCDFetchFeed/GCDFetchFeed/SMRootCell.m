@@ -96,7 +96,7 @@
 - (SMContentLabel *)contentLabel {
     if (!_contentLabel) {
         _contentLabel = [[SMContentLabel alloc] init];
-        _contentLabel.textColor = [SMStyle colorGrayLight];
+        _contentLabel.textColor = [SMStyle colorPaperGray];
     }
     return _contentLabel;
 }
@@ -104,6 +104,7 @@
     if (!_highlightLabel) {
         _highlightLabel = [[SMHighlightLabel alloc] init];
         _highlightLabel.textAlignment = NSTextAlignmentRight;
+        _highlightLabel.textColor = [SMStyle colorPaperGray];
     }
     return _highlightLabel;
 }

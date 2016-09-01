@@ -161,7 +161,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     viewModel.titleString = model.title;
     viewModel.contentString = model.des;
     viewModel.iconUrl = model.imageUrl;
-    viewModel.highlightString = [NSString stringWithFormat:@"%lu条",(unsigned long)model.unReadCount];
+    viewModel.highlightString = [NSString stringWithFormat:@"%lu",(unsigned long)model.unReadCount];
     viewModel.feedModel = model;
     [v updateWithViewModel:viewModel];
     
@@ -229,7 +229,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero];
         _tableView.dataSource = self;
         _tableView.delegate = self;
-        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.backgroundColor = [SMStyle colorPaperLight];
         _tableView.showsVerticalScrollIndicator = false;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }

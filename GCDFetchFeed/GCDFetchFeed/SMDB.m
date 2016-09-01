@@ -78,6 +78,12 @@
                     FMResultSet *iRsl = [db executeQuery:@"select iid from feeditem where link = ?",itemModel.link];
                     if ([iRsl next]) {
                     } else {
+                        //过滤字符串
+                        NSString *badChars = @"\\\'";
+                        NSCharacterSet *badCharSet = [NSCharacterSet characterSetWithCharactersInString: badChars];
+                        itemModel.title = [itemModel.title stringByTrimmingCharactersInSet:badCharSet];
+                        itemModel.des = [itemModel.des stringByTrimmingCharactersInSet:badCharSet];
+                        //入库
                         [db executeUpdate:@"insert into feeditem (fid, link, title, author, category, pubdate, des, isread) values (?, ?, ?, ?, ?, ?, ?, ?)", @(fid), itemModel.link, itemModel.title, itemModel.author, itemModel.category, itemModel.pubDate, itemModel.des, @0];
                     }
                 }

@@ -59,9 +59,9 @@
     self.titleLabel.text = viewModel.titleString;
     self.contentLabel.text = viewModel.contentString;
     if (viewModel.itemModel.isRead > 0) {
-        self.titleLabel.textColor = [SMStyle colorGrayLight];
+        self.titleLabel.textColor = [SMStyle colorPaperGray];
     } else {
-        self.titleLabel.textColor = [SMStyle colorBlack];
+        self.titleLabel.textColor = [SMStyle colorPaperBlack];
     }
     self.itemModel = viewModel.itemModel;
 }
@@ -86,7 +86,7 @@
 - (SMContentLabel *)contentLabel {
     if (!_contentLabel) {
         _contentLabel = [[SMContentLabel alloc] init];
-        _contentLabel.textColor = [SMStyle colorGrayLight];
+        _contentLabel.textColor = [SMStyle colorPaperGray];
     }
     return _contentLabel;
 }

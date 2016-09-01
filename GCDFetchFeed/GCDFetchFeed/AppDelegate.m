@@ -22,7 +22,12 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     SMRootViewController *rootVC = [[SMRootViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:rootVC];
-    
+    nav.navigationBar.tintColor = [SMStyle colorPaperBlack];
+    nav.navigationBar.barTintColor = [SMStyle colorPaperDark];
+    UIView *shaowLine = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(nav.navigationBar.frame), CGRectGetWidth(nav.navigationBar.frame), 0.5)];
+    shaowLine.backgroundColor = [UIColor colorWithHexString:@"D8D7D3"];
+    [nav.navigationBar addSubview:shaowLine];
+    nav.navigationBar.translucent = NO;
     self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
     return YES;

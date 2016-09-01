@@ -38,7 +38,7 @@
 }
 - (void)loadView {
     [super loadView];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [SMStyle colorPaperLight];
     [self.view addSubview:self.backScrollView];
     [self.backScrollView addSubview:self.backScrollViewContainer];
     [self.backScrollViewContainer addSubview:self.articleView];
@@ -269,6 +269,7 @@
         _articleView.shouldDrawImages = NO;
         _articleView.shouldDrawLinks = NO;
         _articleView.delegate = self;
+        _articleView.backgroundColor = [SMStyle colorPaperLight];
     }
     return _articleView;
 }
