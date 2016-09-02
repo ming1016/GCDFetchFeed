@@ -76,7 +76,6 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 }
 - (void)selectFeedItems {
     RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityHigh];
-
     @weakify(self);
     [[[[[SMDB shareInstance] selectFeedItemsWithPage:self.page fid:self.feedModel.fid]
        subscribeOn:scheduler]
@@ -84,14 +83,19 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
      subscribeNext:^(NSMutableArray *x) {
         @strongify(self);
         if (self.listData.count > 0) {
+            //进入时加载
             [self.listData addObjectsFromArray:x];
         } else {
+            //加载更多
             self.listData = x;
         }
+        //刷新
         [self.tableView reloadData];
     } error:^(NSError *error) {
+        //处理无数据的显示
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
     } completed:^{
+        //加载完成后的处理
         [self.tableView.mj_footer endRefreshing];
     }];
     self.page += 1;

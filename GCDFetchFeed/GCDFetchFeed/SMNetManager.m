@@ -36,7 +36,7 @@
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        //gcd
+        //创建并行队列
         dispatch_queue_t fetchFeedQueue = dispatch_queue_create("com.starming.fetchfeed.fetchfeed", DISPATCH_QUEUE_CONCURRENT);
         dispatch_group_t group = dispatch_group_create();
         self.feeds = modelArray;
@@ -49,15 +49,16 @@
 //                    NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
 //                    NSLog(@"Data: %@", xmlString);
 //                    NSLog(@"%@",feedModel);
-                    
+                    //解析feed
                     self.feeds[i] = [self.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
+                    //入库存储
                     SMDB *db = [[SMDB alloc] init];
                     [[db insertWithFeedModel:self.feeds[i]] subscribeNext:^(NSNumber *x) {
                         SMFeedModel *model = (SMFeedModel *)self.feeds[i];
                         model.fid = [x integerValue];
-                        //插入本地数据库成功
+                        //插入本地数据库成功后开始sendNext
                         [subscriber sendNext:@(i)];
-                        //通知
+                        //通知单个完成
                         dispatch_group_leave(group);
                     }];
                     
@@ -69,15 +70,12 @@
             });//end dispatch async
             
         }//end for
-        
         //全完成后执行事件
         dispatch_group_notify(group, dispatch_get_main_queue(), ^{
             [subscriber sendCompleted];
         });
         return nil;
-        
     }];
-    
 }
 
 #pragma mark - Getter

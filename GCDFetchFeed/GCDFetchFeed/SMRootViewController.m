@@ -75,6 +75,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     
     //本地
     @weakify(self);
+    //首页列表数据赋值，过滤无效数据
     RAC(self, feeds) = [[[SMDB shareInstance] selectAllFeeds] filter:^BOOL(NSMutableArray *feedsArray) {
         if (feedsArray.count > 0) {
             return YES;
@@ -82,6 +83,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
             return NO;
         }
     }];
+    //监听列表数据变化进行列表更新
     [RACObserve(self, feeds) subscribeNext:^(id x) {
         @strongify(self);
         [self.tableView reloadData];
@@ -103,7 +105,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 - (void)fetchAllFeeds {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.tableView.tableHeaderView = self.tbHeaderView;
-    self.fetchingCount = 0;
+    self.fetchingCount = 0; //统计抓取数量
     @weakify(self);
     [[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
         @strongify(self);
@@ -114,6 +116,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         //抓完所有的feeds
         @strongify(self);
         NSLog(@"fetch complete");
+        //完成置为默认状态
         self.tbHeaderLabel.text = @"";
         self.tableView.tableHeaderView = [[UIView alloc] init];
         self.fetchingCount = 0;
@@ -121,6 +124,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
         //抓完一个
         @strongify(self);
+        //显示抓取状态
         self.fetchingCount += 1;
         self.tbHeaderLabel.text = [NSString stringWithFormat:@"正在获取%@...(%lu/%lu)",feedModel.title,(unsigned long)self.fetchingCount,(unsigned long)self.feeds.count];
         [self.tableView reloadData];

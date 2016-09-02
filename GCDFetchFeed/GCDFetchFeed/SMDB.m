@@ -107,6 +107,7 @@
     
 }
 
+//本地读取首页订阅源数据
 - (RACSignal *)selectAllFeeds {
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -144,9 +145,11 @@
         @strongify(self);
         FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
+            //分页获取
             FMResultSet *rs = [db executeQuery:@"select * from feeditem where fid = ? and isread = ? order by iid desc limit ?, 20",@(fid), @(0), @(page * 20)];
             NSUInteger count = 0;
             NSMutableArray *feedItemsArray = [NSMutableArray array];
+            //设置返回Array里的Model
             while ([rs next]) {
                 SMFeedItemModel *itemModel = [[SMFeedItemModel alloc] init];
                 itemModel.iid = [rs intForColumn:@"iid"];
@@ -164,6 +167,7 @@
             if (count > 0) {
                 [subscriber sendNext:feedItemsArray];
             } else {
+                //获取出错处理
                 [subscriber sendError:nil];
             }
             [subscriber sendCompleted];
