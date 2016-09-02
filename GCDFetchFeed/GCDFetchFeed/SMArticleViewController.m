@@ -13,6 +13,7 @@
 #import "SMFeedStore.h"
 #import "SMCellViewImport.h"
 
+
 @interface SMArticleViewController ()<DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate,UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSString *articleString;
@@ -20,10 +21,10 @@
 @property (nonatomic, strong) DTAttributedLabel *articleLabel;
 @property (nonatomic, strong) UIScrollView *backScrollView;
 @property (nonatomic, strong) UIView *backScrollViewContainer;
-//@property (nonatomic, strong) DTAttributedTextContentView *articleView;
 @property (nonatomic, strong) DTAttributedTextContentView *articleView;
-
+@property (nonatomic, strong) UIAlertController *alertController;
 @property (nonatomic, strong) NSURL *lastActionLink;
+@property (nonatomic, strong) UIActivityViewController *activityVC;
 
 @end
 
@@ -80,9 +81,33 @@
     [self.backScrollViewContainer mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.articleView.mas_bottom);
     }];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"分享" style:UIBarButtonItemStylePlain target:self action:@selector(share)];
+    
+    //更多功能
+    self.alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"浏览器打开" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        [[UIApplication sharedApplication] openURL:[self.lastActionLink absoluteURL]];
+    }]];
+    [self.alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        
+    }]];
+    
+    //分享
+    NSURL *urlToShare = [NSURL URLWithString:self.feedItemModel.link];
+    NSArray *activityItems = @[urlToShare];
+    self.activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    self.activityVC.excludedActivityTypes = @[UIActivityTypePrint,
+                                         UIActivityTypeAssignToContact,
+                                         UIActivityTypeSaveToCameraRoll
+                                         ];
+    
 }
 
 #pragma mark - Private
+- (void)share {
+    [self presentViewController:self.activityVC animated:YES completion:nil];
+}
 //链接点击
 - (void)linkClicked:(DTLinkButton *)button {
     NSURL *URL = button.URL;
@@ -108,8 +133,7 @@
         
         if ([[UIApplication sharedApplication] canOpenURL:[button.URL absoluteURL]])
         {
-            UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:[[button.URL absoluteURL] description] delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Open in Safari", nil];
-            [action showFromRect:button.frame inView:button.superview animated:YES];
+            [self presentViewController:self.alertController animated:YES completion:nil];
         }
     }
 }
@@ -192,13 +216,7 @@
     return YES; // draw standard background
 }
 
-#pragma mark - ActionSheet Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex != actionSheet.cancelButtonIndex)
-    {
-        [[UIApplication sharedApplication] openURL:[self.lastActionLink absoluteURL]];
-    }
-}
+
 
 #pragma mark - DTLazyImageViewDelegate
 - (void)lazyImageView:(DTLazyImageView *)lazyImageView didChangeImageSize:(CGSize)size {
