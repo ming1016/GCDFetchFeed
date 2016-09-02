@@ -30,4 +30,7 @@
 * 支持手动添加源
 
 # 截图
-![Alt text](http://ww2.sinaimg.cn/mw1024/681101d0jw1f08irq9qczj20yi1pcwjp.jpg)
+![截图](https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/ScreenShot1.png?raw=true)
+![截图](https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/ScreenShot2.png?raw=true)
+![截图](https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/ScreenShot3.png?raw=true)
+
