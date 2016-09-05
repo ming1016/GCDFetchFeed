@@ -9,6 +9,7 @@
 #import "SMArticleViewController.h"
 #import "Masonry.h"
 #import <DTCoreText/DTCoreText.h>
+#import <SafariServices/SafariServices.h>
 
 #import "SMFeedStore.h"
 #import "SMCellViewImport.h"
@@ -112,17 +113,8 @@
 - (void)linkClicked:(DTLinkButton *)button {
     NSURL *URL = button.URL;
     
-    if ([[UIApplication sharedApplication] canOpenURL:[URL absoluteURL]])
-    {
-        [[UIApplication sharedApplication] openURL:[URL absoluteURL]];
-    }
-    else
-    {
-        if (![URL host] && ![URL path])
-        {
-            //无效链接情况
-        }
-    }
+    SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[URL absoluteURL]];
+    [self presentViewController:sfVC animated:YES completion:nil];
 }
 //链接长按
 - (void)linkLongPressed:(UILongPressGestureRecognizer *)gesture {
