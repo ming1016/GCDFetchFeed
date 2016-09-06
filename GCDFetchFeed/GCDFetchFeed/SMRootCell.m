@@ -55,6 +55,7 @@
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconImageView.mas_right).offset([SMStyle floatMarginNormal]);
         make.top.equalTo(self.iconImageView).offset([SMStyle floatMarginMinor]);
+        make.right.lessThanOrEqualTo(self).offset(-50);
     }];
     [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.titleLabel);
