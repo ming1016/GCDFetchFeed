@@ -199,6 +199,8 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         _tableView.backgroundColor = [SMStyle colorPaperLight];
         _tableView.showsVerticalScrollIndicator = false;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        UIView *tbFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 50)];
+        _tableView.tableFooterView = tbFooterView;
     }
     return _tableView;
 }

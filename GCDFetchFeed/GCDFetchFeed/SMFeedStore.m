@@ -34,6 +34,7 @@
     feedModel.feedUrl = preModel.feedUrl;
     feedModel.fid = preModel.fid;
     feedModel.unReadCount = preModel.unReadCount;
+    feedModel.des = preModel.des;
     //开始解析
     NSMutableArray *itemArray = [NSMutableArray array];
     for (ONOXMLElement *element in document.rootElement.children) {
@@ -209,6 +210,7 @@
     next.title = @"NEXT";
     next.feedUrl = @"http://next.36kr.com/feed";
     next.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_next.png?raw=true";
+    next.des = @"不错过任何一个新产品";
     [mArr addObject:next];
     
     SMFeedModel *cnEngadget = [[SMFeedModel alloc] init];
@@ -222,8 +224,6 @@
     geekpark.feedUrl = @"http://www.geekpark.net/rss";
     geekpark.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_geekpark.jpeg?raw=true";
     [mArr addObject:geekpark];
-    
-    
     
     return mArr;
 }

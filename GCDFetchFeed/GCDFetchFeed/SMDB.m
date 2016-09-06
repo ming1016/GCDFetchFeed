@@ -38,7 +38,7 @@
         if ([[NSFileManager defaultManager] fileExistsAtPath:_feedDBPath] == NO) {
             FMDatabase *db = [FMDatabase databaseWithPath:_feedDBPath];
             if ([db open]) {
-                NSString *createSql = @"create table feeds (fid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, title text, link text, des text, copyright text, generator text, imageurl text, feedurl text, unread integer)";
+                NSString *createSql = @"create table feeds (fid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, title text, link text, des text, copyright text, generator text, imageurl text, feedurl text, unread integer, updatetime integer)";
                 [db executeUpdate:createSql];
                 NSString *createItemSql = @"create table feeditem (iid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, fid integer, link text, title text, author text, category text, pubdate text, des blob, isread integer)";
                 [db executeUpdate:createItemSql];
@@ -85,6 +85,7 @@
                         itemModel.des = [itemModel.des stringByTrimmingCharactersInSet:badCharSet];
                         //入库
                         [db executeUpdate:@"insert into feeditem (fid, link, title, author, category, pubdate, des, isread) values (?, ?, ?, ?, ?, ?, ?, ?)", @(fid), itemModel.link, itemModel.title, itemModel.author, itemModel.category, itemModel.pubDate, itemModel.des, @0];
+                        [db executeUpdate:@"update feeds set updatetime = ? where fid = ?",@(time(NULL)),@(fid)];
                     }
                 }
             }
@@ -114,7 +115,7 @@
         @strongify(self);
         FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
-            FMResultSet *rs = [db executeQuery:@"select * from feeds"];
+            FMResultSet *rs = [db executeQuery:@"select * from feeds order by updatetime desc"];
             NSUInteger count = 0;
             NSMutableArray *feedsArray = [NSMutableArray array];
             while ([rs next]) {
