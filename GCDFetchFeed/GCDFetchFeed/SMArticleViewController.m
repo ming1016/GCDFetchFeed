@@ -60,7 +60,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.title = self.feedItemModel.title;
     //Html转Native
     NSError *err = nil;
     NSString *feedString = [NSString stringWithFormat:@"%@<p><a href=\"%@\">阅读原文</a></p>",self.feedItemModel.des,self.feedItemModel.link];

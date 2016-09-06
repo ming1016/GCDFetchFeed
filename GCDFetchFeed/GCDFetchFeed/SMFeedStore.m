@@ -154,44 +154,76 @@
     SMFeedModel *starmingFeed = [[SMFeedModel alloc] init];
     starmingFeed.title = @"Starming星光社最新更新";
     starmingFeed.feedUrl = @"http://www.starming.com/index.php?v=index&rss=all";
-    starmingFeed.imageUrl = @"http://starming-staticpic.stor.sinaapp.com/pic/64height.png";
+    starmingFeed.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_starming.png?raw=true";
     [mArr addObject:starmingFeed];
     
     SMFeedModel *cnbetaFeed = [[SMFeedModel alloc] init];
     cnbetaFeed.title = @"cnBeta.COM业界咨询";
     cnbetaFeed.feedUrl = @"http://www.cnbeta.com/backend.php";
-    cnbetaFeed.imageUrl = @"http://tp4.sinaimg.cn/2769378403/180/5726899232/1";
+    cnbetaFeed.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_cnbeta.jpeg?raw=true";
     [mArr addObject:cnbetaFeed];
     
     SMFeedModel *kr36Feed = [[SMFeedModel alloc] init];
     kr36Feed.title = @"36氪";
     kr36Feed.feedUrl = @"http://www.36kr.com/feed";
-    kr36Feed.imageUrl = @"http://krplus-cdn.b0.upaiyun.com/common-module/common-header/images/logo.png";
+    kr36Feed.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_36kr.png?raw=true";
     [mArr addObject:kr36Feed];
     
     SMFeedModel *dgtleFeed = [[SMFeedModel alloc] init];
     dgtleFeed.title = @"数字尾巴-分享美好数字生活";
     dgtleFeed.feedUrl = @"http://www.dgtle.com/rss/dgtle.xml";
-    dgtleFeed.imageUrl = @"http://tp1.sinaimg.cn/1726544024/180/5630520790/1";
+    dgtleFeed.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_dgtle.jpeg?raw=true";
     [mArr addObject:dgtleFeed];
     
     SMFeedModel *ifanrFeed = [[SMFeedModel alloc] init];
     ifanrFeed.title = @"爱范儿";
     ifanrFeed.feedUrl = @"http://www.ifanr.com/feed";
-    ifanrFeed.imageUrl = @"http://tp1.sinaimg.cn/1642720480/180/5742721759/1";
+    ifanrFeed.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_ifanr.jpeg?raw=true";
     [mArr addObject:ifanrFeed];
     
     SMFeedModel *v2exFeed = [[SMFeedModel alloc] init];
     v2exFeed.title = @"V2EX";
     v2exFeed.feedUrl = @"http://www.v2ex.com/index.xml";
-    v2exFeed.imageUrl = @"http://cdn.v2ex.co/site/logo@2x.png";
+    v2exFeed.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_v2ex.png?raw=true";
     [mArr addObject:v2exFeed];
     
     SMFeedModel *ftFeed = [[SMFeedModel alloc] init];
     ftFeed.title = @"FT中文网";
     ftFeed.feedUrl = @"http://www.ftchinese.com/rss/feed";
-    ftFeed.imageUrl = @"";
+    ftFeed.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_ft.jpg?raw=true";
     [mArr addObject:ftFeed];
+    
+    SMFeedModel *zhihuDaily = [[SMFeedModel alloc] init];
+    zhihuDaily.title = @"知乎每日精选";
+    zhihuDaily.feedUrl = @"http://www.zhihu.com/rss";
+    zhihuDaily.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_zhihu.png?raw=true";
+    [mArr addObject:zhihuDaily];
+    
+    SMFeedModel *scipark = [[SMFeedModel alloc] init];
+    scipark.title = @"科技公园";
+    scipark.feedUrl = @"http://www.scipark.net/feed/";
+    scipark.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_scipark.jpg?raw=true";
+    [mArr addObject:scipark];
+    
+    SMFeedModel *next = [[SMFeedModel alloc] init];
+    next.title = @"NEXT";
+    next.feedUrl = @"http://next.36kr.com/feed";
+    next.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_next.png?raw=true";
+    [mArr addObject:next];
+    
+    SMFeedModel *cnEngadget = [[SMFeedModel alloc] init];
+    cnEngadget.title = @"engadget中国版";
+    cnEngadget.feedUrl = @"http://cn.engadget.com/rss.xml";
+    cnEngadget.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_engadget.jpg?raw=true";
+    [mArr addObject:cnEngadget];
+    
+    SMFeedModel *geekpark = [[SMFeedModel alloc] init];
+    geekpark.title = @"极客公园";
+    geekpark.feedUrl = @"http://www.geekpark.net/rss";
+    geekpark.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_geekpark.jpeg?raw=true";
+    [mArr addObject:geekpark];
+    
+    
     
     return mArr;
 }

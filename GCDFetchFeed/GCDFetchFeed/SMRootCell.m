@@ -60,6 +60,7 @@
     [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.titleLabel);
         make.top.equalTo(self.titleLabel.mas_bottom).offset([SMStyle floatTextIntervalVertical]);
+        make.right.lessThanOrEqualTo(self).offset(-50);
     }];
     [self.highlightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self).offset(-[SMStyle floatMarginMassive]);
