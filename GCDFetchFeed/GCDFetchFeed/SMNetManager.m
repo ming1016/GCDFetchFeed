@@ -45,6 +45,7 @@
             dispatch_group_enter(group);
             SMFeedModel *feedModel = modelArray[i];
             dispatch_async(fetchFeedQueue, ^{
+                @strongify(self);
                 [self GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
 //                    NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
 //                    NSLog(@"Data: %@", xmlString);
@@ -52,8 +53,7 @@
                     //解析feed
                     self.feeds[i] = [self.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
                     //入库存储
-                    SMDB *db = [[SMDB alloc] init];
-                    [[db insertWithFeedModel:self.feeds[i]] subscribeNext:^(NSNumber *x) {
+                    [[[SMDB shareInstance] insertWithFeedModel:self.feeds[i]] subscribeNext:^(NSNumber *x) {
                         SMFeedModel *model = (SMFeedModel *)self.feeds[i];
                         model.fid = [x integerValue];
                         //插入本地数据库成功后开始sendNext
@@ -64,7 +64,11 @@
                     
                 } failure:^(NSURLSessionTask *operation, NSError *error) {
                     NSLog(@"Error: %@", error);
-                    dispatch_group_leave(group);
+                    [[[SMDB shareInstance] insertWithFeedModel:self.feeds[i]] subscribeNext:^(NSNumber *x) {
+                        SMFeedModel *model = (SMFeedModel *)self.feeds[i];
+                        model.fid = [x integerValue];
+                        dispatch_group_leave(group);
+                    }];
                 }];
                 
             });//end dispatch async

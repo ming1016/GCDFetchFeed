@@ -38,9 +38,19 @@
         if ([[NSFileManager defaultManager] fileExistsAtPath:_feedDBPath] == NO) {
             FMDatabase *db = [FMDatabase databaseWithPath:_feedDBPath];
             if ([db open]) {
-                NSString *createSql = @"create table feeds (fid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, title text, link text, des text, copyright text, generator text, imageurl text, feedurl text, unread integer, updatetime integer)";
+                /*
+                 unread：未读数
+                 updatetime：最后更新时间用来排序
+                 ishide：是否隐藏，0表示显示，1表示不显示
+                 */
+                NSString *createSql = @"create table feeds (fid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, title text, link text, des text, copyright text, generator text, imageurl text, feedurl text, unread integer, updatetime integer, ishide integer)";
                 [db executeUpdate:createSql];
-                NSString *createItemSql = @"create table feeditem (iid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, fid integer, link text, title text, author text, category text, pubdate text, des blob, isread integer)";
+                /*
+                 des：正文内容
+                 isread：是否点开查看过，0表示没看过，1表示看过
+                 thumbnails：图片集，各个图片地址使用|作为分隔符
+                 */
+                NSString *createItemSql = @"create table feeditem (iid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, fid integer, link text, title text, author text, category text, pubdate text, des blob, isread integer, thumbnails text)";
                 [db executeUpdate:createItemSql];
             }
         }
@@ -64,7 +74,7 @@
                 
             } else {
                 //不存在创建一个，同时返回fid
-                [db executeUpdate:@"insert into feeds (title, link, des, copyright, generator, imageurl, feedurl) values (?, ?, ?, ?, ?, ?, ?)", feedModel.title, feedModel.link, feedModel.des, feedModel.copyright, feedModel.generator, feedModel.imageUrl, feedModel.feedUrl];
+                [db executeUpdate:@"insert into feeds (title, link, des, copyright, generator, imageurl, feedurl, ishide) values (?, ?, ?, ?, ?, ?, ?, ?)", feedModel.title, feedModel.link, feedModel.des, feedModel.copyright, feedModel.generator, feedModel.imageUrl, feedModel.feedUrl, @(0)];
                 
                 FMResultSet *fidRsl = [db executeQuery:@"select fid from feeds where feedurl = ?",feedModel.feedUrl];
                 if ([fidRsl next]) {
@@ -115,7 +125,7 @@
         @strongify(self);
         FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
-            FMResultSet *rs = [db executeQuery:@"select * from feeds order by updatetime desc"];
+            FMResultSet *rs = [db executeQuery:@"select * from feeds where ishide = ? order by updatetime desc",@(0)];
             NSUInteger count = 0;
             NSMutableArray *feedsArray = [NSMutableArray array];
             while ([rs next]) {
@@ -147,7 +157,7 @@
         FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
             //分页获取
-            FMResultSet *rs = [db executeQuery:@"select * from feeditem where fid = ? and isread = ? order by iid desc limit ?, 20",@(fid), @(0), @(page * 20)];
+            FMResultSet *rs = [db executeQuery:@"select * from feeditem where fid = ? and isread = ? order by iid desc limit ?, 50",@(fid), @(0), @(page * 50)];
             NSUInteger count = 0;
             NSMutableArray *feedItemsArray = [NSMutableArray array];
             //设置返回Array里的Model
@@ -177,7 +187,6 @@
         return nil;
     }];
 }
-//标注已读
 - (RACSignal *)markFeedItemAsRead:(NSUInteger)iid {
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -192,8 +201,6 @@
         return nil;
     }];
 }
-
-//标注全部已读
 - (RACSignal *)markFeedAllItemsAsRead:(NSUInteger)fid {
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -201,7 +208,7 @@
         FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
             [db executeUpdate:@"update feeditem set isread = ? where fid = ?", @(1), @(fid)];
-            
+            [db executeUpdate:@"update feeds set unread = ? where fid = ?",@0,@(fid)]; //更新feeds表里未读数
             FMResultSet *rs = [db executeQuery:@"select iid from feeditem where fid = ? order by iid asc",@(fid)];
             NSUInteger count = 0;
             while ([rs next]) {
@@ -219,7 +226,17 @@
         return nil;
     }];
 }
-
-
+//是否取消订阅
+- (RACSignal *)isHideFeed:(BOOL)hide {
+    @weakify(self);
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
+        if ([db open]) {
+            //
+        }
+        return nil;
+    }];
+}
 
 @end

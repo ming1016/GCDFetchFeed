@@ -49,7 +49,7 @@
         make.left.right.top.bottom.equalTo(self);
     }];
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.equalTo(self).offset([SMStyle floatMarginMassive]);
+        make.left.top.equalTo(self).offset([SMStyle floatMarginNormal]);
         make.size.mas_equalTo(CGSizeMake(30, 30));
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -73,6 +73,13 @@
     self.contentLabel.text = viewModel.contentString;
     [self.iconImageView updateWithImageWebUrl:viewModel.iconUrl];
     self.highlightLabel.text = viewModel.highlightString;
+    if ([viewModel.highlightString isEqualToString:@"0"]) {
+        self.highlightLabel.textColor = [SMStyle colorPaperGray];
+        self.titleLabel.textColor = [SMStyle colorPaperGray];
+    } else {
+        self.highlightLabel.textColor = [SMStyle colorPaperBlack];
+        self.titleLabel.textColor = [SMStyle colorPaperBlack];
+    }
     self.feedModel = viewModel.feedModel;
 }
 #pragma mark - Private

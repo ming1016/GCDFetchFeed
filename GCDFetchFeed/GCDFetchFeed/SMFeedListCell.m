@@ -44,14 +44,12 @@
         make.left.right.top.bottom.equalTo(self);
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.equalTo(self).offset([SMStyle floatMarginMassive]);
+        make.left.top.equalTo(self).offset([SMStyle floatMarginNormal]);
     }];
     [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.titleLabel);
         make.top.equalTo(self.titleLabel.mas_bottom).offset([SMStyle floatTextIntervalHorizontal]);
-        make.bottom.equalTo(self);
     }];
-    
 }
 
 #pragma mark - Interface

@@ -37,7 +37,6 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     if (self = [super init]) {
         self.feedModel = feedModel;
         self.page = 0;
-        
     }
     return self;
 }
@@ -81,16 +80,20 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
        subscribeOn:scheduler]
       deliverOn:[RACScheduler mainThreadScheduler]]
      subscribeNext:^(NSMutableArray *x) {
-        @strongify(self);
-        if (self.listData.count > 0) {
-            //进入时加载
-            [self.listData addObjectsFromArray:x];
-        } else {
-            //加载更多
-            self.listData = x;
-        }
-        //刷新
-        [self.tableView reloadData];
+         @strongify(self);
+         self.tableView.mj_footer.hidden = NO;
+         if (self.listData.count > 0) {
+             //加载更多
+             [self.listData addObjectsFromArray:x];
+         } else {
+             //进入时加载
+             self.listData = x;
+             if (self.listData.count < 50) {
+                 self.tableView.mj_footer.hidden = YES;
+             }
+         }
+         //刷新
+         [self.tableView reloadData];
     } error:^(NSError *error) {
         //处理无数据的显示
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
@@ -190,6 +193,13 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         //mj
         _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(selectFeedItems)];
+        MJRefreshAutoNormalFooter *footer = (MJRefreshAutoNormalFooter *)_tableView.mj_footer;
+        footer.stateLabel.font = [SMStyle fontSmall];
+        footer.stateLabel.textColor = [SMStyle colorPaperGray];
+        [footer setTitle:@"上拉读取更多" forState:MJRefreshStateIdle];
+        [footer setTitle:@"正在读取..." forState:MJRefreshStateRefreshing];
+        [footer setTitle:@"已读取完毕" forState:MJRefreshStateNoMoreData];
+        
     }
     return _tableView;
 }

@@ -10,6 +10,7 @@
 #import "SMNetManager.h"
 #import "Ono.h"
 #import "Masonry.h"
+#import "MJRefresh.h"
 #import "SMNotificationConst.h"
 #import "SMSubContentLabel.h"
 
@@ -20,6 +21,7 @@
 #import "SMDB.h"
 
 #import "SMFeedListViewController.h"
+#import "UINavigationController+FDFullscreenPopGesture.h"
 
 static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 
@@ -83,6 +85,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
             return NO;
         }
     }];
+    
     //监听列表数据变化进行列表更新
     [RACObserve(self, feeds) subscribeNext:^(id x) {
         @strongify(self);
@@ -96,9 +99,9 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         @strongify(self);
         SMFeedModel *feedModel = (SMFeedModel *)value.second;
         SMFeedListViewController *feedList = [[SMFeedListViewController alloc] initWithFeedModel:feedModel];
+        feedList.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:feedList animated:YES];
     }];
-    
 }
 
 #pragma mark - private
@@ -121,6 +124,15 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         self.tableView.tableHeaderView = [[UIView alloc] init];
         self.fetchingCount = 0;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //下拉刷新关闭
+        [self.tableView.mj_header endRefreshing];
+        //更新列表
+        [self.tableView reloadData];
+        //检查是否需要增加源
+        if ([SMFeedStore defaultFeeds].count > self.feeds.count) {
+            self.feeds = [SMFeedStore defaultFeeds];
+            [self fetchAllFeeds];
+        }
     }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
         //抓完一个
         @strongify(self);
@@ -171,6 +183,19 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     
     return cell;
 }
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        SMFeedModel *model = self.feeds[indexPath.row];
+        
+    }
+}
+- (NSString *)tableView:(UITableView *)tableView
+titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return @"取消";
+}
 
 #pragma mark - Getter
 - (SMRootDataSource *)dataSource {
@@ -201,6 +226,22 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         UIView *tbFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 50)];
         _tableView.tableFooterView = tbFooterView;
+        
+        //下拉刷新
+        @weakify(self);
+        _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            @strongify(self);
+            [self fetchAllFeeds];
+        }];
+        MJRefreshNormalHeader *header = (MJRefreshNormalHeader *)_tableView.mj_header;
+        header.lastUpdatedTimeLabel.hidden = YES;
+        [header.arrowView setImage:[UIImage imageNamed:@""]];
+        header.stateLabel.font = [SMStyle fontSmall];
+        header.stateLabel.textColor = [SMStyle colorPaperGray];
+        [header setTitle:@"下拉更新数据" forState:MJRefreshStateIdle];
+        [header setTitle:@"松开立刻更新" forState:MJRefreshStatePulling];
+        [header setTitle:@"更新数据..." forState:MJRefreshStateRefreshing];
+        
     }
     return _tableView;
 }
