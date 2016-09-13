@@ -48,7 +48,14 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [SMStyle colorPaperLight];
-    self.title = self.feedModel.title;
+    
+    //列表类型不同的处理
+    if (self.feedModel.fid == 0) {
+        self.title = @"列表";
+    } else {
+        self.title = self.feedModel.title;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"全部已读" style:UIBarButtonItemStylePlain target:self action:@selector(markAllAsRead)];
+    }
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:feedListViewControllerCellIdentifier];
     [self.view addSubview:self.tableView];
@@ -57,7 +64,8 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     }];
     [self selectFeedItems];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"全部已读" style:UIBarButtonItemStylePlain target:self action:@selector(markAllAsRead)];
+    
+    
 }
 
 #pragma mark - Private
@@ -120,6 +128,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
         }
     }];
     SMArticleViewController *articleVC = [[SMArticleViewController alloc] initWithFeedModel:itemModel];
+    articleVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:articleVC animated:YES];
 }
 #pragma mark - UITableView Delegate
@@ -171,6 +180,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
         dateString = [NSString stringWithFormat:@"%@ ",[dateFormatter stringFromDate:date]];
     }
     viewModel.contentString = [NSString stringWithFormat:@"%@%@ %@",dateString,categoryString,authorString];
+    viewModel.iconUrlString = itemModel.iconUrl;
     viewModel.itemModel = itemModel;
     [v updateWithViewModel:viewModel];
     

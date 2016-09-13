@@ -18,6 +18,8 @@
 
 
 @interface SMDB : NSObject
+@property (nonatomic, strong) NSMutableDictionary *feedIcons;
+
 + (SMDB *)shareInstance;
 - (RACSignal *)insertWithFeedModel:(SMFeedModel *)feedModel; //插入feed内容
 - (RACSignal *)selectAllFeeds; //读取所有feeds

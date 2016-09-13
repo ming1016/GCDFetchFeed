@@ -34,7 +34,7 @@
 @property (nonatomic, copy) NSString<Optional> *author;       //作者
 @property (nonatomic, copy) NSString<Optional> *category;     //分类
 @property (nonatomic, copy) NSString<Optional> *pubDate;      //发布日期
-@property (nonatomic, copy) NSString<Optional> *des;
-@property (nonatomic) NSUInteger isRead;
-
+@property (nonatomic, copy) NSString<Optional> *des;          //正文内容
+@property (nonatomic) NSUInteger isRead;                      //是否已读
+@property (nonatomic, copy) NSString<Optional> *iconUrl;       //频道icon
 @end

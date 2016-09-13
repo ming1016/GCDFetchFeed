@@ -16,6 +16,7 @@
 + (SMNetManager *)shareInstance;
 
 @property (nonatomic, strong) NSMutableArray *feeds;
+@property (nonatomic, strong) NSMutableDictionary *icons;
 
 - (RACSignal *)fetchAllFeedWithModelArray:(NSArray *)modelArray;
 

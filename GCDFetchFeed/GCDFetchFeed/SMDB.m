@@ -141,6 +141,11 @@
                 feedModel.unReadCount = [rs intForColumn:@"unread"];
                 [feedsArray addObject:feedModel];
                 count++;
+                //feedicons
+                if (feedModel.imageUrl.length > 0) {
+                    NSString *fidStr = [NSString stringWithFormat:@"%lu",(unsigned long)feedModel.fid];
+                    self.feedIcons[fidStr] = feedModel.imageUrl;
+                }
             }
             [subscriber sendNext:feedsArray];
             [subscriber sendCompleted];
@@ -157,7 +162,12 @@
         FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
             //分页获取
-            FMResultSet *rs = [db executeQuery:@"select * from feeditem where fid = ? and isread = ? order by iid desc limit ?, 50",@(fid), @(0), @(page * 50)];
+            FMResultSet *rs = [FMResultSet new];
+            if (fid == 0) {
+                rs = [db executeQuery:@"select * from feeditem where isread = ? order by iid desc limit ?, 50", @(0), @(page * 50)];
+            } else {
+                rs = [db executeQuery:@"select * from feeditem where fid = ? and isread = ? order by iid desc limit ?, 50",@(fid), @(0), @(page * 50)];
+            }
             NSUInteger count = 0;
             NSMutableArray *feedItemsArray = [NSMutableArray array];
             //设置返回Array里的Model
@@ -172,6 +182,11 @@
                 itemModel.pubDate = [rs stringForColumn:@"pubDate"];
                 itemModel.des = [rs stringForColumn:@"des"];
                 itemModel.isRead = [rs intForColumn:@"isread"];
+                //icon url
+                NSString *fidStr = [NSString stringWithFormat:@"%lu",(unsigned long)itemModel.fid];
+                if (self.feedIcons[fidStr]) {
+                    itemModel.iconUrl = self.feedIcons[fidStr];
+                }
                 [feedItemsArray addObject:itemModel];
                 count++;
             }
@@ -237,6 +252,14 @@
         }
         return nil;
     }];
+}
+
+#pragma mark - Getter
+- (NSMutableDictionary *)feedIcons {
+    if (!_feedIcons) {
+        _feedIcons = [NSMutableDictionary dictionary];
+    }
+    return _feedIcons;
 }
 
 @end

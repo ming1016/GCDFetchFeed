@@ -8,10 +8,12 @@
 
 #import "SMFeedListCell.h"
 #import "SMCellViewImport.h"
+#import "SMDB.h"
 
 @interface SMFeedListCell()
 
 @property (nonatomic, strong) SMTitleLabel *titleLabel;
+@property (nonatomic, strong) SMImageView *iconImageView;
 @property (nonatomic, strong) SMContentLabel *contentLabel;
 @property (nonatomic, strong) SMFeedItemModel *itemModel;
 
@@ -37,6 +39,7 @@
 
 - (void)buildUI {
     [self addSubview:self.titleLabel];
+    [self addSubview:self.iconImageView];
     [self addSubview:self.contentLabel];
     [self addSubview:self.clickButton];
     
@@ -46,9 +49,14 @@
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.equalTo(self).offset([SMStyle floatMarginNormal]);
     }];
-    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.titleLabel);
         make.top.equalTo(self.titleLabel.mas_bottom).offset([SMStyle floatTextIntervalHorizontal]);
+        make.size.mas_equalTo(CGSizeMake(15, 15));
+    }];
+    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.iconImageView.mas_right).offset([SMStyle floatMarginMinor]);
+        make.top.equalTo(self.iconImageView);
     }];
 }
 
@@ -56,6 +64,7 @@
 - (void)updateWithViewModel:(SMFeedListCellViewModel *)viewModel {
     self.titleLabel.text = viewModel.titleString;
     self.contentLabel.text = viewModel.contentString;
+    [self.iconImageView updateWithImageWebUrl:viewModel.iconUrlString];
     if (viewModel.itemModel.isRead > 0) {
         self.titleLabel.textColor = [SMStyle colorPaperGray];
     } else {
@@ -80,6 +89,12 @@
         [_titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     }
     return _titleLabel;
+}
+- (SMImageView *)iconImageView {
+    if (!_iconImageView) {
+        _iconImageView = [[SMImageView alloc] init];
+    }
+    return _iconImageView;
 }
 - (SMContentLabel *)contentLabel {
     if (!_contentLabel) {

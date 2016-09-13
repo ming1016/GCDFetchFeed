@@ -13,6 +13,7 @@
 
 @property (nonatomic, copy) NSString *titleString;
 @property (nonatomic, copy) NSString *contentString;
+@property (nonatomic, copy) NSString *iconUrlString;
 @property (nonatomic, strong) SMFeedItemModel *itemModel;
 @property (nonatomic, assign) CGFloat cellHeight;
 

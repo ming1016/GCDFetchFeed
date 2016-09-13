@@ -53,9 +53,16 @@
                     //解析feed
                     self.feeds[i] = [self.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
                     //入库存储
-                    [[[SMDB shareInstance] insertWithFeedModel:self.feeds[i]] subscribeNext:^(NSNumber *x) {
+                    SMDB *db = [SMDB shareInstance];
+                    @weakify(db);
+                    [[db insertWithFeedModel:self.feeds[i]] subscribeNext:^(NSNumber *x) {
+                        @strongify(db);
                         SMFeedModel *model = (SMFeedModel *)self.feeds[i];
                         model.fid = [x integerValue];
+                        if (model.imageUrl.length > 0) {
+                            NSString *fidStr = [x stringValue];
+                            db.feedIcons[fidStr] = model.imageUrl;
+                        }
                         //插入本地数据库成功后开始sendNext
                         [subscriber sendNext:@(i)];
                         //通知单个完成
@@ -95,5 +102,6 @@
     }
     return _feeds;
 }
+
 
 @end

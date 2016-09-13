@@ -11,6 +11,7 @@
 #import "SMRootViewController.h"
 #import "SMFeedListViewController.h"
 #import "SMStyle.h"
+#import "SMFeedModel.h"
 
 @interface AppDelegate ()
 
@@ -27,8 +28,9 @@
     homeTab.titlePositionAdjustment = UIOffsetMake(0, -20);
     homeNav.tabBarItem = homeTab;
     
-    
-    SMFeedListViewController *feedListVC = [[SMFeedListViewController alloc] init];
+    SMFeedModel *feedModel = [SMFeedModel new];
+    feedModel.fid = 0;
+    SMFeedListViewController *feedListVC = [[SMFeedListViewController alloc] initWithFeedModel:feedModel];
     UINavigationController *listNav = [self styleNavigationControllerWithRootController:feedListVC];
     UITabBarItem *listTab = [[UITabBarItem alloc] initWithTitle:@"列表" image:nil tag:2];
     listTab.titlePositionAdjustment = UIOffsetMake(0, -18);

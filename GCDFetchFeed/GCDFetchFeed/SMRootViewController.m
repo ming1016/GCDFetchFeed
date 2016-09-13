@@ -107,7 +107,6 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 #pragma mark - private
 - (void)fetchAllFeeds {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    self.tableView.tableHeaderView = self.tbHeaderView;
     self.fetchingCount = 0; //统计抓取数量
     @weakify(self);
     [[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
@@ -136,6 +135,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
         //抓完一个
         @strongify(self);
+        self.tableView.tableHeaderView = self.tbHeaderView;
         //显示抓取状态
         self.fetchingCount += 1;
         self.tbHeaderLabel.text = [NSString stringWithFormat:@"正在获取%@...(%lu/%lu)",feedModel.title,(unsigned long)self.fetchingCount,(unsigned long)self.feeds.count];
