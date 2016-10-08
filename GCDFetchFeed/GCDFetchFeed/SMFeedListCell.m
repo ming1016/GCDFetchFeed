@@ -47,7 +47,9 @@
         make.left.right.top.bottom.equalTo(self);
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.equalTo(self).offset([SMStyle floatMarginNormal]);
+        make.top.equalTo(self).offset([SMStyle floatMarginNormal]);
+        make.left.equalTo(self).offset([SMStyle floatMarginMassive]);
+        make.right.equalTo(self).offset(-[SMStyle floatMarginMassive]);
     }];
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.titleLabel);
@@ -79,13 +81,17 @@
         [self.delegate smFeedListCellView:self clickWithItemModel:self.itemModel];
     }
 }
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.frame.size.width;
+}
+
 
 #pragma mark - Getter
 - (SMTitleLabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[SMTitleLabel alloc] init];
         _titleLabel.numberOfLines = 0;
-        _titleLabel.preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width - [SMStyle floatMarginMassive]*2;
         [_titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     }
     return _titleLabel;

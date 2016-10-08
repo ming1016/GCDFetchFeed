@@ -14,8 +14,10 @@
 #import "NSDate+InternetDateTime.h"
 #import "SMArticleViewController.h"
 #import "SMDB.h"
+#import "SMNetManager.h"
 #import "MJRefresh.h"
 #import "SMStyle.h"
+#import "SMSubContentLabel.h"
 
 static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControllerCell";
 
@@ -26,6 +28,12 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 @property (nonatomic, strong) SMFeedStore *feedStore;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic) NSUInteger page;
+
+//下拉刷新
+@property (nonatomic) NSUInteger fetchingCount;
+@property (nonatomic, strong) UIView *tbHeaderView;
+@property (nonatomic, strong) SMSubContentLabel *tbHeaderLabel;
+@property (nonatomic, strong) NSMutableArray *feeds;
 
 @end
 
@@ -49,9 +57,66 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     [super viewDidLoad];
     self.view.backgroundColor = [SMStyle colorPaperLight];
     
+    RAC(self, feeds) = [[[SMDB shareInstance] selectAllFeeds] filter:^BOOL(NSMutableArray *feedsArray) {
+        if (feedsArray.count > 0) {
+            return YES;
+        } else {
+            return NO;
+        }
+    }];
+    self.tbHeaderView.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 30);
+    [self.tbHeaderView addSubview:self.tbHeaderLabel];
+    
+    [self.tbHeaderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.tbHeaderView);
+        make.centerX.equalTo(self.tbHeaderView);
+    }];
+    
     //列表类型不同的处理
     if (self.feedModel.fid == 0) {
         self.title = @"列表";
+        //下拉刷新
+        @weakify(self);
+        self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            @strongify(self);
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+            self.fetchingCount = 0; //统计抓取数量
+            @weakify(self);
+            [[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
+                NSUInteger index = [value integerValue];
+                self.feeds[index] = [SMNetManager shareInstance].feeds[index];
+                return [SMNetManager shareInstance].feeds[index];
+            }] doCompleted:^{
+                //抓完所有的feeds
+                @strongify(self);
+                NSLog(@"fetch complete");
+                //完成置为默认状态
+                self.tbHeaderLabel.text = @"";
+                self.tableView.tableHeaderView = [[UIView alloc] init];
+                self.fetchingCount = 0;
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                //更新列表
+                self.page = 0;
+                self.listData = [NSMutableArray array];
+                [self selectFeedItems];
+                
+            }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
+                //抓完一个
+                @strongify(self);
+                self.tableView.tableHeaderView = self.tbHeaderView;
+                //显示抓取状态
+                self.fetchingCount += 1;
+                self.tbHeaderLabel.text = [NSString stringWithFormat:@"正在获取%@...(%lu/%lu)",feedModel.title,(unsigned long)self.fetchingCount,(unsigned long)self.feeds.count];
+            }];
+        }];
+        MJRefreshNormalHeader *header = (MJRefreshNormalHeader *)_tableView.mj_header;
+        header.lastUpdatedTimeLabel.hidden = YES;
+        [header.arrowView setImage:[UIImage imageNamed:@""]];
+        header.stateLabel.font = [SMStyle fontSmall];
+        header.stateLabel.textColor = [SMStyle colorPaperGray];
+        [header setTitle:@"下拉更新数据" forState:MJRefreshStateIdle];
+        [header setTitle:@"松开立刻更新" forState:MJRefreshStatePulling];
+        [header setTitle:@"更新数据..." forState:MJRefreshStateRefreshing];
     } else {
         self.title = self.feedModel.title;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"全部已读" style:UIBarButtonItemStylePlain target:self action:@selector(markAllAsRead)];
@@ -63,8 +128,6 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
         make.top.left.right.bottom.equalTo(self.view);
     }];
     [self selectFeedItems];
-    
-    
     
 }
 
@@ -80,6 +143,23 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
     self.feedModel.unReadCount = 0;
     [self.navigationController popViewControllerAnimated:YES];
     
+}
+- (void)reloadFeedItems {
+    RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityHigh];
+    @weakify(self);
+    [[[[[SMDB shareInstance] selectFeedItemsWithPage:self.page fid:self.feedModel.fid] subscribeOn:scheduler] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(id x) {
+        @strongify(self);
+        self.listData = x;
+        if (self.listData.count < 50) {
+            self.tableView.mj_footer.hidden = YES;
+        }
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView reloadData];
+    } error:^(NSError *error) {
+        
+    } completed:^{
+        
+    }];
 }
 - (void)selectFeedItems {
     RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityHigh];
@@ -100,6 +180,10 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
                  self.tableView.mj_footer.hidden = YES;
              }
          }
+         if (self.feedModel.fid == 0) {
+             //下拉刷新关闭
+             [self.tableView.mj_header endRefreshing];
+         }
          //刷新
          [self.tableView reloadData];
     } error:^(NSError *error) {
@@ -117,14 +201,20 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
 - (void)smFeedListCellView:(SMFeedListCell *)cell clickWithItemModel:(SMFeedItemModel *)itemModel {
     RACScheduler *scheduler = [RACScheduler schedulerWithPriority:RACSchedulerPriorityHigh];
     @weakify(self);
-    [[[[[SMDB shareInstance] markFeedItemAsRead:itemModel.iid] subscribeOn:scheduler] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(id x) {
+    [[[[[SMDB shareInstance] markFeedItemAsRead:itemModel.iid fid:self.feedModel.fid] subscribeOn:scheduler] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSNumber *x) {
         @strongify(self);
         if (itemModel.isRead > 0) {
             //
         } else {
+            //界面显示处理
             itemModel.isRead = 1;
+            for (SMFeedItemModel *aItemModel in self.listData) {
+                if (aItemModel.iid > itemModel.iid) {
+                    aItemModel.isRead = 1;
+                }
+            }
             [self.tableView reloadData];
-            self.feedModel.unReadCount -= 1;
+            self.feedModel.unReadCount -= [x integerValue];
         }
     }];
     SMArticleViewController *articleVC = [[SMArticleViewController alloc] initWithFeedModel:itemModel];
@@ -212,6 +302,18 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
         
     }
     return _tableView;
+}
+- (UIView *)tbHeaderView {
+    if (!_tbHeaderView) {
+        _tbHeaderView = [[UIView alloc] init];
+    }
+    return _tbHeaderView;
+}
+- (SMSubContentLabel *)tbHeaderLabel {
+    if (!_tbHeaderLabel) {
+        _tbHeaderLabel = [[SMSubContentLabel alloc] init];
+    }
+    return _tbHeaderLabel;
 }
 
 @end

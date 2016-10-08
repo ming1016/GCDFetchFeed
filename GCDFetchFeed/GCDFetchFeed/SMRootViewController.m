@@ -78,22 +78,24 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     //本地
     @weakify(self);
     //首页列表数据赋值，过滤无效数据
-    RAC(self, feeds) = [[[SMDB shareInstance] selectAllFeeds] filter:^BOOL(NSMutableArray *feedsArray) {
-        if (feedsArray.count > 0) {
-            return YES;
-        } else {
-            return NO;
-        }
-    }];
+    RAC(self, feeds) = [[[SMDB shareInstance] selectAllFeeds]
+                        map:^id(NSMutableArray *feedsArray) {
+                            if (feedsArray.count > 0) {
+                                //
+                            } else {
+                                feedsArray = [SMFeedStore defaultFeeds];
+                            }
+                            return feedsArray;
+                        }];
     
     //监听列表数据变化进行列表更新
     [RACObserve(self, feeds) subscribeNext:^(id x) {
         @strongify(self);
-        [self.tableView reloadData];
+        [self fetchAllFeeds];
     }];
     
     //网络获取
-    [self fetchAllFeeds];
+    
     
     [[self rac_signalForSelector:@selector(smRootCellView:clickWithFeedModel:) fromProtocol:@protocol(SMRootCellDelegate)] subscribeNext:^(RACTuple *value) {
         @strongify(self);
@@ -210,12 +212,12 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     }
     return _feedStore;
 }
-- (NSMutableArray *)feeds {
-    if (!_feeds) {
-        _feeds = [SMFeedStore defaultFeeds];
-    }
-    return _feeds;
-}
+//- (NSMutableArray *)feeds {
+//    if (!_feeds) {
+//        _feeds = [SMFeedStore defaultFeeds];
+//    }
+//    return _feeds;
+//}
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero];

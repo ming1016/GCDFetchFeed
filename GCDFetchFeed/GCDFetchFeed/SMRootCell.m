@@ -49,7 +49,8 @@
         make.left.right.top.bottom.equalTo(self);
     }];
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.equalTo(self).offset([SMStyle floatMarginNormal]);
+        make.top.equalTo(self).offset([SMStyle floatMarginNormal]);
+        make.left.equalTo(self).offset([SMStyle floatMarginMassive]);
         make.size.mas_equalTo(CGSizeMake(30, 30));
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

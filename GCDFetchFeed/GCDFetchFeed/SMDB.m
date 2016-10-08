@@ -202,14 +202,29 @@
         return nil;
     }];
 }
-- (RACSignal *)markFeedItemAsRead:(NSUInteger)iid {
+- (RACSignal *)markFeedItemAsRead:(NSUInteger)iid fid:(NSUInteger)fid{
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
         if ([db open]) {
-            [db executeUpdate:@"update feeditem set isread = ? where iid = ?", @(1), @(iid)];
-            [subscriber sendNext:nil];
+            FMResultSet *rs = [FMResultSet new];
+            if (fid == 0) {
+                rs = [db executeQuery:@"select * from feeditem where isread = ? and iid >= ? order by iid desc", @(0), @(iid)];
+            } else {
+                rs = [db executeQuery:@"select * from feeditem where isread = ? and iid >= ? and fid = ? order by iid desc", @(0), @(iid), @(fid)];
+            }
+            NSUInteger count = 0;
+            while ([rs next]) {
+                count++;
+            }
+            if (fid == 0) {
+                [db executeUpdate:@"update feeditem set isread = ? where iid >= ?", @(1), @(iid)];
+            } else {
+                [db executeUpdate:@"update feeditem set isread = ? where iid >= ? and fid = ?", @(1), @(iid), @(fid)];
+            }
+            
+            [subscriber sendNext:@(count)];
             [subscriber sendCompleted];
             [db close];
         }
