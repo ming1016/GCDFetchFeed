@@ -98,8 +98,7 @@ static NSString *feedListViewControllerCellIdentifier = @"SMFeedListViewControll
                 //更新列表
                 self.page = 0;
                 self.listData = [NSMutableArray array];
-                [self selectFeedItems];
-                
+                [self reloadFeedItems];
             }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
                 //抓完一个
                 @strongify(self);
