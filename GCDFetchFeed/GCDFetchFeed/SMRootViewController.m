@@ -212,12 +212,7 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     }
     return _feedStore;
 }
-//- (NSMutableArray *)feeds {
-//    if (!_feeds) {
-//        _feeds = [SMFeedStore defaultFeeds];
-//    }
-//    return _feeds;
-//}
+
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero];

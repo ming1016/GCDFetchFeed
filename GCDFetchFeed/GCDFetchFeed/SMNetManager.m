@@ -44,12 +44,14 @@
         for (int i = 0; i < modelArray.count; i++) {
             dispatch_group_enter(group);
             SMFeedModel *feedModel = modelArray[i];
-            dispatch_async(fetchFeedQueue, ^{
-                @strongify(self);
-                [self GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-//                    NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//                    NSLog(@"Data: %@", xmlString);
-//                    NSLog(@"%@",feedModel);
+            
+            
+            [self GET:feedModel.feedUrl parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+                //                    NSString *xmlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                //                    NSLog(@"Data: %@", xmlString);
+                //                    NSLog(@"%@",feedModel);
+                dispatch_async(fetchFeedQueue, ^{
+                    @strongify(self);
                     //解析feed
                     self.feeds[i] = [self.feedStore updateFeedModelWithData:responseObject preModel:feedModel];
                     //入库存储
@@ -69,16 +71,22 @@
                         dispatch_group_leave(group);
                     }];
                     
-                } failure:^(NSURLSessionTask *operation, NSError *error) {
-                    NSLog(@"Error: %@", error);
+                });//end dispatch async
+                
+                
+            } failure:^(NSURLSessionTask *operation, NSError *error) {
+                NSLog(@"Error: %@", error);
+                dispatch_async(fetchFeedQueue, ^{
+                    @strongify(self);
                     [[[SMDB shareInstance] insertWithFeedModel:self.feeds[i]] subscribeNext:^(NSNumber *x) {
                         SMFeedModel *model = (SMFeedModel *)self.feeds[i];
                         model.fid = [x integerValue];
                         dispatch_group_leave(group);
                     }];
-                }];
+                    
+                });//end dispatch async
                 
-            });//end dispatch async
+            }];
             
         }//end for
         //全完成后执行事件
