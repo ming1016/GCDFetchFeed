@@ -19,9 +19,10 @@
 @property (nonatomic, copy) NSString<Optional> *copyright;
 @property (nonatomic, copy) NSString<Optional> *generator;
 @property (nonatomic, copy) NSString<Optional> *imageUrl;     //icon图标
-@property (nonatomic, strong) NSMutableArray *items;                 //SMFeedItemModel
+@property (nonatomic, strong) NSMutableArray *items;          //SMFeedItemModel
 @property (nonatomic, copy) NSString<Optional> *feedUrl;      //博客feed的链接
 @property (nonatomic) NSUInteger unReadCount;
+@property (nonatomic) BOOL isSync;
 
 @end
 
@@ -36,5 +37,6 @@
 @property (nonatomic, copy) NSString<Optional> *pubDate;      //发布日期
 @property (nonatomic, copy) NSString<Optional> *des;          //正文内容
 @property (nonatomic) NSUInteger isRead;                      //是否已读
-@property (nonatomic, copy) NSString<Optional> *iconUrl;       //频道icon
+@property (nonatomic) NSUInteger isCached;                    //是否缓存
+@property (nonatomic, copy) NSString<Optional> *iconUrl;      //频道icon
 @end

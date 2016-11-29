@@ -26,4 +26,6 @@
 - (RACSignal *)selectFeedItemsWithPage:(NSUInteger)page fid:(NSUInteger)fid;
 - (RACSignal *)markFeedItemAsRead:(NSUInteger)iid fid:(NSUInteger)fid; //标注已读
 - (RACSignal *)markFeedAllItemsAsRead:(NSUInteger)fid; //标注全部已读
+- (RACSignal *)selectAllUnCachedFeedItems; //读取所有未缓存的本地rss item
+- (RACSignal *)markFeedItemAsCached:(NSUInteger)iid; //标记为已经缓存
 @end

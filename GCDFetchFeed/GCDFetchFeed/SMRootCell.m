@@ -74,13 +74,14 @@
     self.contentLabel.text = viewModel.contentString;
     [self.iconImageView updateWithImageWebUrl:viewModel.iconUrl];
     self.highlightLabel.text = viewModel.highlightString;
-    if ([viewModel.highlightString isEqualToString:@"0"]) {
+    if (!viewModel.isSync) {
         self.highlightLabel.textColor = [SMStyle colorPaperGray];
         self.titleLabel.textColor = [SMStyle colorPaperGray];
     } else {
         self.highlightLabel.textColor = [SMStyle colorPaperBlack];
         self.titleLabel.textColor = [SMStyle colorPaperBlack];
     }
+    
     self.feedModel = viewModel.feedModel;
 }
 #pragma mark - Private

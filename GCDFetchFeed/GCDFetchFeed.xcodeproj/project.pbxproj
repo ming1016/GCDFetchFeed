@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A12F26E1DE96864002ED910 /* STMURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F2671DE96864002ED910 /* STMURLCache.m */; };
+		0A12F26F1DE96864002ED910 /* STMURLCacheMk.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F2691DE96864002ED910 /* STMURLCacheMk.m */; };
+		0A12F2701DE96864002ED910 /* STMURLCacheModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F26B1DE96864002ED910 /* STMURLCacheModel.m */; };
+		0A12F2711DE96864002ED910 /* STMURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F26D1DE96864002ED910 /* STMURLProtocol.m */; };
 		0A8B09E31D6DA2BB00BE4FEC /* STMAssembleMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09DC1D6DA2BB00BE4FEC /* STMAssembleMaker.m */; };
 		0A8B09E41D6DA2BB00BE4FEC /* STMAssembleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09DE1D6DA2BB00BE4FEC /* STMAssembleView.m */; };
 		0A8B09E51D6DA2BB00BE4FEC /* STMPartMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09E01D6DA2BB00BE4FEC /* STMPartMaker.m */; };
@@ -64,6 +68,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A12F2661DE96864002ED910 /* STMURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMURLCache.h; sourceTree = "<group>"; };
+		0A12F2671DE96864002ED910 /* STMURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMURLCache.m; sourceTree = "<group>"; };
+		0A12F2681DE96864002ED910 /* STMURLCacheMk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMURLCacheMk.h; sourceTree = "<group>"; };
+		0A12F2691DE96864002ED910 /* STMURLCacheMk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMURLCacheMk.m; sourceTree = "<group>"; };
+		0A12F26A1DE96864002ED910 /* STMURLCacheModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMURLCacheModel.h; sourceTree = "<group>"; };
+		0A12F26B1DE96864002ED910 /* STMURLCacheModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMURLCacheModel.m; sourceTree = "<group>"; };
+		0A12F26C1DE96864002ED910 /* STMURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMURLProtocol.h; sourceTree = "<group>"; };
+		0A12F26D1DE96864002ED910 /* STMURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMURLProtocol.m; sourceTree = "<group>"; };
 		0A8B09DB1D6DA2BB00BE4FEC /* STMAssembleMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMAssembleMaker.h; sourceTree = "<group>"; };
 		0A8B09DC1D6DA2BB00BE4FEC /* STMAssembleMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMAssembleMaker.m; sourceTree = "<group>"; };
 		0A8B09DD1D6DA2BB00BE4FEC /* STMAssembleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMAssembleView.h; sourceTree = "<group>"; };
@@ -169,6 +181,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A149B991DE5C9210000D58F /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				0A149B9A1DE5C92A0000D58F /* STMURLCache */,
+			);
+			name = Cache;
+			sourceTree = "<group>";
+		};
+		0A149B9A1DE5C92A0000D58F /* STMURLCache */ = {
+			isa = PBXGroup;
+			children = (
+				0A12F2661DE96864002ED910 /* STMURLCache.h */,
+				0A12F2671DE96864002ED910 /* STMURLCache.m */,
+				0A12F2681DE96864002ED910 /* STMURLCacheMk.h */,
+				0A12F2691DE96864002ED910 /* STMURLCacheMk.m */,
+				0A12F26A1DE96864002ED910 /* STMURLCacheModel.h */,
+				0A12F26B1DE96864002ED910 /* STMURLCacheModel.m */,
+				0A12F26C1DE96864002ED910 /* STMURLProtocol.h */,
+				0A12F26D1DE96864002ED910 /* STMURLProtocol.m */,
+			);
+			name = STMURLCache;
+			sourceTree = "<group>";
+		};
 		0A8B09DA1D6DA2AD00BE4FEC /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +261,7 @@
 		3E58A8611C50B86C0026A610 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				0A149B991DE5C9210000D58F /* Cache */,
 				0A8B09DA1D6DA2AD00BE4FEC /* UI */,
 				3E7402C31C7BFC550006466A /* DB */,
 				3EA7BF831C57193E00055544 /* Notification */,
@@ -637,11 +673,15 @@
 				3EA7BF8A1C57781600055544 /* NSDate+InternetDateTime.m in Sources */,
 				3E8341F51C525ADD002C3EAA /* SMFeedListCellViewModel.m in Sources */,
 				3EA7BF871C5741AC00055544 /* UIButton+BackgroundColor.m in Sources */,
+				0A12F26E1DE96864002ED910 /* STMURLCache.m in Sources */,
 				3E58A8711C50C1830026A610 /* SMDividingLineView.m in Sources */,
 				3E58A8771C50E0E10026A610 /* SMStyle.m in Sources */,
+				0A12F26F1DE96864002ED910 /* STMURLCacheMk.m in Sources */,
+				0A12F2701DE96864002ED910 /* STMURLCacheModel.m in Sources */,
 				0A8B09E61D6DA2BB00BE4FEC /* STMPartView.m in Sources */,
 				3E7402C61C7BFD8C0006466A /* SMDB.m in Sources */,
 				3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */,
+				0A12F2711DE96864002ED910 /* STMURLProtocol.m in Sources */,
 				3E58A8581C507FB90026A610 /* SMImageView.m in Sources */,
 				3EC82B731C72E4BC0057C6E5 /* SMArticleViewController.m in Sources */,
 				3E58A8681C50BA4A0026A610 /* SMContentLabel.m in Sources */,

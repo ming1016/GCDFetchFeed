@@ -15,6 +15,7 @@
 @property (nonatomic, copy) NSString *contentString;
 @property (nonatomic, copy) NSString *iconUrl;
 @property (nonatomic, copy) NSString *highlightString;
+@property (nonatomic) BOOL isSync;
 @property (nonatomic, strong) SMFeedModel *feedModel;
 
 @end

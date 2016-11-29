@@ -11,7 +11,7 @@
 #import "SMNotificationConst.h"
 #import "SMFeedStore.h"
 #import "SMDB.h"
-
+#import "STMURLCache.h"
 
 @interface SMNetManager()
 

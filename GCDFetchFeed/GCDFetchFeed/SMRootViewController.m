@@ -22,15 +22,18 @@
 
 #import "SMFeedListViewController.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
+#import "STMURLCache.h"
 
 static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 
-@interface SMRootViewController()<UITableViewDataSource,UITableViewDelegate,SMRootCellDelegate>
+@interface SMRootViewController()<UITableViewDataSource,UITableViewDelegate,SMRootCellDelegate,STMURLCacheDelegate>
 //data
 @property (nonatomic, strong) NSMutableArray *feeds;
 @property (nonatomic, strong) SMFeedStore *feedStore;
 @property (nonatomic, strong) SMRootDataSource *dataSource;
 @property (nonatomic) NSUInteger fetchingCount;
+@property (nonatomic) NSUInteger needCacheCount;
+@property (nonatomic, strong) NSMutableDictionary *needCacheDic;
 //view
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *tbHeaderView;
@@ -95,8 +98,6 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     }];
     
     //网络获取
-    
-    
     [[self rac_signalForSelector:@selector(smRootCellView:clickWithFeedModel:) fromProtocol:@protocol(SMRootCellDelegate)] subscribeNext:^(RACTuple *value) {
         @strongify(self);
         SMFeedModel *feedModel = (SMFeedModel *)value.second;
@@ -124,7 +125,6 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         self.tbHeaderLabel.text = @"";
         self.tableView.tableHeaderView = [[UIView alloc] init];
         self.fetchingCount = 0;
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         //下拉刷新关闭
         [self.tableView.mj_header endRefreshing];
         //更新列表
@@ -134,6 +134,8 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
             self.feeds = [SMFeedStore defaultFeeds];
             [self fetchAllFeeds];
         }
+        //缓存未缓存的页面
+        [self cacheFeedItems];
     }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
         //抓完一个
         @strongify(self);
@@ -141,7 +143,28 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         //显示抓取状态
         self.fetchingCount += 1;
         self.tbHeaderLabel.text = [NSString stringWithFormat:@"正在获取%@...(%lu/%lu)",feedModel.title,(unsigned long)self.fetchingCount,(unsigned long)self.feeds.count];
+        feedModel.isSync = YES;
         [self.tableView reloadData];
+    }];
+}
+
+- (void)cacheFeedItems {
+    if (![self isWifi]) {
+        return;
+    }
+    [[[SMDB shareInstance] selectAllUnCachedFeedItems] subscribeNext:^(NSMutableArray *x) {
+        NSMutableArray *urls = [NSMutableArray array];
+        if (x.count > 0) {
+            self.needCacheCount = x.count;
+            for (SMFeedItemModel *aModel in x) {
+                [urls addObject:aModel.link];
+                [self.needCacheDic setObject:aModel forKey:aModel.link];
+            }
+        }
+        [[STMURLCache create:^(STMURLCacheMk *mk) {
+            mk.whiteUserAgent(@"gcdfetchfeed").diskCapacity(1000 * 1024 * 1024);
+        }] preLoadByWebViewWithUrls:[NSArray arrayWithArray:urls]].delegate = self;
+        
     }];
 }
 
@@ -179,6 +202,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     viewModel.titleString = model.title;
     viewModel.contentString = model.des;
     viewModel.iconUrl = model.imageUrl;
+    viewModel.isSync = model.isSync;
     viewModel.highlightString = [NSString stringWithFormat:@"%lu",(unsigned long)model.unReadCount];
     viewModel.feedModel = model;
     [v updateWithViewModel:viewModel];
@@ -197,6 +221,50 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 - (NSString *)tableView:(UITableView *)tableView
 titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"取消";
+}
+
+#pragma mark - STMURLCache Delegate
+- (void)preloadDidFinishLoad:(UIWebView *)webView remain:(NSUInteger)remain {
+    self.tableView.tableHeaderView = self.tbHeaderView;
+    self.tbHeaderLabel.text = [NSString stringWithFormat:@"缓存图片...(%lu/%lu)",(unsigned long)(self.needCacheCount - remain),(unsigned long)self.needCacheCount];
+    SMFeedItemModel *aModel = [self.needCacheDic objectForKey:webView.request.URL.absoluteString];
+    if ([aModel isKindOfClass:[SMFeedItemModel class]]) {
+        [[[SMDB shareInstance] markFeedItemAsCached:aModel.iid] subscribeNext:^(id x) {
+            //
+        }];
+    }
+    //非wifi状态处理
+    if (![self isWifi]) {
+        [[[STMURLCache alloc] init] stop];
+        [self preloadDidAllDone];
+    }
+}
+
+- (void)preloadDidAllDone {
+    self.tbHeaderLabel.text = @"";
+    self.tableView.tableHeaderView = [[UIView alloc] init];
+    self.needCacheDic = [NSMutableDictionary dictionary];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+#pragma mark - Private
+- (BOOL)isWifi {
+    UIApplication *app = [UIApplication sharedApplication];
+    NSArray *children = [[[app valueForKeyPath:@"statusBar"]valueForKeyPath:@"foregroundView"]subviews];
+    int netType = 0;
+    //获取到网络返回码
+    for (id child in children) {
+        if ([child isKindOfClass:NSClassFromString(@"UIStatusBarDataNetworkItemView")]) {
+            //获取到状态栏
+            netType = [[child valueForKeyPath:@"dataNetworkType"]intValue];
+            // 0: 无网络  1:2G 2:3G 3:4G  5:WIFI
+            NSLog(@"netType = %d", netType);
+            if (netType == 5) {
+                return YES;
+            }
+        }  
+    }
+    return NO;
 }
 
 #pragma mark - Getter
@@ -253,6 +321,12 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
         _tbHeaderLabel = [[SMSubContentLabel alloc] init];
     }
     return _tbHeaderLabel;
+}
+- (NSMutableDictionary *)needCacheDic {
+    if (!_needCacheDic) {
+        _needCacheDic = [NSMutableDictionary dictionary];
+    }
+    return _needCacheDic;
 }
 
 

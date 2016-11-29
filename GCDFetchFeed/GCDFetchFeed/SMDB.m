@@ -48,9 +48,10 @@
                 /*
                  des：正文内容
                  isread：是否点开查看过，0表示没看过，1表示看过
+                 isCached：是否缓存了内容
                  thumbnails：图片集，各个图片地址使用|作为分隔符
                  */
-                NSString *createItemSql = @"create table feeditem (iid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, fid integer, link text, title text, author text, category text, pubdate text, des blob, isread integer, thumbnails text)";
+                NSString *createItemSql = @"create table feeditem (iid INTEGER PRIMARY KEY AUTOINCREMENT  NOT NULL, fid integer, link text, title text, author text, category text, pubdate text, des blob, isread integer, iscached integer, thumbnails text)";
                 [db executeUpdate:createItemSql];
             }
         }
@@ -94,7 +95,7 @@
                         itemModel.title = [itemModel.title stringByTrimmingCharactersInSet:badCharSet];
                         itemModel.des = [itemModel.des stringByTrimmingCharactersInSet:badCharSet];
                         //入库
-                        [db executeUpdate:@"insert into feeditem (fid, link, title, author, category, pubdate, des, isread) values (?, ?, ?, ?, ?, ?, ?, ?)", @(fid), itemModel.link, itemModel.title, itemModel.author, itemModel.category, itemModel.pubDate, itemModel.des, @0];
+                        [db executeUpdate:@"insert into feeditem (fid, link, title, author, category, pubdate, des, isread, iscached) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", @(fid), itemModel.link, itemModel.title, itemModel.author, itemModel.category, itemModel.pubDate, itemModel.des, @0, @0];
                         [db executeUpdate:@"update feeds set updatetime = ? where fid = ?",@(time(NULL)),@(fid)];
                     }
                 }
@@ -154,7 +155,7 @@
         return nil;
     }];
 }
-
+//按照翻页取数据
 - (RACSignal *)selectFeedItemsWithPage:(NSUInteger)page fid:(NSUInteger)fid {
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -172,21 +173,7 @@
             NSMutableArray *feedItemsArray = [NSMutableArray array];
             //设置返回Array里的Model
             while ([rs next]) {
-                SMFeedItemModel *itemModel = [[SMFeedItemModel alloc] init];
-                itemModel.iid = [rs intForColumn:@"iid"];
-                itemModel.fid = [rs intForColumn:@"fid"];
-                itemModel.link = [rs stringForColumn:@"link"];
-                itemModel.title = [rs stringForColumn:@"title"];
-                itemModel.author = [rs stringForColumn:@"author"];
-                itemModel.category = [rs stringForColumn:@"category"];
-                itemModel.pubDate = [rs stringForColumn:@"pubDate"];
-                itemModel.des = [rs stringForColumn:@"des"];
-                itemModel.isRead = [rs intForColumn:@"isread"];
-                //icon url
-                NSString *fidStr = [NSString stringWithFormat:@"%lu",(unsigned long)itemModel.fid];
-                if (self.feedIcons[fidStr]) {
-                    itemModel.iconUrl = self.feedIcons[fidStr];
-                }
+                SMFeedItemModel *itemModel = [self itmeModelFromResultSet:rs];
                 [feedItemsArray addObject:itemModel];
                 count++;
             }
@@ -202,6 +189,8 @@
         return nil;
     }];
 }
+
+//标记已读
 - (RACSignal *)markFeedItemAsRead:(NSUInteger)iid fid:(NSUInteger)fid{
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -231,6 +220,7 @@
         return nil;
     }];
 }
+//标记全部已读
 - (RACSignal *)markFeedAllItemsAsRead:(NSUInteger)fid {
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -267,6 +257,72 @@
         }
         return nil;
     }];
+}
+//读取所有未缓存的本地rss item
+- (RACSignal *)selectAllUnCachedFeedItems {
+    @weakify(self);
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
+        if ([db open]) {
+            //分页获取
+            FMResultSet *rs = [FMResultSet new];
+            rs = [db executeQuery:@"select * from feeditem where iscached = ? order by iid desc", @(0)];
+            NSUInteger count = 0;
+            NSMutableArray *feedItemsArray = [NSMutableArray array];
+            //设置返回Array里的Model
+            while ([rs next]) {
+                SMFeedItemModel *itemModel = [self itmeModelFromResultSet:rs];
+                [feedItemsArray addObject:itemModel];
+                count++;
+            }
+            if (count > 0) {
+                [subscriber sendNext:feedItemsArray];
+            } else {
+                //获取出错处理
+                [subscriber sendError:nil];
+            }
+            [subscriber sendCompleted];
+            [db close];
+        }
+        return nil;
+    }];
+}
+//标记为已经缓存
+- (RACSignal *)markFeedItemAsCached:(NSUInteger)iid {
+    @weakify(self);
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
+        if ([db open]) {
+            [db executeUpdate:@"update feeditem set iscached = ? where iid = ?", @(1), @(iid)];
+            [subscriber sendNext:nil];
+            [subscriber sendCompleted];
+            [db close];
+        }
+        return nil;
+    }];
+}
+
+#pragma mark - Private
+- (SMFeedItemModel *)itmeModelFromResultSet:(FMResultSet *)rs {
+    SMFeedItemModel *itemModel = [[SMFeedItemModel alloc] init];
+    itemModel.iid = [rs intForColumn:@"iid"];
+    itemModel.fid = [rs intForColumn:@"fid"];
+    itemModel.link = [rs stringForColumn:@"link"];
+    itemModel.title = [rs stringForColumn:@"title"];
+    itemModel.author = [rs stringForColumn:@"author"];
+    itemModel.category = [rs stringForColumn:@"category"];
+    itemModel.pubDate = [rs stringForColumn:@"pubDate"];
+    itemModel.des = [rs stringForColumn:@"des"];
+    itemModel.isRead = [rs intForColumn:@"isread"];
+    itemModel.isCached = [rs intForColumn:@"iscached"];
+    //icon url
+    NSString *fidStr = [NSString stringWithFormat:@"%lu",(unsigned long)itemModel.fid];
+    if (self.feedIcons[fidStr]) {
+        itemModel.iconUrl = self.feedIcons[fidStr];
+    }
+    return itemModel;
 }
 
 #pragma mark - Getter
