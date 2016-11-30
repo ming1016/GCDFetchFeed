@@ -20,4 +20,6 @@
 
 - (RACSignal *)fetchAllFeedWithModelArray:(NSArray *)modelArray;
 
++ (BOOL)isWifi;
+
 @end

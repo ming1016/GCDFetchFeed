@@ -59,6 +59,29 @@
     }
     return self;
 }
+#pragma mark - Interface
+//清理数据
+- (void)clearFeedItemByFid:(NSUInteger)fid db:(FMDatabase *)db {
+    BOOL needCloseDb = NO;
+    if (!db) {
+        needCloseDb = YES;
+        db = [FMDatabase databaseWithPath:self.feedDBPath];
+        [db open];
+    }
+    FMResultSet *rs = [db executeQuery:@"select iid from feeditem where fid = ? and isread = ? order by iid asc",@(fid), @(1)];
+    NSUInteger count = 0;
+    while ([rs next]) {
+        count += 1;
+    }
+    //本地存储数据超过400就开始清理，只保留最新200条
+    if (count > 400) {
+        [db executeUpdate:@"delete from feeditem where fid = ? and isread = ? order by iid asc limit 0, ?", @(fid), @(1), @(count - 200)];
+    }
+    if (needCloseDb) {
+        [db close];
+    }
+}
+
 #pragma mark - DB Operate
 - (RACSignal *)insertWithFeedModel:(SMFeedModel *)feedModel {
     @weakify(self);
@@ -229,16 +252,7 @@
         if ([db open]) {
             [db executeUpdate:@"update feeditem set isread = ? where fid = ?", @(1), @(fid)];
             [db executeUpdate:@"update feeds set unread = ? where fid = ?",@0,@(fid)]; //更新feeds表里未读数
-            FMResultSet *rs = [db executeQuery:@"select iid from feeditem where fid = ? order by iid asc",@(fid)];
-            NSUInteger count = 0;
-            while ([rs next]) {
-                count += 1;
-            }
-            //本地存储数据超过400就开始清理，只保留最新200条
-            if (count > 400) {
-                [db executeUpdate:@"delete from feeditem where fid = ? order by iid asc limit 0, ?", @(fid), @(count - 200)];
-            }
-            
+            [self clearFeedItemByFid:fid db:db];
             [subscriber sendNext:nil];
             [subscriber sendCompleted];
             [db close];
@@ -246,6 +260,7 @@
         return nil;
     }];
 }
+
 //是否取消订阅
 - (RACSignal *)isHideFeed:(BOOL)hide {
     @weakify(self);
@@ -267,7 +282,7 @@
         if ([db open]) {
             //分页获取
             FMResultSet *rs = [FMResultSet new];
-            rs = [db executeQuery:@"select * from feeditem where iscached = ? order by iid desc", @(0)];
+            rs = [db executeQuery:@"select * from feeditem where iscached = ? and isread = ? order by iid desc", @(0), @(0)];
             NSUInteger count = 0;
             NSMutableArray *feedItemsArray = [NSMutableArray array];
             //设置返回Array里的Model
@@ -305,6 +320,8 @@
 }
 
 #pragma mark - Private
+
+//合并到item的model里
 - (SMFeedItemModel *)itmeModelFromResultSet:(FMResultSet *)rs {
     SMFeedItemModel *itemModel = [[SMFeedItemModel alloc] init];
     itemModel.iid = [rs intForColumn:@"iid"];

@@ -149,10 +149,10 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 }
 
 - (void)cacheFeedItems {
-    if (![self isWifi]) {
+    if (![SMNetManager isWifi]) {
         return;
     }
-    [[[SMDB shareInstance] selectAllUnCachedFeedItems] subscribeNext:^(NSMutableArray *x) {
+    [[[[[SMDB shareInstance] selectAllUnCachedFeedItems] subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSMutableArray *x) {
         NSMutableArray *urls = [NSMutableArray array];
         if (x.count > 0) {
             self.needCacheCount = x.count;
@@ -162,7 +162,7 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
             }
         }
         [[STMURLCache create:^(STMURLCacheMk *mk) {
-            mk.whiteUserAgent(@"gcdfetchfeed").diskCapacity(1000 * 1024 * 1024);
+            mk.whiteUserAgent(@"gcdfetchfeed").diskCapacity(500 * 1024 * 1024);
         }] preLoadByWebViewWithUrls:[NSArray arrayWithArray:urls]].delegate = self;
         
     }];
@@ -233,8 +233,11 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
             //
         }];
     }
+    if (remain == 0) {
+        [self preloadDidAllDone];
+    }
     //非wifi状态处理
-    if (![self isWifi]) {
+    if (![SMNetManager isWifi]) {
         [[[STMURLCache alloc] init] stop];
         [self preloadDidAllDone];
     }
@@ -245,27 +248,14 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     self.tableView.tableHeaderView = [[UIView alloc] init];
     self.needCacheDic = [NSMutableDictionary dictionary];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    //清理已读
+    for (SMFeedModel *aModel in self.feeds) {
+        [[SMDB shareInstance] clearFeedItemByFid:aModel.fid db:nil];
+    }
 }
 
 #pragma mark - Private
-- (BOOL)isWifi {
-    UIApplication *app = [UIApplication sharedApplication];
-    NSArray *children = [[[app valueForKeyPath:@"statusBar"]valueForKeyPath:@"foregroundView"]subviews];
-    int netType = 0;
-    //获取到网络返回码
-    for (id child in children) {
-        if ([child isKindOfClass:NSClassFromString(@"UIStatusBarDataNetworkItemView")]) {
-            //获取到状态栏
-            netType = [[child valueForKeyPath:@"dataNetworkType"]intValue];
-            // 0: 无网络  1:2G 2:3G 3:4G  5:WIFI
-            NSLog(@"netType = %d", netType);
-            if (netType == 5) {
-                return YES;
-            }
-        }  
-    }
-    return NO;
-}
+
 
 #pragma mark - Getter
 - (SMRootDataSource *)dataSource {

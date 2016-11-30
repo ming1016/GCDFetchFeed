@@ -8,21 +8,16 @@
 
 #import "SMArticleViewController.h"
 #import "Masonry.h"
-#import <DTCoreText/DTCoreText.h>
 #import <SafariServices/SafariServices.h>
 
 #import "SMFeedStore.h"
 #import "SMCellViewImport.h"
 
 
-@interface SMArticleViewController ()<DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate,UIActionSheetDelegate>
+@interface SMArticleViewController ()<UIActionSheetDelegate,UIWebViewDelegate>
 
 @property (nonatomic, strong) NSString *articleString;
 @property (nonatomic, strong) SMFeedItemModel *feedItemModel;
-@property (nonatomic, strong) DTAttributedLabel *articleLabel;
-@property (nonatomic, strong) UIScrollView *backScrollView;
-@property (nonatomic, strong) UIView *backScrollViewContainer;
-@property (nonatomic, strong) DTAttributedTextContentView *articleView;
 @property (nonatomic, strong) UIAlertController *alertController;
 @property (nonatomic, strong) NSURL *lastActionLink;
 @property (nonatomic, strong) UIActivityViewController *activityVC;
@@ -42,22 +37,9 @@
 - (void)loadView {
     [super loadView];
     self.view.backgroundColor = [SMStyle colorPaperLight];
-//    [self.view addSubview:self.backScrollView];
-//    [self.backScrollView addSubview:self.backScrollViewContainer];
-//    [self.backScrollViewContainer addSubview:self.articleView];
-//    [self.backScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.left.right.bottom.equalTo(self.view);
-//    }];
-//    [self.backScrollViewContainer mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self.backScrollView);
-//        make.width.equalTo(self.backScrollView);
-//    }];
-//    [self.articleView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.backScrollViewContainer).offset([SMStyle floatMarginMassive]);
-//        make.left.equalTo(self.backScrollViewContainer).offset([SMStyle floatMarginMassive]);
-//        make.right.equalTo(self.backScrollViewContainer).offset(-[SMStyle floatMarginMassive]);
-//    }];
+
     self.wbView = [[UIWebView alloc] init];
+    self.wbView.delegate = self;
     [self.view addSubview:self.wbView];
     [self.wbView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.equalTo(self.view);
@@ -77,22 +59,7 @@
     NSString *feedString = [NSString stringWithFormat:@"%@<p><a href=\"%@\">阅读原文</a></p>",self.feedItemModel.des,self.feedItemModel.link];
     NSString *styleString = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"css.html"] encoding:NSUTF8StringEncoding error:&err];
     NSString *articleString = [NSString stringWithFormat:@"%@%@",styleString,feedString];
-//    NSData *data = [articleString dataUsingEncoding:NSUTF8StringEncoding];
-//    NSAttributedString *attrString = [[NSAttributedString alloc] initWithHTMLData:data documentAttributes:nil];
-//    self.articleView.attributedString = attrString;
-//    //算高
-//    DTCoreTextLayouter *layouter = [[DTCoreTextLayouter alloc] initWithAttributedString:attrString];
-//    CGRect maxRect = CGRectMake(0, 0, [SMStyle floatScreenWidth], CGFLOAT_HEIGHT_UNKNOWN);
-//    NSRange entireString = NSMakeRange(0, [attrString length]);
-//    DTCoreTextLayoutFrame *layoutFrame = [layouter layoutFrameWithRect:maxRect range:entireString];
-//    CGSize sizeNeed = [layoutFrame frame].size;
-//    //更新高
-//    [self.articleView mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.height.mas_equalTo(sizeNeed.height + [SMStyle floatMarginMassive]*2);
-//    }];
-//    [self.backScrollViewContainer mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(self.articleView.mas_bottom);
-//    }];
+
     if (self.feedItemModel.isCached) {
         NSURLRequest *re = [NSURLRequest requestWithURL:[NSURL URLWithString:self.feedItemModel.link]];
         [self.wbView loadRequest:re];
@@ -120,6 +87,18 @@
                                          UIActivityTypeSaveToCameraRoll
                                          ];
     
+}
+
+#pragma mark - UIWebView Delegate
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (!self.feedItemModel.isCached) {
+        if ([request.URL.absoluteString isEqualToString:self.feedItemModel.link]) {
+            SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:self.feedItemModel.link]];
+            [self presentViewController:sfVC animated:YES completion:nil];
+            return NO;
+        }
+    }
+    return YES;
 }
 
 #pragma mark - Private
