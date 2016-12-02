@@ -8,6 +8,7 @@
 
 @property (nonatomic, strong) UIWebView *wbView; //用于预加载的webview
 @property (nonatomic, strong) NSMutableArray *preLoadWebUrls; //预加载的webview的url列表
+@property (nonatomic) BOOL isUseHtmlPreload;
 
 @end
 
@@ -71,6 +72,17 @@
     [self requestWebWithFirstPreUrl];
     return self;
 }
+- (STMURLCache *)preloadByWebViewWithHtmls:(NSArray *)htmls {
+    if (!(htmls.count > 0)) {
+        return self;
+    }
+    self.wbView = [[UIWebView alloc] init];
+    self.wbView.delegate = self;
+    self.preLoadWebUrls = [NSMutableArray arrayWithArray:htmls];
+    self.isUseHtmlPreload = YES;
+    [self requestWebWithFirstPreHtml];
+    return self;
+}
 //web view delegate
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     if ([self.delegate respondsToSelector:@selector(preloadDidStartLoad)]) {
@@ -105,7 +117,11 @@
 - (void)requestWebDone {
     if (self.preLoadWebUrls.count > 0) {
         [self.preLoadWebUrls removeObjectAtIndex:0];
-        [self requestWebWithFirstPreUrl];
+        if (self.isUseHtmlPreload) {
+            [self requestWebWithFirstPreHtml];
+        } else {
+            [self requestWebWithFirstPreUrl];
+        }
         if (self.preLoadWebUrls.count == 0) {
             [self preloadAllDone];
         }
@@ -125,6 +141,9 @@
     NSURLRequest *re = [NSURLRequest requestWithURL:[NSURL URLWithString:self.preLoadWebUrls.firstObject] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     [self.wbView loadRequest:re];
 }
+- (void)requestWebWithFirstPreHtml {
+    [self.wbView loadHTMLString:self.preLoadWebUrls.firstObject baseURL:nil];
+}
 
 #pragma mark - Interface Preload by Request
 - (STMURLCache *)preLoadByRequestWithUrls:(NSArray *)urls {
@@ -141,7 +160,6 @@
     
     return self;
 }
-
 
 #pragma mark - NSURLCache Method
 - (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request {

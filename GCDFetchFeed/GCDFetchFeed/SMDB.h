@@ -28,6 +28,7 @@
 - (RACSignal *)markFeedAllItemsAsRead:(NSUInteger)fid; //标注全部已读
 - (RACSignal *)selectAllUnCachedFeedItems; //读取所有未缓存的本地rss item
 - (RACSignal *)markFeedItemAsCached:(NSUInteger)iid; //标记为已经缓存
+- (RACSignal *)markAllFeedItemAsCached; //标记全部为已经缓存
 
 - (void)clearFeedItemByFid:(NSUInteger)fid db:(FMDatabase *)db;
 @end

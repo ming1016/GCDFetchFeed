@@ -303,7 +303,22 @@
         return nil;
     }];
 }
-//标记为已经缓存
+//标记所有库里的为已缓存
+- (RACSignal *)markAllFeedItemAsCached {
+    @weakify(self);
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        FMDatabase *db = [FMDatabase databaseWithPath:self.feedDBPath];
+        if ([db open]) {
+            [db executeUpdate:@"update feeditem set iscached = ? where isread = ?", @(1), @(0)];
+            [subscriber sendNext:nil];
+            [subscriber sendCompleted];
+            [db close];
+        }
+        return nil;
+    }];
+}
+//标记指定iid的feed item为已经缓存
 - (RACSignal *)markFeedItemAsCached:(NSUInteger)iid {
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {

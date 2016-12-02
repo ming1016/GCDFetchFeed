@@ -33,7 +33,6 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 @property (nonatomic, strong) SMRootDataSource *dataSource;
 @property (nonatomic) NSUInteger fetchingCount;
 @property (nonatomic) NSUInteger needCacheCount;
-@property (nonatomic, strong) NSMutableDictionary *needCacheDic;
 //view
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *tbHeaderView;
@@ -147,23 +146,27 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         [self.tableView reloadData];
     }];
 }
-
 - (void)cacheFeedItems {
     if (![SMNetManager isWifi]) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         return;
     }
+    
     [[[[[SMDB shareInstance] selectAllUnCachedFeedItems] subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSMutableArray *x) {
         NSMutableArray *urls = [NSMutableArray array];
         if (x.count > 0) {
             self.needCacheCount = x.count;
             for (SMFeedItemModel *aModel in x) {
-                [urls addObject:aModel.link];
-                [self.needCacheDic setObject:aModel forKey:aModel.link];
+                [urls addObject:aModel.des];
             }
         }
         [[STMURLCache create:^(STMURLCacheMk *mk) {
-            mk.whiteUserAgent(@"gcdfetchfeed").diskCapacity(500 * 1024 * 1024);
-        }] preLoadByWebViewWithUrls:[NSArray arrayWithArray:urls]].delegate = self;
+            mk.whiteUserAgent(@"gcdfetchfeed").diskCapacity(1000 * 1024 * 1024);
+        }] preloadByWebViewWithHtmls:[NSArray arrayWithArray:urls]].delegate = self;
+        //标准都要缓存
+        [[[SMDB shareInstance] markAllFeedItemAsCached] subscribeNext:^(id x) {
+            //
+        }];
         
     }];
 }
@@ -227,12 +230,7 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)preloadDidFinishLoad:(UIWebView *)webView remain:(NSUInteger)remain {
     self.tableView.tableHeaderView = self.tbHeaderView;
     self.tbHeaderLabel.text = [NSString stringWithFormat:@"缓存图片...(%lu/%lu)",(unsigned long)(self.needCacheCount - remain),(unsigned long)self.needCacheCount];
-    SMFeedItemModel *aModel = [self.needCacheDic objectForKey:webView.request.URL.absoluteString];
-    if ([aModel isKindOfClass:[SMFeedItemModel class]]) {
-        [[[SMDB shareInstance] markFeedItemAsCached:aModel.iid] subscribeNext:^(id x) {
-            //
-        }];
-    }
+    
     if (remain == 0) {
         [self preloadDidAllDone];
     }
@@ -242,11 +240,9 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
         [self preloadDidAllDone];
     }
 }
-
 - (void)preloadDidAllDone {
     self.tbHeaderLabel.text = @"";
     self.tableView.tableHeaderView = [[UIView alloc] init];
-    self.needCacheDic = [NSMutableDictionary dictionary];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     //清理已读
     for (SMFeedModel *aModel in self.feeds) {
@@ -312,12 +308,5 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     }
     return _tbHeaderLabel;
 }
-- (NSMutableDictionary *)needCacheDic {
-    if (!_needCacheDic) {
-        _needCacheDic = [NSMutableDictionary dictionary];
-    }
-    return _needCacheDic;
-}
-
 
 @end

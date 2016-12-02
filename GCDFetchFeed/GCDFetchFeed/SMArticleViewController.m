@@ -60,12 +60,7 @@
     NSString *styleString = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"css.html"] encoding:NSUTF8StringEncoding error:&err];
     NSString *articleString = [NSString stringWithFormat:@"%@%@",styleString,feedString];
 
-    if (self.feedItemModel.isCached) {
-        NSURLRequest *re = [NSURLRequest requestWithURL:[NSURL URLWithString:self.feedItemModel.link]];
-        [self.wbView loadRequest:re];
-    } else {
-        [self.wbView loadHTMLString:articleString baseURL:nil];
-    }
+    [self.wbView loadHTMLString:articleString baseURL:nil];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"分享" style:UIBarButtonItemStylePlain target:self action:@selector(share)];
     
@@ -91,12 +86,10 @@
 
 #pragma mark - UIWebView Delegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if (!self.feedItemModel.isCached) {
-        if ([request.URL.absoluteString isEqualToString:self.feedItemModel.link]) {
-            SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:self.feedItemModel.link]];
-            [self presentViewController:sfVC animated:YES completion:nil];
-            return NO;
-        }
+    if ([request.URL.absoluteString isEqualToString:self.feedItemModel.link]) {
+        SFSafariViewController *sfVC = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:self.feedItemModel.link]];
+        [self presentViewController:sfVC animated:YES completion:nil];
+        return NO;
     }
     return YES;
 }

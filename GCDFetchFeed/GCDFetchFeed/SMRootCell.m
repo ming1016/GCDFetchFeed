@@ -74,7 +74,7 @@
     self.contentLabel.text = viewModel.contentString;
     [self.iconImageView updateWithImageWebUrl:viewModel.iconUrl];
     self.highlightLabel.text = viewModel.highlightString;
-    if (!viewModel.isSync) {
+    if (!viewModel.isSync || [viewModel.highlightString isEqualToString:@"0"]) {
         self.highlightLabel.textColor = [SMStyle colorPaperGray];
         self.titleLabel.textColor = [SMStyle colorPaperGray];
     } else {

@@ -20,7 +20,9 @@
 - (STMURLCache *)update:(void (^)(STMURLCacheMk *mk))mk;
 
 - (STMURLCache *)preLoadByWebViewWithUrls:(NSArray *)urls; //使用WebView进行预加载缓存
-- (STMURLCache *)preLoadByRequestWithUrls:(NSArray *)urls; //使用
+- (STMURLCache *)preloadByWebViewWithHtmls:(NSArray *)htmls; //使用以html内容在WebView里读取进行内容预加载缓存
+- (STMURLCache *)preLoadByRequestWithUrls:(NSArray *)urls; //使用url
+
 - (void)stop; //关闭缓存
 
 @end
