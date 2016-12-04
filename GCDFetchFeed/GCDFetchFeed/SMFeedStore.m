@@ -200,12 +200,6 @@
     zhihuDaily.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_zhihu.png?raw=true";
     [mArr addObject:zhihuDaily];
     
-    SMFeedModel *scipark = [[SMFeedModel alloc] init];
-    scipark.title = @"科技公园";
-    scipark.feedUrl = @"http://www.scipark.net/feed/";
-    scipark.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_scipark.jpg?raw=true";
-    [mArr addObject:scipark];
-    
     SMFeedModel *next = [[SMFeedModel alloc] init];
     next.title = @"NEXT";
     next.feedUrl = @"http://next.36kr.com/feed";
