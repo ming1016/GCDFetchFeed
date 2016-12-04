@@ -245,9 +245,11 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     self.tableView.tableHeaderView = [[UIView alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     //清理已读
-    for (SMFeedModel *aModel in self.feeds) {
-        [[SMDB shareInstance] clearFeedItemByFid:aModel.fid db:nil];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+        for (SMFeedModel *aModel in self.feeds) {
+            [[SMDB shareInstance] clearFeedItemByFid:aModel.fid db:nil];
+        }
+    });
 }
 
 #pragma mark - Private
