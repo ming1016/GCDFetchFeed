@@ -28,8 +28,8 @@
             threadBaseInfo = (thread_basic_info_t)threadInfo;
             if (!(threadBaseInfo->flags & TH_FLAGS_IDLE)) {
                 integer_t cpuUsage = threadBaseInfo->cpu_usage / 10;
-                if (cpuUsage > 70) {
-                    //cup 消耗大于 70 时打印和记录堆栈
+                if (cpuUsage > 75) {
+                    //cup 消耗大于 75 时打印和记录堆栈
                     NSString *reStr = smStackOfThread(threads[i]);
                     //记录数据库中
                     [[[SMLagDB shareInstance] increaseWithStackString:reStr] subscribeNext:^(id x) {}];
