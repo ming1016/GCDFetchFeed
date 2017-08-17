@@ -13,6 +13,7 @@
 #import "SMMapViewController.h"
 #import "SMStyle.h"
 #import "SMFeedModel.h"
+#import "SMLagMonitor.h"
 
 @interface AppDelegate ()
 
@@ -22,6 +23,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    //这里是做卡顿监测
+    [[SMLagMonitor shareInstance] beginMonitor];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     //首页
     SMRootViewController *rootVC = [[SMRootViewController alloc] init];

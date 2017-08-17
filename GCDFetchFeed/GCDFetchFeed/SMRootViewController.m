@@ -24,6 +24,10 @@
 #import "UINavigationController+FDFullscreenPopGesture.h"
 #import "STMURLCache.h"
 
+#import "SMLagButton.h"
+#import "SMStackViewController.h"
+#import "SMClsCallViewController.h"
+
 static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 
 @interface SMRootViewController()<UITableViewDataSource,UITableViewDelegate,SMRootCellDelegate,STMURLCacheDelegate>
@@ -37,6 +41,9 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *tbHeaderView;
 @property (nonatomic, strong) SMSubContentLabel *tbHeaderLabel;
+//monitor
+@property (nonatomic, strong) SMLagButton *stackBt;
+@property (nonatomic, strong) SMLagButton *clsCallBt;
 @end
 
 @implementation SMRootViewController
@@ -103,6 +110,20 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         SMFeedListViewController *feedList = [[SMFeedListViewController alloc] initWithFeedModel:feedModel];
         feedList.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:feedList animated:YES];
+    }];
+    
+    //monitor
+    [self.view addSubview:self.stackBt];
+    [self.view addSubview:self.clsCallBt];
+    [self.clsCallBt mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(20);
+        make.right.equalTo(self.view).offset(-10);
+        make.size.mas_equalTo(CGSizeMake(40, 40));
+    }];
+    [self.stackBt mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.clsCallBt);
+        make.right.equalTo(self.clsCallBt.mas_left).offset(-10);
+        make.size.mas_equalTo(CGSizeMake(40, 40));
     }];
 }
 
@@ -309,6 +330,27 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
         _tbHeaderLabel = [[SMSubContentLabel alloc] init];
     }
     return _tbHeaderLabel;
+}
+
+- (SMLagButton *)stackBt {
+    if (!_stackBt) {
+        _stackBt = [[SMLagButton alloc] initWithStr:@"S" size:24 backgroundColor:[UIColor blackColor]];
+        [[_stackBt click] subscribeNext:^(id x) {
+            SMStackViewController *vc = [[SMStackViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
+    }
+    return _stackBt;
+}
+- (SMLagButton *)clsCallBt {
+    if (!_clsCallBt) {
+        _clsCallBt = [[SMLagButton alloc] initWithStr:@"C" size:24 backgroundColor:[UIColor blackColor]];
+        [[_clsCallBt click] subscribeNext:^(id x) {
+            SMClsCallViewController *vc = [[SMClsCallViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
+    }
+    return _clsCallBt;
 }
 
 @end
