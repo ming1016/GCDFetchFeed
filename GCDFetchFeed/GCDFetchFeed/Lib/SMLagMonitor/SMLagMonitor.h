@@ -10,6 +10,8 @@
 
 + (instancetype)shareInstance;
 
+@property (nonatomic) BOOL isMonitoring;
+
 - (void)beginMonitor; //开始监视卡顿
 - (void)endMonitor;   //停止监视卡顿
 

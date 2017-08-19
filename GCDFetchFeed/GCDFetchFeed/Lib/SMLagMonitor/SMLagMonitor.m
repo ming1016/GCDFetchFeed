@@ -33,6 +33,7 @@
 }
 
 - (void)beginMonitor {
+    self.isMonitoring = YES;
     //监测 CPU 消耗
     self.cpuMonitorTimer = [NSTimer scheduledTimerWithTimeInterval:3
                                                              target:self
@@ -75,7 +76,7 @@
                     }
 //                    NSLog(@"monitor trigger");
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                        NSString *stackStr = [SMCallStack callStackWithType:SMCallStackTypeCurrent];
+                        NSString *stackStr = [SMCallStack callStackWithType:SMCallStackTypeMain];
                         SMCallStackModel *model = [[SMCallStackModel alloc] init];
                         model.stackStr = stackStr;
                         model.isStuck = YES;
@@ -90,6 +91,7 @@
 }
 
 - (void)endMonitor {
+    self.isMonitoring = NO;
     [self.cpuMonitorTimer invalidate];
     if (!runLoopObserver) {
         return;
