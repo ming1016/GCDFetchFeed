@@ -8,6 +8,7 @@
 
 #import "SMCPUMonitor.h"
 #import "SMCallStack.h"
+#import "SMCallStackModel.h"
 #import "SMLagDB.h"
 
 @implementation SMCPUMonitor
@@ -28,12 +29,14 @@
             threadBaseInfo = (thread_basic_info_t)threadInfo;
             if (!(threadBaseInfo->flags & TH_FLAGS_IDLE)) {
                 integer_t cpuUsage = threadBaseInfo->cpu_usage / 10;
-                if (cpuUsage > 75) {
-                    //cup 消耗大于 75 时打印和记录堆栈
+                if (cpuUsage > CPUMONITORRATE) {
+                    //cup 消耗大于设置值时打印和记录堆栈
                     NSString *reStr = smStackOfThread(threads[i]);
+                    SMCallStackModel *model = [[SMCallStackModel alloc] init];
+                    model.stackStr = reStr;
                     //记录数据库中
-                    [[[SMLagDB shareInstance] increaseWithStackString:reStr] subscribeNext:^(id x) {}];
-                    NSLog(@"CPU useage overload thread stack：\n%@",reStr);
+                    [[[SMLagDB shareInstance] increaseWithStackModel:model] subscribeNext:^(id x) {}];
+//                    NSLog(@"CPU useage overload thread stack：\n%@",reStr);
                 }
             }
         }

@@ -156,7 +156,7 @@ static NSString *smClsCallCellIdentifier = @"smClsCallCell";
 }
 - (SMLagButton *)closeView {
     if (!_closeView) {
-        _closeView = [[SMLagButton alloc] initWithStr:@"X" size:24 backgroundColor:[UIColor blackColor]];
+        _closeView = [[SMLagButton alloc] initWithStr:@"退出" size:16 backgroundColor:[UIColor blackColor]];
         @weakify(self);
         [[_closeView click] subscribeNext:^(id x) {
             @strongify(self);
@@ -167,7 +167,7 @@ static NSString *smClsCallCellIdentifier = @"smClsCallCell";
 }
 - (SMLagButton *)clearAndCloseView {
     if (!_clearAndCloseView) {
-        _clearAndCloseView = [[SMLagButton alloc] initWithStr:@"CX" size:20 backgroundColor:[UIColor redColor]];
+        _clearAndCloseView = [[SMLagButton alloc] initWithStr:@"清理" size:16 backgroundColor:[UIColor redColor]];
         @weakify(self);
         [[_clearAndCloseView click] subscribeNext:^(id x) {
             @strongify(self);

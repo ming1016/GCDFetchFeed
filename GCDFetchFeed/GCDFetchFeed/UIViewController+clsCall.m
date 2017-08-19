@@ -42,7 +42,7 @@
 
 - (void)clsCallInsertToViewWillAppear {
     //显示
-    [SMCallTrace startWithMaxDepth:3];
+    [SMCallTrace startWithMaxDepth:0];
 }
 - (void)clsCallInsertToViewWillDisappear {
     //消失

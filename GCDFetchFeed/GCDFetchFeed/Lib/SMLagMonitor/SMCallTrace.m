@@ -43,7 +43,7 @@
         model.path = [NSString stringWithFormat:@"[%@ %@]",model.className,model.methodName];
         [self appendRecord:model to:mStr];
     }
-    NSLog(@"%@",mStr);
+//    NSLog(@"%@",mStr);
 }
 + (void)stopSaveAndClean {
     [SMCallTrace stop];
@@ -51,18 +51,22 @@
     smClearCallRecords();
 }
 + (void)appendRecord:(SMCallTraceTimeCostModel *)cost to:(NSMutableString *)mStr {
-    [mStr appendFormat:@"%@\n path%@\n",[cost des],cost.path];
+//    [mStr appendFormat:@"%@\n path%@\n",[cost des],cost.path];
     if (cost.subCosts.count < 1) {
         cost.lastCall = YES;
+        //记录到数据库中
+        [[SMLagDB shareInstance] addWithClsCallModel:cost];
+    } else {
+        for (SMCallTraceTimeCostModel *model in cost.subCosts) {
+            if ([model.className isEqualToString:@"SMCallTrace"]) {
+                break;
+            }
+            //记录方法的子方法的路径
+            model.path = [NSString stringWithFormat:@"%@ - [%@ %@]",cost.path,model.className,model.methodName];
+            [self appendRecord:model to:mStr];
+        }
     }
-    //记录到数据库中
-    [[[SMLagDB shareInstance] increaseWithClsCallModel:cost] subscribeNext:^(id x) {}];
     
-    for (SMCallTraceTimeCostModel *model in cost.subCosts) {
-        //记录方法的子方法的路径
-        model.path = [NSString stringWithFormat:@"%@ - [%@ %@]",cost.path,model.className,model.methodName];
-        [self appendRecord:model to:mStr];
-    }
 }
 + (NSArray<SMCallTraceTimeCostModel *>*)loadRecords {
     NSMutableArray<SMCallTraceTimeCostModel *> *arr = [NSMutableArray new];

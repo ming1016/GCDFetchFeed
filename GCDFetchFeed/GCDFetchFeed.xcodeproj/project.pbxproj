@@ -11,6 +11,7 @@
 		0A12F26F1DE96864002ED910 /* STMURLCacheMk.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F2691DE96864002ED910 /* STMURLCacheMk.m */; };
 		0A12F2701DE96864002ED910 /* STMURLCacheModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F26B1DE96864002ED910 /* STMURLCacheModel.m */; };
 		0A12F2711DE96864002ED910 /* STMURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F26D1DE96864002ED910 /* STMURLProtocol.m */; };
+		0A333DED1F46946900EAD6E8 /* SMCallStackModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A333DEC1F46946900EAD6E8 /* SMCallStackModel.m */; };
 		0A35AD451F45B31600780172 /* SMCPUMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A35AD441F45B31600780172 /* SMCPUMonitor.m */; };
 		0A35AD4A1F45B32600780172 /* SMStackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A35AD471F45B32600780172 /* SMStackViewController.m */; };
 		0A35AD4B1F45B32600780172 /* SMStackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A35AD491F45B32600780172 /* SMStackCell.m */; };
@@ -92,6 +93,8 @@
 		0A12F26B1DE96864002ED910 /* STMURLCacheModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMURLCacheModel.m; sourceTree = "<group>"; };
 		0A12F26C1DE96864002ED910 /* STMURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMURLProtocol.h; sourceTree = "<group>"; };
 		0A12F26D1DE96864002ED910 /* STMURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMURLProtocol.m; sourceTree = "<group>"; };
+		0A333DEB1F46946900EAD6E8 /* SMCallStackModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCallStackModel.h; sourceTree = "<group>"; };
+		0A333DEC1F46946900EAD6E8 /* SMCallStackModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCallStackModel.m; sourceTree = "<group>"; };
 		0A35AD431F45B31600780172 /* SMCPUMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCPUMonitor.h; sourceTree = "<group>"; };
 		0A35AD441F45B31600780172 /* SMCPUMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCPUMonitor.m; sourceTree = "<group>"; };
 		0A35AD461F45B32600780172 /* SMStackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMStackViewController.h; sourceTree = "<group>"; };
@@ -284,6 +287,8 @@
 				0A35AD5F1F45B34C00780172 /* SMCallTraceTimeCostModel.m */,
 				0A35AD601F45B34C00780172 /* SMCallStack.h */,
 				0A35AD611F45B34C00780172 /* SMCallStack.m */,
+				0A333DEB1F46946900EAD6E8 /* SMCallStackModel.h */,
+				0A333DEC1F46946900EAD6E8 /* SMCallStackModel.m */,
 				0A35AD671F45B35500780172 /* SMLagMonitor.h */,
 				0A35AD681F45B35500780172 /* SMLagMonitor.m */,
 			);
@@ -800,6 +805,7 @@
 				3E58A86E1C50BDCE0026A610 /* SMHighlightLabel.m in Sources */,
 				3E58A86B1C50BA870026A610 /* SMSubContentLabel.m in Sources */,
 				3EE311701C4E212700103FA3 /* SMRootViewController.m in Sources */,
+				0A333DED1F46946900EAD6E8 /* SMCallStackModel.m in Sources */,
 				3EE311751C4E303600103FA3 /* SMFeedModel.m in Sources */,
 				3E8341F21C525ABD002C3EAA /* SMFeedListCell.m in Sources */,
 				0A35AD6D1F45B41E00780172 /* DCHook.m in Sources */,

@@ -7,7 +7,6 @@
 
 #import "SMCallStack.h"
 
-
 //为通用回溯设计结构支持栈地址由小到大，地址里存储上个栈指针的地址
 typedef struct SMStackFrame {
     const struct SMStackFrame *const previous;
@@ -117,7 +116,7 @@ NSString *smStackOfThread(thread_t thread) {
     
     uintptr_t buffer[100];
     int i = 0;
-    NSMutableString *reStr = [NSMutableString stringWithFormat:@"Stack of thread: %u:\n CPU used: %.1f percent\n user time: %d second\n", thread, threadInfoSt.cpuUsage, threadInfoSt.userTime];
+    NSMutableString *reStr = [NSMutableString stringWithFormat:@"Stack of thread: %u:\nCPU used: %.1f percent\nuser time: %d second\n", thread, threadInfoSt.cpuUsage, threadInfoSt.userTime];
     
     //回溯栈的算法
     /*

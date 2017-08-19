@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SMCallStackModel.h"
 
 @interface SMStackCell : UITableViewCell
 
-- (void)updateWithStr:(NSString *)str;
+- (void)updateWithModel:(SMCallStackModel *)model;
 
 @end

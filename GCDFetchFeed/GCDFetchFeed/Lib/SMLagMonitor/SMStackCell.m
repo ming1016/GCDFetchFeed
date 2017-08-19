@@ -12,6 +12,8 @@
 @interface SMStackCell()
 
 @property (nonatomic, strong) UILabel *contentLb;
+@property (nonatomic, strong) UILabel *dateLb;
+@property (nonatomic, strong) UILabel *infoLb;
 
 @end
 
@@ -26,14 +28,36 @@
 
 - (void)buildUI {
     [self addSubview:self.contentLb];
-    [self.contentLb mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self addSubview:self.dateLb];
+    [self addSubview:self.infoLb];
+    [self.dateLb mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.equalTo(self).offset(10);
+    }];
+    [self.infoLb mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.dateLb.mas_right).offset(20);
+        make.top.equalTo(self.dateLb);
+    }];
+    [self.contentLb mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.dateLb).offset(10);
+        make.top.equalTo(self.dateLb.mas_bottom).offset(10);
         make.right.bottom.equalTo(self).offset(-10);
     }];
 }
 
-- (void)updateWithStr:(NSString *)str {
-    self.contentLb.text = str;
+- (void)updateWithModel:(SMCallStackModel *)model {
+    self.contentLb.text = model.stackStr;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss z"];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:model.dateString];
+    self.dateLb.text = [formatter stringFromDate:date];
+    if (model.isStuck) {
+        self.infoLb.text = @"卡顿问题";
+        self.infoLb.textColor = [UIColor redColor];
+    } else {
+        self.infoLb.text = @"CPU负载高";
+        self.infoLb.textColor = [UIColor orangeColor];
+    }
+    
 }
 
 - (void)layoutSubviews {
@@ -50,6 +74,22 @@
         _contentLb.textColor = [UIColor grayColor];
     }
     return _contentLb;
+}
+- (UILabel *)dateLb {
+    if (!_dateLb) {
+        _dateLb = [[UILabel alloc] init];
+        _dateLb.font = [UIFont boldSystemFontOfSize:14];
+        _dateLb.textColor = [UIColor grayColor];
+    }
+    return _dateLb;
+}
+- (UILabel *)infoLb {
+    if (!_infoLb) {
+        _infoLb = [[UILabel alloc] init];
+        _infoLb.font = [UIFont boldSystemFontOfSize:14];
+        _infoLb.textColor = [UIColor redColor];
+    }
+    return _infoLb;
 }
 
 @end

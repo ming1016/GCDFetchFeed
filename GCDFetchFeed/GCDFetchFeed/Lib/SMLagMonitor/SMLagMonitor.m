@@ -6,7 +6,9 @@
 
 #import "SMLagMonitor.h"
 #import "SMCallStack.h"
+#import "SMCallStackModel.h"
 #import "SMCPUMonitor.h"
+#import "SMLagDB.h"
 
 @interface SMLagMonitor() {
     int timeoutCount;
@@ -57,7 +59,7 @@
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         //子线程开启一个持续的loop用来进行监控
         while (YES) {
-            long semaphoreWait = dispatch_semaphore_wait(dispatchSemaphore, dispatch_time(DISPATCH_TIME_NOW, 20*NSEC_PER_MSEC));
+            long semaphoreWait = dispatch_semaphore_wait(dispatchSemaphore, dispatch_time(DISPATCH_TIME_NOW, STUCKMONITORRATE * NSEC_PER_MSEC));
             if (semaphoreWait != 0) {
                 if (!runLoopObserver) {
                     timeoutCount = 0;
@@ -68,12 +70,16 @@
                 //两个runloop的状态，BeforeSources和AfterWaiting这两个状态区间时间能够检测到是否卡顿
                 if (runLoopActivity == kCFRunLoopBeforeSources || runLoopActivity == kCFRunLoopAfterWaiting) {
                     //出现三次出结果
-//                    if (++timeoutCount < 3) {
-//                        continue;
-//                    }
-                    NSLog(@"monitor trigger");
+                    if (++timeoutCount < 3) {
+                        continue;
+                    }
+//                    NSLog(@"monitor trigger");
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//                        [SMCallStack callStackWithType:SMCallStackTypeAll];
+                        NSString *stackStr = [SMCallStack callStackWithType:SMCallStackTypeCurrent];
+                        SMCallStackModel *model = [[SMCallStackModel alloc] init];
+                        model.stackStr = stackStr;
+                        model.isStuck = YES;
+                        [[[SMLagDB shareInstance] increaseWithStackModel:model] subscribeNext:^(id x) {}];
                     });
                 } //end activity
             }// end semaphore wait

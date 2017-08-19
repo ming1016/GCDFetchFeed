@@ -126,9 +126,11 @@
 
 //清除自建的缓存目录
 - (void)checkCapacity {
-    if ([self folderSize] > self.diskCapacity) {
-        [self deleteCacheFolder];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        if ([self folderSize] > self.diskCapacity) {
+            [self deleteCacheFolder];
+        }
+    });
 }
 - (void)deleteCacheFolder {
     [[NSFileManager defaultManager] removeItemAtPath:[self cacheFolderPath] error:nil];

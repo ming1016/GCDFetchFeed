@@ -32,6 +32,7 @@
     [self addSubview:self.pathLb];
     [self.nameLb mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.equalTo(self).offset(10);
+        make.right.equalTo(self).offset(-10);
     }];
     [self.desLb mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.nameLb.mas_bottom).offset(10);
@@ -46,7 +47,7 @@
 
 - (void)updateWithModel:(SMCallTraceTimeCostModel *)model {
     self.nameLb.text = [NSString stringWithFormat:@"[%@ %@]",model.className,model.methodName];
-    self.desLb.text = [NSString stringWithFormat:@"频次:%lu 深度:%lu 耗时:%f",(unsigned long)model.frequency,(unsigned long)model.callDepth, model.timeCost * 1000];
+    self.desLb.text = [NSString stringWithFormat:@"频次:%lu 耗时:%f",(unsigned long)model.frequency, model.timeCost * 1000];
     self.pathLb.text = model.path;
 }
 
@@ -58,7 +59,7 @@
 - (UILabel *)nameLb {
     if (!_nameLb) {
         _nameLb = [[UILabel alloc] init];
-        _nameLb.font = [UIFont systemFontOfSize:14];
+        _nameLb.font = [UIFont boldSystemFontOfSize:16];
         _nameLb.textColor = [UIColor grayColor];
     }
     return _nameLb;
@@ -67,7 +68,7 @@
     if (!_desLb) {
         _desLb = [[UILabel alloc] init];
         _desLb.font = [UIFont systemFontOfSize:12];
-        _desLb.textColor = [UIColor lightGrayColor];
+        _desLb.textColor = [UIColor grayColor];
     }
     return _desLb;
 }
