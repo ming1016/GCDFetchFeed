@@ -66,7 +66,7 @@
 - (RACSignal *)increaseWithStackModel:(SMCallStackModel *)model {
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        if ([model.stackStr containsString:@"+[SMCallStack callStackWithType:]"]) {
+        if ([model.stackStr containsString:@"+[SMCallStack callStackWithType:]"] || [model.stackStr containsString:@"-[SMLagMonitor updateCPUInfo]"]) {
             return nil;
         }
         @strongify(self);
