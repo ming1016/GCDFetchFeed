@@ -334,7 +334,7 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (SMLagButton *)stackBt {
     if (!_stackBt) {
-        _stackBt = [[SMLagButton alloc] initWithStr:@"S" size:24 backgroundColor:[UIColor blackColor]];
+        _stackBt = [[SMLagButton alloc] initWithStr:@"堆栈" size:16 backgroundColor:[UIColor blackColor]];
         [[_stackBt click] subscribeNext:^(id x) {
             SMStackViewController *vc = [[SMStackViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -344,7 +344,7 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 - (SMLagButton *)clsCallBt {
     if (!_clsCallBt) {
-        _clsCallBt = [[SMLagButton alloc] initWithStr:@"C" size:24 backgroundColor:[UIColor blackColor]];
+        _clsCallBt = [[SMLagButton alloc] initWithStr:@"频次" size:16 backgroundColor:[UIColor blackColor]];
         [[_clsCallBt click] subscribeNext:^(id x) {
             SMClsCallViewController *vc = [[SMClsCallViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
