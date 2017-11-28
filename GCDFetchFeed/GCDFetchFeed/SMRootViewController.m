@@ -112,19 +112,19 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
         [self.navigationController pushViewController:feedList animated:YES];
     }];
     
-    //monitor
-    [self.view addSubview:self.stackBt];
-    [self.view addSubview:self.clsCallBt];
-    [self.clsCallBt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(20);
-        make.right.equalTo(self.view).offset(-10);
-        make.size.mas_equalTo(CGSizeMake(40, 40));
-    }];
-    [self.stackBt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.clsCallBt);
-        make.right.equalTo(self.clsCallBt.mas_left).offset(-10);
-        make.size.mas_equalTo(CGSizeMake(40, 40));
-    }];
+    //monitor 显示性能监控
+//    [self.view addSubview:self.stackBt];
+//    [self.view addSubview:self.clsCallBt];
+//    [self.clsCallBt mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(20);
+//        make.right.equalTo(self.view).offset(-10);
+//        make.size.mas_equalTo(CGSizeMake(40, 40));
+//    }];
+//    [self.stackBt mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.clsCallBt);
+//        make.right.equalTo(self.clsCallBt.mas_left).offset(-10);
+//        make.size.mas_equalTo(CGSizeMake(40, 40));
+//    }];
 }
 
 #pragma mark - private

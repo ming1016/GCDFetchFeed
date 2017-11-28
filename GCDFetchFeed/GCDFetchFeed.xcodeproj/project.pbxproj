@@ -125,6 +125,10 @@
 		0A35AD6C1F45B41E00780172 /* DCHook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCHook.m; sourceTree = "<group>"; };
 		0A35AD711F45B48400780172 /* UIViewController+clsCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+clsCall.h"; sourceTree = "<group>"; };
 		0A35AD721F45B48400780172 /* UIViewController+clsCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+clsCall.m"; sourceTree = "<group>"; };
+		0A600C1D1FC4643E00771AF1 /* SMStateMachine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMStateMachine.m; sourceTree = "<group>"; };
+		0A600C1E1FC4643E00771AF1 /* SMStateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMStateMachine.h; sourceTree = "<group>"; };
+		0A600C1F1FC4643E00771AF1 /* SMState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMState.h; sourceTree = "<group>"; };
+		0A600C201FC4643E00771AF1 /* SMState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMState.m; sourceTree = "<group>"; };
 		0A8B09DB1D6DA2BB00BE4FEC /* STMAssembleMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMAssembleMaker.h; sourceTree = "<group>"; };
 		0A8B09DC1D6DA2BB00BE4FEC /* STMAssembleMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMAssembleMaker.m; sourceTree = "<group>"; };
 		0A8B09DD1D6DA2BB00BE4FEC /* STMAssembleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMAssembleView.h; sourceTree = "<group>"; };
@@ -306,6 +310,17 @@
 			name = Hook;
 			sourceTree = "<group>";
 		};
+		0A600C1C1FC4640200771AF1 /* StateMachine */ = {
+			isa = PBXGroup;
+			children = (
+				0A600C1E1FC4643E00771AF1 /* SMStateMachine.h */,
+				0A600C1D1FC4643E00771AF1 /* SMStateMachine.m */,
+				0A600C1F1FC4643E00771AF1 /* SMState.h */,
+				0A600C201FC4643E00771AF1 /* SMState.m */,
+			);
+			name = StateMachine;
+			sourceTree = "<group>";
+		};
 		0A8B09DA1D6DA2AD00BE4FEC /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -363,6 +378,7 @@
 		3E58A8611C50B86C0026A610 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				0A600C1C1FC4640200771AF1 /* StateMachine */,
 				0A35AD6A1F45B41400780172 /* Hook */,
 				0A149B991DE5C9210000D58F /* Cache */,
 				0A8B09DA1D6DA2AD00BE4FEC /* UI */,
