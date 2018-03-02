@@ -31,6 +31,7 @@
 		0A8B09E41D6DA2BB00BE4FEC /* STMAssembleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09DE1D6DA2BB00BE4FEC /* STMAssembleView.m */; };
 		0A8B09E51D6DA2BB00BE4FEC /* STMPartMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09E01D6DA2BB00BE4FEC /* STMPartMaker.m */; };
 		0A8B09E61D6DA2BB00BE4FEC /* STMPartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09E21D6DA2BB00BE4FEC /* STMPartView.m */; };
+		0AA0CF151FCD58FD005B00DD /* SMEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0CF141FCD58FD005B00DD /* SMEvent.m */; };
 		0AEE64961D881563009E21C7 /* SMMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE64951D881563009E21C7 /* SMMapViewController.m */; };
 		0AEE649A1D883058009E21C7 /* ArtWork.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE64991D883058009E21C7 /* ArtWork.m */; };
 		3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8521C507BFD0026A610 /* SMRootCellViewModel.m */; };
@@ -137,6 +138,8 @@
 		0A8B09E01D6DA2BB00BE4FEC /* STMPartMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMPartMaker.m; sourceTree = "<group>"; };
 		0A8B09E11D6DA2BB00BE4FEC /* STMPartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMPartView.h; sourceTree = "<group>"; };
 		0A8B09E21D6DA2BB00BE4FEC /* STMPartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMPartView.m; sourceTree = "<group>"; };
+		0AA0CF131FCD58FD005B00DD /* SMEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMEvent.h; sourceTree = "<group>"; };
+		0AA0CF141FCD58FD005B00DD /* SMEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMEvent.m; sourceTree = "<group>"; };
 		0AEE64941D881563009E21C7 /* SMMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMMapViewController.h; sourceTree = "<group>"; };
 		0AEE64951D881563009E21C7 /* SMMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMMapViewController.m; sourceTree = "<group>"; };
 		0AEE64981D883058009E21C7 /* ArtWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtWork.h; sourceTree = "<group>"; };
@@ -317,6 +320,8 @@
 				0A600C1D1FC4643E00771AF1 /* SMStateMachine.m */,
 				0A600C1F1FC4643E00771AF1 /* SMState.h */,
 				0A600C201FC4643E00771AF1 /* SMState.m */,
+				0AA0CF131FCD58FD005B00DD /* SMEvent.h */,
+				0AA0CF141FCD58FD005B00DD /* SMEvent.m */,
 			);
 			name = StateMachine;
 			sourceTree = "<group>";
@@ -832,6 +837,7 @@
 				0A8B09E51D6DA2BB00BE4FEC /* STMPartMaker.m in Sources */,
 				0A35AD641F45B34C00780172 /* SMCallTraceCore.c in Sources */,
 				3EAC029F1C4F8602009BE766 /* SMRootDataSource.m in Sources */,
+				0AA0CF151FCD58FD005B00DD /* SMEvent.m in Sources */,
 				3E58A8651C50B90A0026A610 /* UIColor-Expanded.m in Sources */,
 				3EE3113D1C4E1F0800103FA3 /* main.m in Sources */,
 				0AEE64961D881563009E21C7 /* SMMapViewController.m in Sources */,

@@ -105,10 +105,10 @@
             }
             if (count > 0) {
                 [subscriber sendNext:arr];
+                [subscriber sendCompleted];
             } else {
                 [subscriber sendError:nil];
             }
-            [subscriber sendCompleted];
             [db close];
         }
         return nil;
