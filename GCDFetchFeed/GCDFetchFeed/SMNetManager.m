@@ -100,7 +100,12 @@
 #pragma mark - Class method
 + (BOOL)isWifi {
     UIApplication *app = [UIApplication sharedApplication];
-    NSArray *children = [[[app valueForKeyPath:@"statusBar"]valueForKeyPath:@"foregroundView"]subviews];
+    NSMutableArray *children = [NSMutableArray new];
+    if ([app valueForKeyPath:@"statusBar"]) {
+        if ([[app valueForKeyPath:@"statusBar"]valueForKeyPath:@"foregroundView"]) {
+            [children arrayByAddingObjectsFromArray:[[[app valueForKeyPath:@"statusBar"]valueForKeyPath:@"foregroundView"]subviews]];
+        }
+    }
     int netType = 0;
     //获取到网络返回码
     for (id child in children) {
