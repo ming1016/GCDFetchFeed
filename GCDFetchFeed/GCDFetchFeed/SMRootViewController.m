@@ -168,10 +168,10 @@ static NSString *rootViewControllerIdentifier = @"SMRootViewControllerCell";
     }];
 }
 - (void)cacheFeedItems {
-    if (![SMNetManager isWifi]) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        return;
-    }
+//    if (![SMNetManager isWifi]) {
+//        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//        return;
+//    }
     
     [[[[[SMDB shareInstance] selectAllUnCachedFeedItems] subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityDefault]] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSMutableArray *x) {
         NSMutableArray *urls = [NSMutableArray array];
@@ -256,10 +256,10 @@ titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
         [self preloadDidAllDone];
     }
     //非wifi状态处理
-    if (![SMNetManager isWifi]) {
-        [[[STMURLCache alloc] init] stop];
-        [self preloadDidAllDone];
-    }
+//    if (![SMNetManager isWifi]) {
+//        [[[STMURLCache alloc] init] stop];
+//        [self preloadDidAllDone];
+//    }
 }
 - (void)preloadDidAllDone {
     self.tbHeaderLabel.text = @"";
