@@ -156,6 +156,7 @@
     starmingFeed.title = @"Starming星光社最新更新";
     starmingFeed.feedUrl = @"http://www.starming.com/atom.xml";
     starmingFeed.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_starming.png?raw=true";
+    starmingFeed.des = @"戴铭的博客";
     [mArr addObject:starmingFeed];
     
     SMFeedModel *cnbetaFeed = [[SMFeedModel alloc] init];
