@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0866301927293784009D4501 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 0866301727293784009D4501 /* fishhook.c */; };
 		0A12F26E1DE96864002ED910 /* STMURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F2671DE96864002ED910 /* STMURLCache.m */; };
 		0A12F26F1DE96864002ED910 /* STMURLCacheMk.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F2691DE96864002ED910 /* STMURLCacheMk.m */; };
 		0A12F2701DE96864002ED910 /* STMURLCacheModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A12F26B1DE96864002ED910 /* STMURLCacheModel.m */; };
@@ -86,6 +87,8 @@
 
 /* Begin PBXFileReference section */
 		055B62180119DC2D35BCADD9 /* Pods-GCDFetchFeed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCDFetchFeed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed.debug.xcconfig"; sourceTree = "<group>"; };
+		0866301727293784009D4501 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
+		0866301827293784009D4501 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
 		0A12F2661DE96864002ED910 /* STMURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMURLCache.h; sourceTree = "<group>"; };
 		0A12F2671DE96864002ED910 /* STMURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMURLCache.m; sourceTree = "<group>"; };
 		0A12F2681DE96864002ED910 /* STMURLCacheMk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMURLCacheMk.h; sourceTree = "<group>"; };
@@ -270,6 +273,8 @@
 		0A35AD421F45B2D000780172 /* SMLagMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				0866301727293784009D4501 /* fishhook.c */,
+				0866301827293784009D4501 /* fishhook.h */,
 				0A35AD431F45B31600780172 /* SMCPUMonitor.h */,
 				0A35AD441F45B31600780172 /* SMCPUMonitor.m */,
 				0A35AD461F45B32600780172 /* SMStackViewController.h */,
@@ -682,7 +687,7 @@
 				TargetAttributes = {
 					3EE311371C4E1F0800103FA3 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 5AJEH63V73;
+						DevelopmentTeam = 962Z8PV35L;
 					};
 					3EE311501C4E1F0800103FA3 = {
 						CreatedOnToolsVersion = 7.2;
@@ -699,6 +704,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -748,7 +754,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
 				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
@@ -777,7 +783,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F53889DF393E4DEE898D14BE /* [CP] Check Pods Manifest.lock */ = {
@@ -818,6 +824,7 @@
 				0A12F2701DE96864002ED910 /* STMURLCacheModel.m in Sources */,
 				0A35AD531F45B33600780172 /* SMClsCallViewController.m in Sources */,
 				0A8B09E61D6DA2BB00BE4FEC /* STMPartView.m in Sources */,
+				0866301927293784009D4501 /* fishhook.c in Sources */,
 				3E7402C61C7BFD8C0006466A /* SMDB.m in Sources */,
 				3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */,
 				0A12F2711DE96864002ED910 /* STMURLProtocol.m in Sources */,
@@ -989,11 +996,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 5AJEH63V73;
+				DEVELOPMENT_TEAM = 962Z8PV35L;
 				INFOPLIST_FILE = GCDFetchFeed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.starming.GCDFetchFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1008,6 +1016,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.starming.GCDFetchFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -7,7 +7,7 @@ target 'GCDFetchFeed' do
 	pod 'MJRefresh'
 	pod 'JSONModel'
 	pod 'Ono'
-	pod 'AFNetworking'
+	pod 'AFNetworking', '=3.0'
 	pod 'DTCoreText'
 	pod 'FMDB'
 	pod 'ReactiveCocoa', '=2.3'

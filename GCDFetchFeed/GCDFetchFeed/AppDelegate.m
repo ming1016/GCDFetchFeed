@@ -68,8 +68,9 @@
 
 - (UINavigationController *)styleNavigationControllerWithRootController:(UIViewController *)vc {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    nav.navigationBar.tintColor = [SMStyle colorPaperBlack];
-    nav.navigationBar.barTintColor = [SMStyle colorPaperDark];
+//    nav.navigationBar.tintColor = [SMStyle colorPaperLight];
+//    nav.navigationBar.barTintColor = [SMStyle colorPaperLight];
+    nav.navigationBar.backgroundColor = [SMStyle colorPaperLight];
     UIView *shaowLine = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(nav.navigationBar.frame), CGRectGetWidth(nav.navigationBar.frame), 0.5)];
     shaowLine.backgroundColor = [UIColor colorWithHexString:@"D8D7D3"];
     [nav.navigationBar addSubview:shaowLine];

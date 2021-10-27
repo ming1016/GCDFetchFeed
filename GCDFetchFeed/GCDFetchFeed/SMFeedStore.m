@@ -201,13 +201,6 @@
     zhihuDaily.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_zhihu.png?raw=true";
     [mArr addObject:zhihuDaily];
     
-    SMFeedModel *next = [[SMFeedModel alloc] init];
-    next.title = @"NEXT";
-    next.feedUrl = @"http://next.36kr.com/feed";
-    next.imageUrl = @"https://github.com/ming1016/GCDFetchFeed/blob/master/GCDFetchFeed/resource/logo_next.png?raw=true";
-    next.des = @"不错过任何一个新产品";
-    [mArr addObject:next];
-    
     SMFeedModel *cnEngadget = [[SMFeedModel alloc] init];
     cnEngadget.title = @"engadget中国版";
     cnEngadget.feedUrl = @"http://cn.engadget.com/rss.xml";
