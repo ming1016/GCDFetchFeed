@@ -15,6 +15,8 @@
 #import "SMFeedModel.h"
 #import "SMLagMonitor.h"
 
+#import <dlfcn.h>
+
 @interface AppDelegate ()
 
 @end
@@ -78,6 +80,22 @@
     return nav;
 }
 
-
+// MARK: - 代码覆盖回调函数
+//void __sanitizer_cov_trace_pc_guard_init(uint32_t *start,
+//                                         uint32_t *stop) {
+//    static uint64_t N;
+//    if (start == stop || *start) return;
+//    printf("INIT: %p %p\n", start, stop);
+//    for (uint32_t *x = start; x < stop; x++)
+//        *x = ++N;
+//}
+//
+//void __sanitizer_cov_trace_pc_guard(uint32_t *guard) {
+//    if (!*guard) return;
+//    void *PC = __builtin_return_address(0);
+//    Dl_info info;
+//    dladdr(PC, &info);
+//    printf("调用了方法: %s \n", info.dli_sname);
+//}
 
 @end
