@@ -43,7 +43,7 @@
         model.path = [NSString stringWithFormat:@"[%@ %@]",model.className,model.methodName];
         [self appendRecord:model to:mStr];
     }
-//    NSLog(@"%@",mStr);
+    NSLog(@"\n%@",mStr);
 }
 + (void)stopSaveAndClean {
     [SMCallTrace stop];
@@ -51,6 +51,10 @@
     smClearCallRecords();
 }
 + (void)appendRecord:(SMCallTraceTimeCostModel *)cost to:(NSMutableString *)mStr {
+    if (cost.callDepth == 0) {
+        [mStr appendFormat:@"\n"];
+    }
+    [mStr appendFormat:@"%@\n", [cost des]];
 //    [mStr appendFormat:@"%@\n path%@\n",[cost des],cost.path];
     if (cost.subCosts.count < 1) {
         cost.lastCall = YES;
@@ -80,6 +84,12 @@
         model.isClassMethod = class_isMetaClass(rd->cls);
         model.timeCost = (double)rd->time / 1000000.0;
         model.callDepth = rd->depth;
+        model.lr = rd->lr;
+        
+        if (rd->caller_record != NULL) {
+            model.callerLr = rd->caller_record->lr;
+        }
+
         [arr addObject:model];
     }
     NSUInteger count = arr.count;
@@ -89,14 +99,18 @@
             [arr removeObjectAtIndex:i];
             //Todo:不需要循环，直接设置下一个，然后判断好边界就行
             for (NSUInteger j = i; j < count - 1; j++) {
-                //下一个深度小的话就开始将后面的递归的往 sub array 里添加
-                if (arr[j].callDepth + 1 == model.callDepth) {
+                // 下一个深度小的话就开始将后面的递归的往 sub array 里添加
+                // ⚠️⚠️ 这里的bug：不能根据 callDepth 来判断，不然所有层级相等的深度，都在一个调用链路中了
+                // 需要根据调用链路来关联
+                if (arr[j].lr == model.callerLr) {
                     NSMutableArray *sub = (NSMutableArray *)arr[j].subCosts;
                     if (!sub) {
                         sub = [NSMutableArray new];
                         arr[j].subCosts = sub;
                     }
-                    [sub insertObject:model atIndex:0];
+                    if (![sub containsObject:model]) {
+                        [sub addObject:model];
+                    }
                 }
             }
             i--;

@@ -20,6 +20,9 @@
 @property (nonatomic, assign) NSUInteger frequency;      //访问频次
 @property (nonatomic, strong) NSArray <SMCallTraceTimeCostModel *> *subCosts;
 
+@property (nonatomic, assign) uintptr_t lr;              // 自身的 Link Register
+@property (nonatomic, assign) uintptr_t callerLr;        // 调用者的 Link Register
+
 - (NSString *)des;
 
 @end
