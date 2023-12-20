@@ -66,6 +66,7 @@
 		3EE311701C4E212700103FA3 /* SMRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3116F1C4E212700103FA3 /* SMRootViewController.m */; };
 		3EE311751C4E303600103FA3 /* SMFeedModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE311741C4E303600103FA3 /* SMFeedModel.m */; };
 		8F3DCFAC671E00110311BDBE /* Pods_GCDFetchFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3796ACD85E2DA28F1711CF41 /* Pods_GCDFetchFeed.framework */; };
+		D9DCCA782B329A1D00465F0F /* SMCallTraceDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DCCA772B329A1D00465F0F /* SMCallTraceDemo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +87,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		055B62180119DC2D35BCADD9 /* Pods-GCDFetchFeed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCDFetchFeed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed.debug.xcconfig"; sourceTree = "<group>"; };
 		0866301727293784009D4501 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
 		0866301827293784009D4501 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
 		0A12F2661DE96864002ED910 /* STMURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMURLCache.h; sourceTree = "<group>"; };
@@ -147,6 +147,7 @@
 		0AEE64951D881563009E21C7 /* SMMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMMapViewController.m; sourceTree = "<group>"; };
 		0AEE64981D883058009E21C7 /* ArtWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtWork.h; sourceTree = "<group>"; };
 		0AEE64991D883058009E21C7 /* ArtWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtWork.m; sourceTree = "<group>"; };
+		0E1C8B15B6322EA774EE06D2 /* Pods-GCDFetchFeed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCDFetchFeed.release.xcconfig"; path = "Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed.release.xcconfig"; sourceTree = "<group>"; };
 		3796ACD85E2DA28F1711CF41 /* Pods_GCDFetchFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GCDFetchFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E58A8511C507BFD0026A610 /* SMRootCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMRootCellViewModel.h; sourceTree = "<group>"; };
 		3E58A8521C507BFD0026A610 /* SMRootCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMRootCellViewModel.m; sourceTree = "<group>"; };
@@ -210,7 +211,9 @@
 		3EE3116F1C4E212700103FA3 /* SMRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMRootViewController.m; sourceTree = "<group>"; };
 		3EE311731C4E303600103FA3 /* SMFeedModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMFeedModel.h; sourceTree = "<group>"; };
 		3EE311741C4E303600103FA3 /* SMFeedModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFeedModel.m; sourceTree = "<group>"; };
-		BB29081F4A19D8EFBD4887AF /* Pods-GCDFetchFeed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCDFetchFeed.release.xcconfig"; path = "Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed.release.xcconfig"; sourceTree = "<group>"; };
+		8123E856919C2C01C5BED146 /* Pods-GCDFetchFeed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCDFetchFeed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed.debug.xcconfig"; sourceTree = "<group>"; };
+		D9DCCA762B329A1D00465F0F /* SMCallTraceDemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMCallTraceDemo.h; sourceTree = "<group>"; };
+		D9DCCA772B329A1D00465F0F /* SMCallTraceDemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMCallTraceDemo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,6 +269,8 @@
 			isa = PBXGroup;
 			children = (
 				0A35AD421F45B2D000780172 /* SMLagMonitor */,
+				D9DCCA762B329A1D00465F0F /* SMCallTraceDemo.h */,
+				D9DCCA772B329A1D00465F0F /* SMCallTraceDemo.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -604,8 +609,8 @@
 		A386EE4060ADD261E13CC63F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				055B62180119DC2D35BCADD9 /* Pods-GCDFetchFeed.debug.xcconfig */,
-				BB29081F4A19D8EFBD4887AF /* Pods-GCDFetchFeed.release.xcconfig */,
+				8123E856919C2C01C5BED146 /* Pods-GCDFetchFeed.debug.xcconfig */,
+				0E1C8B15B6322EA774EE06D2 /* Pods-GCDFetchFeed.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -687,7 +692,8 @@
 				TargetAttributes = {
 					3EE311371C4E1F0800103FA3 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 962Z8PV35L;
+						DevelopmentTeam = TKRM4J3XJV;
+						ProvisioningStyle = Manual;
 					};
 					3EE311501C4E1F0800103FA3 = {
 						CreatedOnToolsVersion = 7.2;
@@ -863,6 +869,7 @@
 				3E8341EF1C5257F4002C3EAA /* SMFeedListViewController.m in Sources */,
 				0AEE649A1D883058009E21C7 /* ArtWork.m in Sources */,
 				0A35AD4B1F45B32600780172 /* SMStackCell.m in Sources */,
+				D9DCCA782B329A1D00465F0F /* SMCallTraceDemo.m in Sources */,
 				3E58A8601C50B7270026A610 /* SMTitleLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -992,23 +999,27 @@
 		};
 		3EE311661C4E1F0800103FA3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 055B62180119DC2D35BCADD9 /* Pods-GCDFetchFeed.debug.xcconfig */;
+			baseConfigurationReference = 8123E856919C2C01C5BED146 /* Pods-GCDFetchFeed.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 962Z8PV35L;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TKRM4J3XJV;
 				INFOPLIST_FILE = GCDFetchFeed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.starming.GCDFetchFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = JingxiDev_18;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		3EE311671C4E1F0800103FA3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB29081F4A19D8EFBD4887AF /* Pods-GCDFetchFeed.release.xcconfig */;
+			baseConfigurationReference = 0E1C8B15B6322EA774EE06D2 /* Pods-GCDFetchFeed.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

@@ -14,6 +14,7 @@
 #import "SMStyle.h"
 #import "SMFeedModel.h"
 #import "SMLagMonitor.h"
+#import "SMCallTraceDemo.h"
 
 #import <dlfcn.h>
 
@@ -25,6 +26,9 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    [SMCallTraceDemo test];
+    
     //这里是做卡顿监测
 //    [[SMLagMonitor shareInstance] beginMonitor];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

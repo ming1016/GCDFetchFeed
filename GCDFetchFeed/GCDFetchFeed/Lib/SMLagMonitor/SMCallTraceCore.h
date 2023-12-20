@@ -12,11 +12,13 @@
 #include <stdio.h>
 #include <objc/objc.h>
 
-typedef struct {
+typedef struct smCallRecord {
     __unsafe_unretained Class cls;
     SEL sel;
     uint64_t time; // us (1/1000 ms)
     int depth;
+    uintptr_t lr; // link register
+    struct smCallRecord *caller_record;
 } smCallRecord;
 
 extern void smCallTraceStart();
