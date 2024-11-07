@@ -692,8 +692,8 @@
 				TargetAttributes = {
 					3EE311371C4E1F0800103FA3 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = TKRM4J3XJV;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = 962Z8PV35L;
+						ProvisioningStyle = Automatic;
 					};
 					3EE311501C4E1F0800103FA3 = {
 						CreatedOnToolsVersion = 7.2;
@@ -1002,17 +1002,15 @@
 			baseConfigurationReference = 8123E856919C2C01C5BED146 /* Pods-GCDFetchFeed.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TKRM4J3XJV;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 962Z8PV35L;
 				INFOPLIST_FILE = GCDFetchFeed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.starming.GCDFetchFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = JingxiDev_18;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;

@@ -31,12 +31,12 @@
 #pragma mark - Method Hook
 - (void)clsCallHookViewWillAppear:(BOOL)animated {
     //执行插入代码
-    [self clsCallInsertToViewWillAppear];
+//    [self clsCallInsertToViewWillAppear]; // 检测页面载入时间，需要时打开注释
     [self clsCallHookViewWillAppear:animated];
 }
 - (void)clsCallHookViewWillDisappear:(BOOL)animated {
     //执行插入代码
-    [self clsCallInsertToViewWillDisappear];
+//    [self clsCallInsertToViewWillDisappear]; // 检测页面载入时间，需要时打开注释
     [self clsCallHookViewWillDisappear:animated];
 }
 

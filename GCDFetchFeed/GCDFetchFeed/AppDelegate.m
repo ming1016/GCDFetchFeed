@@ -27,7 +27,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [SMCallTraceDemo test];
+//    [SMCallTraceDemo test]; // 监测方法耗时，需要时打开注释
     
     //这里是做卡顿监测
 //    [[SMLagMonitor shareInstance] beginMonitor];
