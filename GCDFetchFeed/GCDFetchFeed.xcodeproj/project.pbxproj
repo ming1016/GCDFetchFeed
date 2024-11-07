@@ -268,22 +268,23 @@
 		0A35AD411F45B2B300780172 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				0A35AD421F45B2D000780172 /* SMLagMonitor */,
+				0A35AD421F45B2D000780172 /* SMMonitor */,
 				D9DCCA762B329A1D00465F0F /* SMCallTraceDemo.h */,
 				D9DCCA772B329A1D00465F0F /* SMCallTraceDemo.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
 		};
-		0A35AD421F45B2D000780172 /* SMLagMonitor */ = {
+		0A35AD421F45B2D000780172 /* SMMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				3AF1BC652CDCCA5900222BE1 /* AppLaunch */,
 				3AF1BC642CDCC83200222BE1 /* CallTrace */,
 				3AF1BC632CDCC4D500222BE1 /* CPUAndLag */,
 				0866301727293784009D4501 /* fishhook.c */,
 				0866301827293784009D4501 /* fishhook.h */,
 			);
-			path = SMLagMonitor;
+			path = SMMonitor;
 			sourceTree = "<group>";
 		};
 		0A35AD6A1F45B41400780172 /* Hook */ = {
@@ -384,6 +385,13 @@
 				0A35AD5F1F45B34C00780172 /* SMCallTraceTimeCostModel.m */,
 			);
 			path = CallTrace;
+			sourceTree = "<group>";
+		};
+		3AF1BC652CDCCA5900222BE1 /* AppLaunch */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AppLaunch;
 			sourceTree = "<group>";
 		};
 		3E45BCC01C85780500D7C9CD /* ListView */ = {
