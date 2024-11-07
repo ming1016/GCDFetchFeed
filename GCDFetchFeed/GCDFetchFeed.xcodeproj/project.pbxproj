@@ -278,36 +278,10 @@
 		0A35AD421F45B2D000780172 /* SMLagMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				3AF1BC642CDCC83200222BE1 /* CallTrace */,
+				3AF1BC632CDCC4D500222BE1 /* CPUAndLag */,
 				0866301727293784009D4501 /* fishhook.c */,
 				0866301827293784009D4501 /* fishhook.h */,
-				0A35AD431F45B31600780172 /* SMCPUMonitor.h */,
-				0A35AD441F45B31600780172 /* SMCPUMonitor.m */,
-				0A35AD461F45B32600780172 /* SMStackViewController.h */,
-				0A35AD471F45B32600780172 /* SMStackViewController.m */,
-				0A35AD481F45B32600780172 /* SMStackCell.h */,
-				0A35AD491F45B32600780172 /* SMStackCell.m */,
-				0A35AD4C1F45B32E00780172 /* SMLagButton.h */,
-				0A35AD4D1F45B32E00780172 /* SMLagButton.m */,
-				0A35AD4F1F45B33600780172 /* SMClsCallViewController.h */,
-				0A35AD501F45B33600780172 /* SMClsCallViewController.m */,
-				0A35AD511F45B33600780172 /* SMClsCallCell.h */,
-				0A35AD521F45B33600780172 /* SMClsCallCell.m */,
-				0A35AD551F45B33E00780172 /* SMLagDB.h */,
-				0A35AD561F45B33E00780172 /* SMLagDB.m */,
-				0A35AD581F45B34C00780172 /* SMCallLib.h */,
-				0A35AD591F45B34C00780172 /* SMCallLib.m */,
-				0A35AD5A1F45B34C00780172 /* SMCallTrace.h */,
-				0A35AD5B1F45B34C00780172 /* SMCallTrace.m */,
-				0A35AD5C1F45B34C00780172 /* SMCallTraceCore.h */,
-				0A35AD5D1F45B34C00780172 /* SMCallTraceCore.c */,
-				0A35AD5E1F45B34C00780172 /* SMCallTraceTimeCostModel.h */,
-				0A35AD5F1F45B34C00780172 /* SMCallTraceTimeCostModel.m */,
-				0A35AD601F45B34C00780172 /* SMCallStack.h */,
-				0A35AD611F45B34C00780172 /* SMCallStack.m */,
-				0A333DEB1F46946900EAD6E8 /* SMCallStackModel.h */,
-				0A333DEC1F46946900EAD6E8 /* SMCallStackModel.m */,
-				0A35AD671F45B35500780172 /* SMLagMonitor.h */,
-				0A35AD681F45B35500780172 /* SMLagMonitor.m */,
 			);
 			path = SMLagMonitor;
 			sourceTree = "<group>";
@@ -368,6 +342,48 @@
 				0AEE64991D883058009E21C7 /* ArtWork.m */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		3AF1BC632CDCC4D500222BE1 /* CPUAndLag */ = {
+			isa = PBXGroup;
+			children = (
+				0A35AD431F45B31600780172 /* SMCPUMonitor.h */,
+				0A35AD441F45B31600780172 /* SMCPUMonitor.m */,
+				0A35AD461F45B32600780172 /* SMStackViewController.h */,
+				0A35AD471F45B32600780172 /* SMStackViewController.m */,
+				0A35AD481F45B32600780172 /* SMStackCell.h */,
+				0A35AD491F45B32600780172 /* SMStackCell.m */,
+				0A35AD601F45B34C00780172 /* SMCallStack.h */,
+				0A35AD611F45B34C00780172 /* SMCallStack.m */,
+				0A333DEB1F46946900EAD6E8 /* SMCallStackModel.h */,
+				0A333DEC1F46946900EAD6E8 /* SMCallStackModel.m */,
+				0A35AD671F45B35500780172 /* SMLagMonitor.h */,
+				0A35AD681F45B35500780172 /* SMLagMonitor.m */,
+			);
+			path = CPUAndLag;
+			sourceTree = "<group>";
+		};
+		3AF1BC642CDCC83200222BE1 /* CallTrace */ = {
+			isa = PBXGroup;
+			children = (
+				0A35AD4C1F45B32E00780172 /* SMLagButton.h */,
+				0A35AD4D1F45B32E00780172 /* SMLagButton.m */,
+				0A35AD4F1F45B33600780172 /* SMClsCallViewController.h */,
+				0A35AD501F45B33600780172 /* SMClsCallViewController.m */,
+				0A35AD511F45B33600780172 /* SMClsCallCell.h */,
+				0A35AD521F45B33600780172 /* SMClsCallCell.m */,
+				0A35AD551F45B33E00780172 /* SMLagDB.h */,
+				0A35AD561F45B33E00780172 /* SMLagDB.m */,
+				0A35AD581F45B34C00780172 /* SMCallLib.h */,
+				0A35AD591F45B34C00780172 /* SMCallLib.m */,
+				0A35AD5A1F45B34C00780172 /* SMCallTrace.h */,
+				0A35AD5B1F45B34C00780172 /* SMCallTrace.m */,
+				0A35AD5C1F45B34C00780172 /* SMCallTraceCore.h */,
+				0A35AD5D1F45B34C00780172 /* SMCallTraceCore.c */,
+				0A35AD5E1F45B34C00780172 /* SMCallTraceTimeCostModel.h */,
+				0A35AD5F1F45B34C00780172 /* SMCallTraceTimeCostModel.m */,
+			);
+			path = CallTrace;
 			sourceTree = "<group>";
 		};
 		3E45BCC01C85780500D7C9CD /* ListView */ = {
