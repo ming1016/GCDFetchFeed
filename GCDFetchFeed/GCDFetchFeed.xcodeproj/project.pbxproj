@@ -35,6 +35,7 @@
 		0AA0CF151FCD58FD005B00DD /* SMEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0CF141FCD58FD005B00DD /* SMEvent.m */; };
 		0AEE64961D881563009E21C7 /* SMMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE64951D881563009E21C7 /* SMMapViewController.m */; };
 		0AEE649A1D883058009E21C7 /* ArtWork.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE64991D883058009E21C7 /* ArtWork.m */; };
+		3AF1BC6F2CDCE4E700222BE1 /* AppLaunchTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF1BC6E2CDCE4E700222BE1 /* AppLaunchTime.m */; };
 		3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8521C507BFD0026A610 /* SMRootCellViewModel.m */; };
 		3E58A8581C507FB90026A610 /* SMImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8571C507FB90026A610 /* SMImageView.m */; };
 		3E58A85D1C50B6B30026A610 /* SMLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A85C1C50B6B30026A610 /* SMLabel.m */; };
@@ -149,6 +150,8 @@
 		0AEE64991D883058009E21C7 /* ArtWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtWork.m; sourceTree = "<group>"; };
 		0E1C8B15B6322EA774EE06D2 /* Pods-GCDFetchFeed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCDFetchFeed.release.xcconfig"; path = "Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed.release.xcconfig"; sourceTree = "<group>"; };
 		3796ACD85E2DA28F1711CF41 /* Pods_GCDFetchFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GCDFetchFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AF1BC6D2CDCE4E700222BE1 /* AppLaunchTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLaunchTime.h; sourceTree = "<group>"; };
+		3AF1BC6E2CDCE4E700222BE1 /* AppLaunchTime.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLaunchTime.m; sourceTree = "<group>"; };
 		3E58A8511C507BFD0026A610 /* SMRootCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMRootCellViewModel.h; sourceTree = "<group>"; };
 		3E58A8521C507BFD0026A610 /* SMRootCellViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMRootCellViewModel.m; sourceTree = "<group>"; };
 		3E58A8561C507FB90026A610 /* SMImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMImageView.h; sourceTree = "<group>"; };
@@ -278,7 +281,7 @@
 		0A35AD421F45B2D000780172 /* SMMonitor */ = {
 			isa = PBXGroup;
 			children = (
-				3AF1BC652CDCCA5900222BE1 /* AppLaunch */,
+				3AF1BC692CDCD6DA00222BE1 /* AppLaunch */,
 				3AF1BC642CDCC83200222BE1 /* CallTrace */,
 				3AF1BC632CDCC4D500222BE1 /* CPUAndLag */,
 				0866301727293784009D4501 /* fishhook.c */,
@@ -387,9 +390,11 @@
 			path = CallTrace;
 			sourceTree = "<group>";
 		};
-		3AF1BC652CDCCA5900222BE1 /* AppLaunch */ = {
+		3AF1BC692CDCD6DA00222BE1 /* AppLaunch */ = {
 			isa = PBXGroup;
 			children = (
+				3AF1BC6D2CDCE4E700222BE1 /* AppLaunchTime.h */,
+				3AF1BC6E2CDCE4E700222BE1 /* AppLaunchTime.m */,
 			);
 			path = AppLaunch;
 			sourceTree = "<group>";
@@ -856,6 +861,7 @@
 				0A8B09E61D6DA2BB00BE4FEC /* STMPartView.m in Sources */,
 				0866301927293784009D4501 /* fishhook.c in Sources */,
 				3E7402C61C7BFD8C0006466A /* SMDB.m in Sources */,
+				3AF1BC6F2CDCE4E700222BE1 /* AppLaunchTime.m in Sources */,
 				3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */,
 				0A12F2711DE96864002ED910 /* STMURLProtocol.m in Sources */,
 				0A35AD541F45B33600780172 /* SMClsCallCell.m in Sources */,
@@ -1030,11 +1036,16 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 962Z8PV35L;
 				INFOPLIST_FILE = GCDFetchFeed/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.starming.GCDFetchFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1047,9 +1058,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 5AJEH63V73;
 				INFOPLIST_FILE = GCDFetchFeed/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.starming.GCDFetchFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
