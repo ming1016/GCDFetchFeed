@@ -33,8 +33,9 @@
 		0A8B09E51D6DA2BB00BE4FEC /* STMPartMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09E01D6DA2BB00BE4FEC /* STMPartMaker.m */; };
 		0A8B09E61D6DA2BB00BE4FEC /* STMPartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09E21D6DA2BB00BE4FEC /* STMPartView.m */; };
 		0AA0CF151FCD58FD005B00DD /* SMEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0CF141FCD58FD005B00DD /* SMEvent.m */; };
-		0AEE64961D881563009E21C7 /* SMMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE64951D881563009E21C7 /* SMMapViewController.m */; };
-		0AEE649A1D883058009E21C7 /* ArtWork.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE64991D883058009E21C7 /* ArtWork.m */; };
+		3AA1EA672CDE0C850093BF9B /* A4LoadMeasure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA1EA652CDE0BA10093BF9B /* A4LoadMeasure.framework */; };
+		3AA1EA682CDE0C850093BF9B /* A4LoadMeasure.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA1EA652CDE0BA10093BF9B /* A4LoadMeasure.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3AF062662CDDB37300E2537C /* MeasureStaticInitializers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3AF062652CDDB37300E2537C /* MeasureStaticInitializers.mm */; };
 		3AF1BC6F2CDCE4E700222BE1 /* AppLaunchTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF1BC6E2CDCE4E700222BE1 /* AppLaunchTime.m */; };
 		3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8521C507BFD0026A610 /* SMRootCellViewModel.m */; };
 		3E58A8581C507FB90026A610 /* SMImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8571C507FB90026A610 /* SMImageView.m */; };
@@ -86,6 +87,20 @@
 			remoteInfo = GCDFetchFeed;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3AF0626C2CDDFB5700E2537C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3AA1EA682CDE0C850093BF9B /* A4LoadMeasure.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0866301727293784009D4501 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
@@ -144,12 +159,10 @@
 		0A8B09E21D6DA2BB00BE4FEC /* STMPartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STMPartView.m; sourceTree = "<group>"; };
 		0AA0CF131FCD58FD005B00DD /* SMEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMEvent.h; sourceTree = "<group>"; };
 		0AA0CF141FCD58FD005B00DD /* SMEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMEvent.m; sourceTree = "<group>"; };
-		0AEE64941D881563009E21C7 /* SMMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMMapViewController.h; sourceTree = "<group>"; };
-		0AEE64951D881563009E21C7 /* SMMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMMapViewController.m; sourceTree = "<group>"; };
-		0AEE64981D883058009E21C7 /* ArtWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtWork.h; sourceTree = "<group>"; };
-		0AEE64991D883058009E21C7 /* ArtWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtWork.m; sourceTree = "<group>"; };
 		0E1C8B15B6322EA774EE06D2 /* Pods-GCDFetchFeed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCDFetchFeed.release.xcconfig"; path = "Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed.release.xcconfig"; sourceTree = "<group>"; };
 		3796ACD85E2DA28F1711CF41 /* Pods_GCDFetchFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GCDFetchFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AA1EA652CDE0BA10093BF9B /* A4LoadMeasure.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = A4LoadMeasure.framework; sourceTree = "<group>"; };
+		3AF062652CDDB37300E2537C /* MeasureStaticInitializers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MeasureStaticInitializers.mm; sourceTree = "<group>"; };
 		3AF1BC6D2CDCE4E700222BE1 /* AppLaunchTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLaunchTime.h; sourceTree = "<group>"; };
 		3AF1BC6E2CDCE4E700222BE1 /* AppLaunchTime.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppLaunchTime.m; sourceTree = "<group>"; };
 		3E58A8511C507BFD0026A610 /* SMRootCellViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMRootCellViewModel.h; sourceTree = "<group>"; };
@@ -224,6 +237,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AA1EA672CDE0C850093BF9B /* A4LoadMeasure.framework in Frameworks */,
 				8F3DCFAC671E00110311BDBE /* Pods_GCDFetchFeed.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,25 +343,6 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
-		0AEE64931D8814F1009E21C7 /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				0AEE64971D882F11009E21C7 /* View */,
-				0AEE64941D881563009E21C7 /* SMMapViewController.h */,
-				0AEE64951D881563009E21C7 /* SMMapViewController.m */,
-			);
-			name = Map;
-			sourceTree = "<group>";
-		};
-		0AEE64971D882F11009E21C7 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				0AEE64981D883058009E21C7 /* ArtWork.h */,
-				0AEE64991D883058009E21C7 /* ArtWork.m */,
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
 		3AF1BC632CDCC4D500222BE1 /* CPUAndLag */ = {
 			isa = PBXGroup;
 			children = (
@@ -395,6 +390,7 @@
 			children = (
 				3AF1BC6D2CDCE4E700222BE1 /* AppLaunchTime.h */,
 				3AF1BC6E2CDCE4E700222BE1 /* AppLaunchTime.m */,
+				3AF062652CDDB37300E2537C /* MeasureStaticInitializers.mm */,
 			);
 			path = AppLaunch;
 			sourceTree = "<group>";
@@ -533,7 +529,6 @@
 		3EAC029C1C4F85CA009BE766 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				0AEE64931D8814F1009E21C7 /* Map */,
 				3EC82B701C72E35E0057C6E5 /* Article */,
 				3E8341EC1C5256AE002C3EAA /* List */,
 				3E8341EB1C52569F002C3EAA /* Root */,
@@ -647,6 +642,7 @@
 		C089D98D89503DBC1C1E275E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3AA1EA652CDE0BA10093BF9B /* A4LoadMeasure.framework */,
 				3796ACD85E2DA28F1711CF41 /* Pods_GCDFetchFeed.framework */,
 			);
 			name = Frameworks;
@@ -664,6 +660,7 @@
 				3EE311351C4E1F0800103FA3 /* Frameworks */,
 				3EE311361C4E1F0800103FA3 /* Resources */,
 				2EC1CB034CF95A2D719C65EC /* [CP] Embed Pods Frameworks */,
+				3AF0626C2CDDFB5700E2537C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -885,6 +882,7 @@
 				0A35AD6D1F45B41E00780172 /* DCHook.m in Sources */,
 				0A8B09E31D6DA2BB00BE4FEC /* STMAssembleMaker.m in Sources */,
 				0A35AD661F45B34C00780172 /* SMCallStack.m in Sources */,
+				3AF062662CDDB37300E2537C /* MeasureStaticInitializers.mm in Sources */,
 				3EE311401C4E1F0800103FA3 /* AppDelegate.m in Sources */,
 				0A35AD451F45B31600780172 /* SMCPUMonitor.m in Sources */,
 				0A8B09E51D6DA2BB00BE4FEC /* STMPartMaker.m in Sources */,
@@ -893,11 +891,9 @@
 				0AA0CF151FCD58FD005B00DD /* SMEvent.m in Sources */,
 				3E58A8651C50B90A0026A610 /* UIColor-Expanded.m in Sources */,
 				3EE3113D1C4E1F0800103FA3 /* main.m in Sources */,
-				0AEE64961D881563009E21C7 /* SMMapViewController.m in Sources */,
 				3E58A87B1C50F01E0026A610 /* SMNetManager.m in Sources */,
 				3EAC02A21C4F8CB2009BE766 /* SMRootCell.m in Sources */,
 				3E8341EF1C5257F4002C3EAA /* SMFeedListViewController.m in Sources */,
-				0AEE649A1D883058009E21C7 /* ArtWork.m in Sources */,
 				0A35AD4B1F45B32600780172 /* SMStackCell.m in Sources */,
 				D9DCCA782B329A1D00465F0F /* SMCallTraceDemo.m in Sources */,
 				3E58A8601C50B7270026A610 /* SMTitleLabel.m in Sources */,
@@ -1035,6 +1031,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 962Z8PV35L;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GCDFetchFeed/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1056,7 +1056,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 5AJEH63V73;
+				DEVELOPMENT_TEAM = 962Z8PV35L;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GCDFetchFeed/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

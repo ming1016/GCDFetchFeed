@@ -10,72 +10,52 @@
 
 #import "SMRootViewController.h"
 #import "SMFeedListViewController.h"
-#import "SMMapViewController.h"
 #import "SMStyle.h"
 #import "SMFeedModel.h"
 #import "SMLagMonitor.h"
 #import "SMCallTraceDemo.h"
 
 #import <dlfcn.h>
+#import <MetricKit/MetricKit.h>
+#import "AppLaunchTime.h"
+#import "SMCallTrace.h"
 
 @interface AppDelegate ()
-
+@property (nonatomic, assign) os_log_t log;
 @end
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-//    [SMCallTraceDemo test]; // 监测方法耗时，需要时打开注释
+//    [SMCallTrace start];
+    self.log = [AppLaunchTime creatWithBundleId:"com.starming.log" key:"launch"]; // 渲染时间
+    [AppLaunchTime beginTime:self.log];
+    // 监测方法耗时，需要时打开注释
+//    [SMCallTraceDemo test];
     
     //这里是做卡顿监测
 //    [[SMLagMonitor shareInstance] beginMonitor];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     //首页
     SMRootViewController *rootVC = [[SMRootViewController alloc] init];
-//    UINavigationController *homeNav = [self styleNavigationControllerWithRootController:rootVC];
     UINavigationController *homeNav = [self styleNavigationControllerWithRootController:rootVC];
-//    UITabBarItem *homeTab = [[UITabBarItem alloc] initWithTitle:@"频道" image:nil tag:1];
-//    homeTab.titlePositionAdjustment = UIOffsetMake(0, -20);
-//    homeNav.tabBarItem = homeTab;
-//    
-//    //列表
-//    SMFeedModel *feedModel = [SMFeedModel new];
-//    feedModel.fid = 0;
-//    SMFeedListViewController *feedListVC = [[SMFeedListViewController alloc] initWithFeedModel:feedModel];
-//    UINavigationController *listNav = [self styleNavigationControllerWithRootController:feedListVC];
-//    UITabBarItem *listTab = [[UITabBarItem alloc] initWithTitle:@"列表" image:nil tag:2];
-//    listTab.titlePositionAdjustment = UIOffsetMake(0, -18);
-//    listNav.tabBarItem = listTab;
-//    
-//    //map
-//    SMMapViewController *mapVC = [[SMMapViewController alloc] init];
-//    UINavigationController *mapNav = [self styleNavigationControllerWithRootController:mapVC];
-//    UITabBarItem *mapTab = [[UITabBarItem alloc] initWithTitle:@"地图" image:nil tag:2];
-//    mapTab.titlePositionAdjustment = UIOffsetMake(0, -18);
-//    mapNav.tabBarItem = mapTab;
-//    
-//    UITabBarController *tabBarC = [[UITabBarController alloc]initWithNibName:nil bundle:nil];
-//    tabBarC.tabBar.tintColor = [SMStyle colorPaperBlack];
-//    tabBarC.tabBar.barTintColor = [SMStyle colorPaperDark];
-//    UIView *shaowLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(tabBarC.tabBar.frame), 0.5)];
-//    shaowLine.backgroundColor = [UIColor colorWithHexString:@"D8D7D3"];
-//    [tabBarC.tabBar addSubview:shaowLine];
-//    tabBarC.tabBar.shadowImage = [UIImage new];
-//    tabBarC.tabBar.clipsToBounds = YES;
-//    tabBarC.viewControllers = @[homeNav,listNav,mapNav];
-    
-//    self.window.rootViewController = tabBarC;
     self.window.rootViewController = homeNav;
     [self.window makeKeyAndVisible];
     return YES;
 }
 
+// 渲染完成
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [AppLaunchTime mark]; // 进程启动开始，到渲染完成的时间
+    [AppLaunchTime endTime:self.log];
+    [AppLaunchTime stopMonitoring];
+//    [SMCallTrace stop];
+//    [SMCallTrace save];
+}
+
 - (UINavigationController *)styleNavigationControllerWithRootController:(UIViewController *)vc {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-//    nav.navigationBar.tintColor = [SMStyle colorPaperLight];
-//    nav.navigationBar.barTintColor = [SMStyle colorPaperLight];
     nav.navigationBar.backgroundColor = [SMStyle colorPaperLight];
     UIView *shaowLine = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(nav.navigationBar.frame), CGRectGetWidth(nav.navigationBar.frame), 0.5)];
     shaowLine.backgroundColor = [UIColor colorWithHexString:@"D8D7D3"];

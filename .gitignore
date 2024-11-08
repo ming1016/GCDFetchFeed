@@ -55,3 +55,5 @@ Carthage/Build
 fastlane/report.xml
 fastlane/screenshots
 GCDFetchFeed/.DS_Store
+GCDFetchFeed/GCDFetchFeed/Lib/SMMonitor/.DS_Store
+.DS_Store

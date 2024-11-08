@@ -26,6 +26,9 @@
 @end
 
 @implementation SMArticleViewController
++ (void)load {
+    NSLog(@"SMArticleViewController +load hi");
+}
 
 #pragma mark - Life Cycle
 - (instancetype)initWithFeedModel:(SMFeedItemModel *)feedItemModel {
