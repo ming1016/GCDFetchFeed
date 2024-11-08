@@ -33,8 +33,7 @@
 		0A8B09E51D6DA2BB00BE4FEC /* STMPartMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09E01D6DA2BB00BE4FEC /* STMPartMaker.m */; };
 		0A8B09E61D6DA2BB00BE4FEC /* STMPartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8B09E21D6DA2BB00BE4FEC /* STMPartView.m */; };
 		0AA0CF151FCD58FD005B00DD /* SMEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0CF141FCD58FD005B00DD /* SMEvent.m */; };
-		3AA1EA672CDE0C850093BF9B /* A4LoadMeasure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA1EA652CDE0BA10093BF9B /* A4LoadMeasure.framework */; };
-		3AA1EA682CDE0C850093BF9B /* A4LoadMeasure.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA1EA652CDE0BA10093BF9B /* A4LoadMeasure.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3A6189462CDE19A4005A530F /* MetricsSubscriber.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6189452CDE19A4005A530F /* MetricsSubscriber.m */; };
 		3AF062662CDDB37300E2537C /* MeasureStaticInitializers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3AF062652CDDB37300E2537C /* MeasureStaticInitializers.mm */; };
 		3AF1BC6F2CDCE4E700222BE1 /* AppLaunchTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF1BC6E2CDCE4E700222BE1 /* AppLaunchTime.m */; };
 		3E58A8531C507BFD0026A610 /* SMRootCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E58A8521C507BFD0026A610 /* SMRootCellViewModel.m */; };
@@ -87,20 +86,6 @@
 			remoteInfo = GCDFetchFeed;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		3AF0626C2CDDFB5700E2537C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				3AA1EA682CDE0C850093BF9B /* A4LoadMeasure.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0866301727293784009D4501 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fishhook.c; sourceTree = "<group>"; };
@@ -161,6 +146,8 @@
 		0AA0CF141FCD58FD005B00DD /* SMEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMEvent.m; sourceTree = "<group>"; };
 		0E1C8B15B6322EA774EE06D2 /* Pods-GCDFetchFeed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GCDFetchFeed.release.xcconfig"; path = "Pods/Target Support Files/Pods-GCDFetchFeed/Pods-GCDFetchFeed.release.xcconfig"; sourceTree = "<group>"; };
 		3796ACD85E2DA28F1711CF41 /* Pods_GCDFetchFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GCDFetchFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A6189442CDE19A4005A530F /* MetricsSubscriber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetricsSubscriber.h; sourceTree = "<group>"; };
+		3A6189452CDE19A4005A530F /* MetricsSubscriber.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetricsSubscriber.m; sourceTree = "<group>"; };
 		3AA1EA652CDE0BA10093BF9B /* A4LoadMeasure.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = A4LoadMeasure.framework; sourceTree = "<group>"; };
 		3AF062652CDDB37300E2537C /* MeasureStaticInitializers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MeasureStaticInitializers.mm; sourceTree = "<group>"; };
 		3AF1BC6D2CDCE4E700222BE1 /* AppLaunchTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppLaunchTime.h; sourceTree = "<group>"; };
@@ -237,7 +224,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AA1EA672CDE0C850093BF9B /* A4LoadMeasure.framework in Frameworks */,
 				8F3DCFAC671E00110311BDBE /* Pods_GCDFetchFeed.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +377,8 @@
 				3AF1BC6D2CDCE4E700222BE1 /* AppLaunchTime.h */,
 				3AF1BC6E2CDCE4E700222BE1 /* AppLaunchTime.m */,
 				3AF062652CDDB37300E2537C /* MeasureStaticInitializers.mm */,
+				3A6189442CDE19A4005A530F /* MetricsSubscriber.h */,
+				3A6189452CDE19A4005A530F /* MetricsSubscriber.m */,
 			);
 			path = AppLaunch;
 			sourceTree = "<group>";
@@ -660,7 +648,6 @@
 				3EE311351C4E1F0800103FA3 /* Frameworks */,
 				3EE311361C4E1F0800103FA3 /* Resources */,
 				2EC1CB034CF95A2D719C65EC /* [CP] Embed Pods Frameworks */,
-				3AF0626C2CDDFB5700E2537C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -891,6 +878,7 @@
 				0AA0CF151FCD58FD005B00DD /* SMEvent.m in Sources */,
 				3E58A8651C50B90A0026A610 /* UIColor-Expanded.m in Sources */,
 				3EE3113D1C4E1F0800103FA3 /* main.m in Sources */,
+				3A6189462CDE19A4005A530F /* MetricsSubscriber.m in Sources */,
 				3E58A87B1C50F01E0026A610 /* SMNetManager.m in Sources */,
 				3EAC02A21C4F8CB2009BE766 /* SMRootCell.m in Sources */,
 				3E8341EF1C5257F4002C3EAA /* SMFeedListViewController.m in Sources */,

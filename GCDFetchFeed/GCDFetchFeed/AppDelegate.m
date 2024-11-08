@@ -19,15 +19,19 @@
 #import <MetricKit/MetricKit.h>
 #import "AppLaunchTime.h"
 #import "SMCallTrace.h"
+#import "MetricsSubscriber.h"
 
 @interface AppDelegate ()
 @property (nonatomic, assign) os_log_t log;
+@property (nonatomic, strong) MetricsSubscriber *metricsSubscriber;
 @end
 
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // 在应用启动时创建 MetricsSubscriber 实例
+    self.metricsSubscriber = [[MetricsSubscriber alloc] init];
 //    [SMCallTrace start];
     self.log = [AppLaunchTime creatWithBundleId:"com.starming.log" key:"launch"]; // 渲染时间
     [AppLaunchTime beginTime:self.log];
